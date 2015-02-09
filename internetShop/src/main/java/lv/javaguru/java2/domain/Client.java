@@ -10,34 +10,15 @@ public class Client {
     private long id;
     private String name;
     private String surname;
-    private Address address;
-    private String eMail;
-    private String phone;
-    private Map<Integer, Booking> orders = new HashMap<Integer, Booking>(); //список заказов клиента
+    private String persCode;
+    private String gender;
 
-    public Client(String name, String surname, String phone, String eMail) {
-        this.name = name;
-        this.surname = surname;
-        this.phone = phone;
-        this.eMail = eMail;
-    }
-
-    public Client(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
-    public Client() {
-    }
-
-    public Client(long id, String name, String surname, Address address, String eMail, String phone, Map<Integer, Booking> orders) {
+    public Client(long id, String name, String surname, String persCode, String gender) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.address = address;
-        this.eMail = eMail;
-        this.phone = phone;
-        this.orders = orders;
+        this.persCode = persCode;
+        this.gender = gender;
     }
 
     public long getId() {
@@ -64,35 +45,20 @@ public class Client {
         this.surname = surname;
     }
 
-    public Address getAddress() {
-        return address;
+    public String getPersCode() {
+        return persCode;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setPersCode(String persCode) {
+        this.persCode = persCode;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getGender() {
+        return gender;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Map<Integer, Booking> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Map<Integer, Booking> orders) {
-        this.orders = orders;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
+
