@@ -1,8 +1,5 @@
 package lv.javaguru.java2.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Anna on 05.02.15.
  */
