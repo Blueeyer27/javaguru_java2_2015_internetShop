@@ -4,6 +4,7 @@ package lv.javaguru.java2.domain;
  * Created by Anna on 09.02.15.
  */
 public class Address {
+    private long addressId;
     private long clientId;
     private String country;
     private String city;  //название города или посёлка
@@ -15,7 +16,8 @@ public class Address {
     public Address() {
     }
 
-    public Address(long clientId, String country, String city, String street, int houseNo, int flatNo, String postcode) {
+    public Address(long addressId, long clientId, String country, String city, String street, int houseNo, int flatNo, String postcode) {
+        this.addressId = addressId;
         this.clientId = clientId;
         this.country = country;
         this.city = city;
@@ -25,13 +27,22 @@ public class Address {
         this.postcode = postcode;
     }
 
-    public Address(long clientId, String country, String city, String street, int houseNo, String postcode) {
+    public Address(long addressId, long clientId, String country, String city, String street, int houseNo, String postcode) {
+        this.addressId = addressId;
         this.clientId = clientId;
         this.country = country;
         this.city = city;
         this.street = street;
         this.houseNo = houseNo;
         this.postcode = postcode;
+    }
+
+    public long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
     }
 
     public long getClientId() {

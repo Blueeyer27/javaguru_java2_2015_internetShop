@@ -15,7 +15,7 @@ public interface ClientDAO {
 
     void delete(Long id) throws DBException;
 
-    void update(Client user) throws DBException;
+    void update(Client client) throws DBException;
 
     List<Client> getAll() throws DBException;
 

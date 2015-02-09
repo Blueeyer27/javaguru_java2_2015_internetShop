@@ -1,8 +1,9 @@
 package lv.javaguru.java2.database.jdbc;
 
-import lv.javaguru.java2.database.ClientDAO;
+
 import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.domain.Client;
+import lv.javaguru.java2.database.PhoneDAO;
+import lv.javaguru.java2.domain.Phone;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,11 +11,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientDAOImpl extends DAOImpl implements ClientDAO {
+/**
+ * Created by Anna on 09.02.15.
+ */
+public class PhoneDAOImpl extends DAOImpl implements PhoneDAO {
 
     @Override
-    public void create(Client client) throws DBException {
-        if (client == null) {
+    public void create(Phone phone) throws DBException {
+        if (phone == null) {
             return;
         }
 
@@ -23,16 +27,14 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("insert into CLIENTS values (default, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, client.getName());
-            preparedStatement.setString(2, client.getSurname());
-            preparedStatement.setString(3, client.getPersCode());
-            preparedStatement.setString(4, client.getGender());
+                    connection.prepareStatement("insert into PHONES values (default, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, phone.getClientId());
+            preparedStatement.setString(2, phone.getPhoneNumber());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()){
-                client.setId(rs.getLong(1));
+                phone.setPhoneId(rs.getLong(1));
             }
         } catch (Throwable e) {
             System.out.println("Exception while execute ClientDAOImpl.create()");
@@ -45,25 +47,23 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
     }
 
     @Override
-    public Client getById(Long id) throws DBException {
+    public Phone getById(Long id) throws DBException {
         Connection connection = null;
 
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from CLIENTS where ClientId = ?");
+                    .prepareStatement("select * from PHONES where PhoneId = ?");
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Client client = null;
+            Phone phone = null;
             if (resultSet.next()) {
-                client = new Client();
-                client.setId(resultSet.getLong("ClientId"));
-                client.setName(resultSet.getString("Name"));
-                client.setSurname(resultSet.getString("Surname"));
-                client.setPersCode(resultSet.getString("Personal_code"));
-                client.setGender(resultSet.getString("Gender"));
+                phone = new Phone();
+                phone.setPhoneId(resultSet.getLong("PhoneId"));
+                phone.setClientId(resultSet.getLong("ClientId"));
+                phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
             }
-            return client;
+            return phone;
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.getById()");
             e.printStackTrace();
@@ -73,22 +73,21 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         }
     }
 
-    public List<Client> getAll() throws DBException {
-        List<Client> clients = new ArrayList<Client>();
+
+    public List<Phone> getAll() throws DBException {
+        List<Phone> phones = new ArrayList<Phone>();
         Connection connection = null;
         try {
             connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from CLIENTS");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from PHONES");
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Client client = new Client();
-                client.setId(resultSet.getLong("ClientId"));
-                client.setName(resultSet.getString("Name"));
-                client.setSurname(resultSet.getString("Surname"));
-                client.setPersCode(resultSet.getString("Personal_code"));
-                client.setGender(resultSet.getString("Gender"));
-                clients.add(client);
+                Phone phone = new Phone();
+                phone.setPhoneId(resultSet.getLong("PhoneId"));
+                phone.setClientId(resultSet.getLong("ClientId"));
+                phone.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                phones.add(phone);
             }
         } catch (Throwable e) {
             System.out.println("Exception while getting customer list UserDAOImpl.getList()");
@@ -97,8 +96,9 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         } finally {
             closeConnection(connection);
         }
-        return clients;
+        return phones;
     }
+
 
     @Override
     public void delete(Long id) throws DBException {
@@ -106,7 +106,7 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("delete from CLIENTS where ClientId = ?");
+                    .prepareStatement("delete from PHONES where PhoneId = ?");
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
@@ -116,11 +116,13 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         } finally {
             closeConnection(connection);
         }
+
     }
 
     @Override
-    public void update(Client client) throws DBException {
-        if (client == null) {
+    public void update(Phone phone) throws DBException {
+
+        if (phone == null) {
             return;
         }
 
@@ -128,10 +130,10 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("update CLIENTS set Surname = ?" +
-                            "where ClientId = ?");
-            preparedStatement.setString(1, client.getSurname());
-            preparedStatement.setLong(2, client.getId());
+                    .prepareStatement("update PHONES set PhoneNumber = ?" +
+                            "where PhoneId = ?");
+            preparedStatement.setString(1, phone.getPhoneNumber());
+            preparedStatement.setLong(2, phone.getPhoneId());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute ClientDAOImpl.update()");
@@ -140,6 +142,7 @@ public class ClientDAOImpl extends DAOImpl implements ClientDAO {
         } finally {
             closeConnection(connection);
         }
+
     }
 
 }
