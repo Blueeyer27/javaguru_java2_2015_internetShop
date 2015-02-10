@@ -26,14 +26,14 @@ public class HelloWorldServlet extends HttpServlet {
 		// Set response content type
 		resp.setContentType("text/html");
 
-        Client client1 = createClient("Elena", "Ivanova", "220788-23856", "female");
+        /*Client client1 = createClient("Elena", "Ivanova", "220788-23856", "female");
         Client client2 = createClient("Ivan", "Petrov", "230189-12303", "male");
-        Client client3 = createClient("Viktorija", "Smirnova", "150455-34012", "female");
+        Client client3 = createClient("Viktorija", "Smirnova", "150455-34012", "female");*/
         List<Client> allClients = null;
         try {
-            clientDAO.create(client1);
+            /*clientDAO.create(client1);
             clientDAO.create(client2);
-            clientDAO.create(client3);
+            clientDAO.create(client3);*/
             allClients = clientDAO.getAll();
         } catch (DBException e) {
             e.printStackTrace();
@@ -41,8 +41,13 @@ public class HelloWorldServlet extends HttpServlet {
 
         // Prepare output html
 		PrintWriter out = resp.getWriter();
-		out.println("<h1>" + allClients.get(1).getName() + "</h1>");
-		out.println("<h1>" + allClients.get(2).getName() + "</h1>");
+        if (allClients.size() < 1) out.println("There are no clients in your DB.");
+        else {
+            for (Client client : allClients) {
+                out.println("<h1>" + client.getName() + "</h1>");
+                out.println("<h3><i>" + client.getSurname() + "</i></h3>\n\n");
+            }
+        }
 	}
 
     private Client createClient(String firstName, String surname, String persCode, String gender) {
