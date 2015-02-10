@@ -26,22 +26,28 @@ public class HelloWorldServlet extends HttpServlet {
 		// Set response content type
 		resp.setContentType("text/html");
 
+        // Prepare output html
+        PrintWriter out = resp.getWriter();
+
+        Client testClient = createClient("Anton", "Kamolins", "112233-12345", "male");
         /*Client client1 = createClient("Elena", "Ivanova", "220788-23856", "female");
         Client client2 = createClient("Ivan", "Petrov", "230189-12303", "male");
         Client client3 = createClient("Viktorija", "Smirnova", "150455-34012", "female");*/
         List<Client> allClients = null;
+
         try {
+            clientDAO.create(testClient);
             /*clientDAO.create(client1);
             clientDAO.create(client2);
             clientDAO.create(client3);*/
             allClients = clientDAO.getAll();
         } catch (DBException e) {
+            out.println("DB error: " + e.getMessage());
             e.printStackTrace();
         }
 
-        // Prepare output html
-		PrintWriter out = resp.getWriter();
-        if (allClients.size() < 1) out.println("There are no clients in your DB.");
+        if (allClients == null) out.println("Something wrong with clients table in DB.");
+        else if (allClients.size() < 1) out.println("There are no clients in your DB.");
         else {
             for (Client client : allClients) {
                 out.println("<h1>" + client.getName() + "</h1>");
@@ -58,5 +64,4 @@ public class HelloWorldServlet extends HttpServlet {
         client.setGender(gender);
         return client;
     }
-
 }
