@@ -6,58 +6,58 @@ package lv.javaguru.java2.domain;
 import java.util.*;
 
 public class Zakupka {
-    private long zakupkaId;
-    private long productId;
-    private long skladId;
-    private Date dateZakupka;
-    private int quantity;
+    private long ZakupkaID;
+    private long ProductID;
+    private long SkladID;
+    private Date DateZakupka;
+    private int Quantity;
 
-    public Zakupka(long zakupkaId, long productId, long skladId, Date dateZakupka, int quantity) {
-        this.zakupkaId = zakupkaId;
-        this.productId = productId;
-        this.skladId = skladId;
-        this.dateZakupka = dateZakupka;
-        this.quantity = quantity;
+    public Zakupka(long ZakupkaID, long ProductID, long SkladID, Date DateZakupka, int Quantity) {
+        this.ZakupkaID = ZakupkaID;
+        this.ProductID = ProductID;
+        this.SkladID = SkladID;
+        this.DateZakupka = DateZakupka;
+        this.Quantity = Quantity;
     }
 
     public long getZakupkaID() {
-        return zakupkaId;
+        return ZakupkaID;
     }
 
-    public void setZakupkaId(long zakupkaId) {
-        this.zakupkaId = zakupkaId;
+    public void setZakupkaID(long ZakupkaID) {
+        this.ZakupkaID = ZakupkaID;
     }
 
-    public long getProductId() {
-        return productId;
+    public long getProductID() {
+        return ProductID;
     }
 
-    public void setProductId(long productId){
-        this.productId =  productId;
+    public void setProductID(long ProductID){
+        this.ProductID =  ProductID;
     }
 
-    public long getSkladId() {
-        return skladId;
+    public long getSkladID() {
+        return SkladID;
     }
 
-    public void setSkladId(long skladId) {
-        this.skladId = skladId;
+    public void setSkladID(long SkladID) {
+        this.SkladID = SkladID;
     }
 
     public Date getDateZakupka() {
-        return dateZakupka;
+        return DateZakupka;
     }
 
-    public void setDateZakupka(Date dateZakupka) {
-        this.dateZakupka = dateZakupka;
+    public void setDateZakupka(Date DateZakupka) {
+        this.DateZakupka = DateZakupka;
     }
 
     public int getQuantity() {
-        return quantity;
+        return Quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
     }
 }
 
