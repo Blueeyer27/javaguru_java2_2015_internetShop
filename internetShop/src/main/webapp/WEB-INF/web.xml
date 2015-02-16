@@ -16,6 +16,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ClientServlet</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.ClientServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ClientServlet</servlet-name>
+        <url-pattern>/client</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ParameterProcessingServlet</servlet-name>
         <servlet-class>lv.javaguru.java2.servlet.ParameterProcessingServlet</servlet-class>
     </servlet>
