@@ -12,9 +12,9 @@ DROP TABLE IF EXISTS `java2_test`.`clients` ;
 DROP TABLE IF EXISTS `java2_test`.`emails` ;
 DROP TABLE IF EXISTS `java2_test`.`phones` ;
 DROP TABLE IF EXISTS `java2_test`.`products` ;
-DROP TABLE IF EXISTS 'java2_test'.'zakupka';
+DROP TABLE IF EXISTS `java2_test`.`zakupka`;
 
--- Create all tables again 
+-- Create all tables again
 CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
   `UserID` INT(11) NOT NULL AUTO_INCREMENT,
   `FirstName` CHAR(32) NOT NULL,
@@ -71,13 +71,13 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`products` (
 )
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS 'java2_test'.'zakupka' (
-  'ZakupkaID' INT(11) NOT NULL AUTO_INCREMENT,
-  'ProductID' INT(11) NOT NULL,
-  'SkladID' INT(11) NOT NULL,
-  'DateZakupka' DATE NOT NULL,
-  'Quantity' INT(11) NOT NULL,
-  PRIMARY KEY ('ZakupkaID')
+CREATE TABLE IF NOT EXISTS `java2_test`.`zakupka` (
+  `ZakupkaID` INT(11) NOT NULL AUTO_INCREMENT,
+  `ProductID` INT(11) NOT NULL,
+  `SkladID` INT(11) NOT NULL,
+  `DateZakupka` DATE NOT NULL,
+  `Quantity` INT(11) NOT NULL,
+  PRIMARY KEY (`ZakupkaID`)
 )
 ENGINE = InnoDB;
 
