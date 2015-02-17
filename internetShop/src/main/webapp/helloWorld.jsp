@@ -6,6 +6,7 @@
 <body>
 
     <h1>Hello from JSP file!</h1>
+    <%= (String)request.getAttribute("model") %>
 
 </body>
 </html>
