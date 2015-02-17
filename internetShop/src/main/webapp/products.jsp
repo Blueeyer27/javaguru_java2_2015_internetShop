@@ -51,11 +51,7 @@
                 <div align="center">
                     <h3>Welcome!</h3>
                     <p>
-                        <%
-                            PrintWriter resp = response.getWriter();
-                            ProductDAO x = new ProductDAOImpl();
-                        %>
-                        <% List<Product> products = x.getAll();
+                        <% List<Product> products = (List<Product>) request.getAttribute("model");
                             for (Product p : products) {
                         %>
                         <%=p.getName() + " - "%>
