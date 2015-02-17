@@ -66,4 +66,26 @@
     </servlet-mapping>
 
 
+    <servlet>
+        <servlet-name>ContactsServlet</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.ContactsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ContactsServlet</servlet-name>
+        <url-pattern>/contacts</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.ProductsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+
+
 </web-app>
