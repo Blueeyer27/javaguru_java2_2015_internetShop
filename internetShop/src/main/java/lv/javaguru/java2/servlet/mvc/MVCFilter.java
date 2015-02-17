@@ -3,19 +3,23 @@ package lv.javaguru.java2.servlet.mvc;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by alex on 17/02/15.
  */
 public class MVCFilter implements Filter {
 
+    private Map<String, MVCController> controllerMapping;
+
     @Override
     public void init (FilterConfig filterConfig) throws ServletException {
-
+        controllerMapping = new HashMap<String, MVCController>();
+        controllerMapping.put("/hello", new HelloWorldController());
     }
 
     @Override
@@ -29,17 +33,15 @@ public class MVCFilter implements Filter {
         String contextURI = req.getServletPath();
         String path = ((HttpServletRequest) request).getRequestURI();
 
-        if (("/hello").equals(contextURI)) {
-            HelloWorldController controller = new HelloWorldController();
-            MVCModel model = controller.processRequest(req, resp);
+        MVCController controller = controllerMapping.get(contextURI);
+        MVCModel model = controller.processRequest(req, resp);
 
-            req.setAttribute("model", model.getData());
-            ServletContext context = req.getServletContext();
-            System.out.println("View: " + model.getView());
+        req.setAttribute("model", model.getData());
+        ServletContext context = req.getServletContext();
+        System.out.println("View: " + model.getView());
 
-            RequestDispatcher requestDispatcher = context.getRequestDispatcher(model.getView());
-            requestDispatcher.forward(req, resp);
-        }
+        RequestDispatcher requestDispatcher = context.getRequestDispatcher(model.getView());
+        requestDispatcher.forward(req, resp);
     }
 
     @Override
