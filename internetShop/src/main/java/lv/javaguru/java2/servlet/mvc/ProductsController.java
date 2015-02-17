@@ -22,12 +22,19 @@ public class ProductsController implements MVCController  {
 
         try {
             products = productDAO.getAll();
+
+            if (products.size() < 2) {
+                productDAO.create(new Product("Apple", "Cheap and good fruit.", 0.25f));
+                productDAO.create(new Product("Banana", "Description for banana.", 0.49f));
+                productDAO.create(new Product("Tomato", "Description for tomato.", 0.99f));
+                products = productDAO.getAll();
+            }
+
         } catch (DBException ex) {
 
         }
 
         MVCModel model = new MVCModel("/products.jsp", products);
-
 
         return model;
     }
