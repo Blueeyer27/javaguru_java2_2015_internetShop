@@ -34,15 +34,20 @@ public class MVCFilter implements Filter {
         String contextURI = req.getServletPath();
         String path = ((HttpServletRequest) request).getRequestURI();
 
-        MVCController controller = controllerMapping.get(contextURI);
-        MVCModel model = controller.processRequest(req, resp);
+        if (controllerMapping.keySet().contains(contextURI)){
+            MVCController controller = controllerMapping.get(contextURI);
+            MVCModel model = controller.processRequest(req, resp);
 
-        req.setAttribute("model", model.getData());
-        ServletContext context = req.getServletContext();
-        System.out.println("View: " + model.getView());
+            req.setAttribute("model", model.getData());
+            ServletContext context = req.getServletContext();
+            System.out.println("View: " + model.getView());
 
-        RequestDispatcher requestDispatcher = context.getRequestDispatcher(model.getView());
-        requestDispatcher.forward(req, resp);
+            RequestDispatcher requestDispatcher = context.getRequestDispatcher(model.getView());
+            requestDispatcher.forward(req, resp);
+        }
+        else filterChain.doFilter(request,response);
+
+
     }
 
     @Override
