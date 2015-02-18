@@ -62,7 +62,7 @@ public class ClientServlet extends HttpServlet {
             }
             req.setAttribute("data", dataList);
 
-            for(Client client : allClients){
+           for(Client client : allClients){
                 try {
                     clientDAO.delete(client.getId());
                 } catch (DBException e) {

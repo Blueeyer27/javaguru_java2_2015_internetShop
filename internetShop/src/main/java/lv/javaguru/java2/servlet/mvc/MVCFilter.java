@@ -21,6 +21,7 @@ public class MVCFilter implements Filter {
         controllerMapping = new HashMap<String, MVCController>();
         controllerMapping.put("/hello", new HelloWorldController());
         controllerMapping.put("/products", new ProductsController());
+        controllerMapping.put("/clients", new ClientsController());
     }
 
     @Override
