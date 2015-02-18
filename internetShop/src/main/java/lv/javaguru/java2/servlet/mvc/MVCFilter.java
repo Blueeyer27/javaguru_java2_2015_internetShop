@@ -32,6 +32,7 @@ public class MVCFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse)response;
 
         String contextURI = req.getServletPath();
+        System.out.println(contextURI);
         String path = ((HttpServletRequest) request).getRequestURI();
 
         if (controllerMapping.keySet().contains(contextURI)){
@@ -46,7 +47,6 @@ public class MVCFilter implements Filter {
             requestDispatcher.forward(req, resp);
         }
         else filterChain.doFilter(request,response);
-
 
     }
 
