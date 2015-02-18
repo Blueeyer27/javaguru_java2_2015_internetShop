@@ -1,4 +1,4 @@
-package lv.javaguru.java2.servlet;
+package lv.javaguru.java2.servlet.mvc.deprecated_servlets;
 
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.jdbc.ClientDAOImpl;

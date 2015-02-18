@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title> Main </title>
+    <title>${pageContext.request.servletPath}</title>
     <link href="styles/design.css" rel="stylesheet" type="text/css" />
 </head>
 <body>

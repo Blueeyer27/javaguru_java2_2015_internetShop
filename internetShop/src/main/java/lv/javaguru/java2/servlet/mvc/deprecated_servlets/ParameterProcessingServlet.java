@@ -1,4 +1,4 @@
-package lv.javaguru.java2.servlet;
+package lv.javaguru.java2.servlet.mvc.deprecated_servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,10 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-
-public class SessionUsageServlet extends HttpServlet {
+public class ParameterProcessingServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req,
@@ -18,18 +16,13 @@ public class SessionUsageServlet extends HttpServlet {
 		// Set response content type
 		resp.setContentType("text/html");
 
-		HttpSession session = req.getSession();
-		Long counter = (Long)session.getAttribute("key");
-		if(counter == null) {
-			counter = 0L;
-		}
-		counter++;
-		session.setAttribute("key", counter);
+		// Get parameter from request
+		String paramValue = req.getParameter("param1");
 
-		// Actual logic goes here.
+		// Prepare output html
 		PrintWriter out = resp.getWriter();
 		out.println("<h1>" + "Hello World from Java!" + "</h1>");
-		out.println("Counrer = " + session.getAttribute("key"));
+		out.println("Param 1 = " + paramValue);
 	}
 
 }
