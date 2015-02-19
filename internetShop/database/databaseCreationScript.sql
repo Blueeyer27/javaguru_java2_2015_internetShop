@@ -15,50 +15,19 @@ DROP TABLE IF EXISTS `java2_test`.`products` ;
 DROP TABLE IF EXISTS `java2_test`.`zakupka`;
 
 -- Create all tables again
+
 CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
   `UserID` INT(11) NOT NULL AUTO_INCREMENT,
-  `FirstName` CHAR(32) NOT NULL,
-  `LastName` CHAR(32) NOT NULL,
-  PRIMARY KEY (`UserID`)
-)
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `java2_test`.`addresses` (
-  `AddressID` INT(11) NOT NULL AUTO_INCREMENT,
-  `ClientID` INT(11) NOT NULL,
-  `Country` CHAR(32) NOT NULL,
-  `City` CHAR(32) NOT NULL,
-  `Street` CHAR(32) NOT NULL,
-  `House` INT(11) NOT NULL,
-  `Flat` INT(11) NOT NULL,
-  `Postcode` CHAR(7) NOT NULL,
-  PRIMARY KEY (`AddressID`)
-)
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `java2_test`.`clients` (
-  `ClientID` INT(11) NOT NULL AUTO_INCREMENT,
   `Name` CHAR(32) NOT NULL,
   `Surname` CHAR(32) NOT NULL,
   `Personal_Code` CHAR(12) NOT NULL,
   `Gender` CHAR(6) NOT NULL,
-  PRIMARY KEY (`ClientID`)
-)
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `java2_test`.`emails` (
-  `EmailID` INT(11) NOT NULL AUTO_INCREMENT,
-  `ClientID` INT(11) NOT NULL,
-  `Email_Address` CHAR(32) NOT NULL,
-  PRIMARY KEY (`EmailID`)
-)
-ENGINE = InnoDB;
-
-CREATE TABLE IF NOT EXISTS `java2_test`.`phones` (
-  `PhoneID` INT(11) NOT NULL AUTO_INCREMENT,
-  `ClientID` INT(11) NOT NULL,
-  `PhoneNumber` CHAR(32) NOT NULL,
-  PRIMARY KEY (`PhoneID`)
+  `Phone` CHAR(15) NOT NULL,
+  `Email` CHAR(30) NOT NULL,
+  `Login` CHAR(16) NOT NULL,
+  `Parole` CHAR(16) NOT NULL,
+  `Level` INT(5) NOT NULL,
+  PRIMARY KEY (`UserID`)
 )
 ENGINE = InnoDB;
 
