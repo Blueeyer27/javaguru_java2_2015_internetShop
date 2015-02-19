@@ -4,8 +4,8 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
-import lv.javaguru.java2.domain.Client;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ProductsController implements MVCController  {
     class TwoLists {
-        public TwoLists(List<Product> products, List<Client> clients) {
+        public TwoLists(List<Product> products, List<User> users) {
 
         }
     }

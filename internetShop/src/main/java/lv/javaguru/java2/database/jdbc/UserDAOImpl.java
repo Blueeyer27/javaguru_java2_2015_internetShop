@@ -1,7 +1,7 @@
 package lv.javaguru.java2.database.jdbc;
 
-import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.domain.User;
 
 import java.sql.Connection;
@@ -10,9 +10,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Viktor on 01/07/2014.
- */
 public class UserDAOImpl extends DAOImpl implements UserDAO {
 
     @Override
@@ -26,14 +23,22 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("insert into USERS values (default, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
+                            connection.prepareStatement("insert into USERS values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getSurname());
+            preparedStatement.setString(3, user.getPersCode());
+            preparedStatement.setString(4, user.getGender());
+            preparedStatement.setString(5, user.getPhone());
+            preparedStatement.setString(6, user.getEmail());
+            preparedStatement.setString(7, user.getLogin());
+            preparedStatement.setString(8, user.getParole());
+            preparedStatement.setInt(9, user.getLevel());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()){
-                user.setUserId(rs.getLong(1));
+                user.setId(rs.getLong(1));
             }
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.create()");
@@ -52,15 +57,22 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from USERS where UserID = ?");
+                    .prepareStatement("select * from USERS where UserId = ?");
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             User user = null;
             if (resultSet.next()) {
                 user = new User();
-                user.setUserId(resultSet.getLong("UserID"));
-                user.setFirstName(resultSet.getString("FirstName"));
-                user.setLastName(resultSet.getString("LastName"));
+                user.setId(resultSet.getLong("UserId"));
+                user.setName(resultSet.getString("Name"));
+                user.setSurname(resultSet.getString("Surname"));
+                user.setPersCode(resultSet.getString("Personal_code"));
+                user.setGender(resultSet.getString("Gender"));
+                user.setPhone(resultSet.getString("Phone"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setLogin(resultSet.getString("Login"));
+                user.setParole(resultSet.getString("Parole"));
+                user.setLevel(resultSet.getInt("Level"));
             }
             return user;
         } catch (Throwable e) {
@@ -82,9 +94,16 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
-                user.setUserId(resultSet.getLong("UserID"));
-                user.setFirstName(resultSet.getString("FirstName"));
-                user.setLastName(resultSet.getString("LastName"));
+                user.setId(resultSet.getLong("UserId"));
+                user.setName(resultSet.getString("Name"));
+                user.setSurname(resultSet.getString("Surname"));
+                user.setPersCode(resultSet.getString("Personal_code"));
+                user.setGender(resultSet.getString("Gender"));
+                user.setPhone(resultSet.getString("Phone"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setLogin(resultSet.getString("Login"));
+                user.setParole(resultSet.getString("Parole"));
+                user.setLevel(resultSet.getInt("Level"));
                 users.add(user);
             }
         } catch (Throwable e) {
@@ -103,7 +122,7 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("delete from USERS where UserID = ?");
+                    .prepareStatement("delete from USERS where UserId = ?");
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
@@ -125,11 +144,10 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("update USERS set FirstName = ?, LastName = ? " +
-                            "where UserID = ?");
-            preparedStatement.setString(1, user.getFirstName());
-            preparedStatement.setString(2, user.getLastName());
-            preparedStatement.setLong(3, user.getUserId());
+                    .prepareStatement("update USERS set Surname = ?" +
+                            "where UserId = ?");
+            preparedStatement.setString(1, user.getSurname());
+            preparedStatement.setLong(2, user.getId());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.update()");

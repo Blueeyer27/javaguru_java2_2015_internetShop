@@ -1,8 +1,6 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
-import com.sun.xml.internal.bind.v2.TODO;
-import lv.javaguru.java2.domain.Client;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 
 import javax.servlet.http.HttpServletRequest;

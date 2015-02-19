@@ -5,7 +5,7 @@ import lv.javaguru.java2.domain.User;
 import java.util.List;
 
 /**
- * Created by Viktor on 01/07/2014.
+ * Created by Anna on 05.02.15.
  */
 public interface UserDAO {
 

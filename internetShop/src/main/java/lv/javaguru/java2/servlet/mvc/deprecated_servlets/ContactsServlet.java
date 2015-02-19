@@ -1,8 +1,8 @@
 package lv.javaguru.java2.servlet.mvc.deprecated_servlets;
 
+import lv.javaguru.java2.database.jdbc.UserDAOImpl;
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -11,14 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.jdbc.ClientDAOImpl;
-import lv.javaguru.java2.domain.Client;
-
 
 public class ContactsServlet extends HttpServlet {
 
-    private ClientDAOImpl clientDAO = new ClientDAOImpl();
+    private UserDAOImpl userDAO = new UserDAOImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest req,

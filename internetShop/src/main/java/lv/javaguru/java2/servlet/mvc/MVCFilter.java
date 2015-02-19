@@ -20,7 +20,7 @@ public class MVCFilter implements Filter {
     public void init (FilterConfig filterConfig) throws ServletException {
         controllerMapping = new HashMap<String, MVCController>();
         controllerMapping.put("/products", new ProductsController());
-        controllerMapping.put("/clients", new ClientsController());
+        controllerMapping.put("/users", new UsersController());
     }
 
     @Override
