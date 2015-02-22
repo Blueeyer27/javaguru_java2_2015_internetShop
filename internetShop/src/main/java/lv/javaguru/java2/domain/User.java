@@ -5,32 +5,32 @@ package lv.javaguru.java2.domain;
  */
 public class User {
     private long id;
+
+    private String username;
+    private String password;
+    private int access_level;
+
     private String name;
     private String surname;
-    private String persCode;
     private String gender;
     private String phone;
     private String email;
-    private String login;
-    private String parole;
-    private int level;
+
 
     public User() {
     }
 
-    public User(long id, String name, String surname, String persCode,
+    public User(String name, String surname,
                 String gender, String phone, String email, String login,
-                String parole, int level) {
-        this.id = id;
+                String password, int access_level) {
         this.name = name;
         this.surname = surname;
-        this.persCode = persCode;
         this.gender = gender;
         this.phone = phone;
         this.email = email;
-        this.login = login;
-        this.parole = parole;
-        this.level = level;
+        this.username = login;
+        this.password = password;
+        this.access_level = access_level;
     }
 
     public long getId() {
@@ -55,14 +55,6 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getPersCode() {
-        return persCode;
-    }
-
-    public void setPersCode(String persCode) {
-        this.persCode = persCode;
     }
 
     public String getGender() {
@@ -90,27 +82,27 @@ public class User {
     }
 
     public String getLogin() {
-        return login;
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setLogin(String username) {
+        this.username = username;
     }
 
-    public String getParole() {
-        return parole;
+    public String getPassword() {
+        return password;
     }
 
-    public void setParole(String parole) {
-        this.parole = parole;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public int getLevel() {
-        return level;
+    public int getAccessLevel() {
+        return access_level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setAccessLevel(int access_level) {
+        this.access_level = access_level;
     }
 }
 

@@ -7,6 +7,7 @@ import lv.javaguru.java2.domain.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +24,16 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                            connection.prepareStatement("insert into USERS values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    connection.prepareStatement("insert into USERS values (default, ?, ?, ?, ?, ?, ?, ?, ?)",
                             PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getSurname());
-            preparedStatement.setString(3, user.getPersCode());
-            preparedStatement.setString(4, user.getGender());
-            preparedStatement.setString(5, user.getPhone());
-            preparedStatement.setString(6, user.getEmail());
-            preparedStatement.setString(7, user.getLogin());
-            preparedStatement.setString(8, user.getParole());
-            preparedStatement.setInt(9, user.getLevel());
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setString(4, user.getSurname());
+            preparedStatement.setString(5, user.getGender());
+            preparedStatement.setString(6, user.getPhone());
+            preparedStatement.setString(7, user.getEmail());
+            preparedStatement.setInt(8, user.getAccessLevel());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -64,15 +64,14 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
             if (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getLong("UserId"));
+                user.setLogin(resultSet.getString("Login"));
+                user.setPassword(resultSet.getString("Password"));
                 user.setName(resultSet.getString("Name"));
                 user.setSurname(resultSet.getString("Surname"));
-                user.setPersCode(resultSet.getString("Personal_code"));
                 user.setGender(resultSet.getString("Gender"));
                 user.setPhone(resultSet.getString("Phone"));
                 user.setEmail(resultSet.getString("Email"));
-                user.setLogin(resultSet.getString("Login"));
-                user.setParole(resultSet.getString("Parole"));
-                user.setLevel(resultSet.getInt("Level"));
+                user.setAccessLevel(resultSet.getInt("Access_Level"));
             }
             return user;
         } catch (Throwable e) {
@@ -81,6 +80,41 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
             throw new DBException(e);
         } finally {
             closeConnection(connection);
+        }
+    }
+
+    @Override
+    public User getByLogin(String login) throws DBException {
+        Connection connect = null;
+
+        System.out.println("getByLogin: " + login);
+        try {
+            connect = getConnection();
+
+            PreparedStatement prepStat = connect.prepareStatement("select * from USERS where Login = ?");
+            prepStat.setString(1, login);
+
+            ResultSet resultSet = prepStat.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getLong("UserId"));
+                user.setLogin(resultSet.getString("Login"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setName(resultSet.getString("Name"));
+                user.setSurname(resultSet.getString("Surname"));
+                user.setGender(resultSet.getString("Gender"));
+                user.setPhone(resultSet.getString("Phone"));
+                user.setEmail(resultSet.getString("Email"));
+                user.setAccessLevel(resultSet.getInt("Access_Level"));
+            }
+            return user;
+        } catch (Throwable e) {
+            System.out.println("Exception while execute UserDAOImpl.getByLogin()");
+            e.printStackTrace();
+            throw new DBException(e);
+        } finally {
+            closeConnection(connect);
         }
     }
 
@@ -95,15 +129,14 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("UserId"));
+                user.setLogin(resultSet.getString("Login"));
+                user.setPassword(resultSet.getString("Password"));
                 user.setName(resultSet.getString("Name"));
                 user.setSurname(resultSet.getString("Surname"));
-                user.setPersCode(resultSet.getString("Personal_code"));
                 user.setGender(resultSet.getString("Gender"));
                 user.setPhone(resultSet.getString("Phone"));
                 user.setEmail(resultSet.getString("Email"));
-                user.setLogin(resultSet.getString("Login"));
-                user.setParole(resultSet.getString("Parole"));
-                user.setLevel(resultSet.getInt("Level"));
+                user.setAccessLevel(resultSet.getInt("Access_Level"));
                 users.add(user);
             }
         } catch (Throwable e) {

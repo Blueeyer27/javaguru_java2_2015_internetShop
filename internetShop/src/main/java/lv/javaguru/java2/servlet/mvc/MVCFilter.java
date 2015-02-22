@@ -1,10 +1,12 @@
 package lv.javaguru.java2.servlet.mvc;
 
+import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +21,11 @@ public class MVCFilter implements Filter {
     @Override
     public void init (FilterConfig filterConfig) throws ServletException {
         controllerMapping = new HashMap<String, MVCController>();
-        controllerMapping.put("/products", new ProductsController());
+        controllerMapping.put("/index", new IndexController());
         controllerMapping.put("/users", new UsersController());
+        controllerMapping.put("/register", new RegisterController());
+        controllerMapping.put("/login", new LoginController());
+        controllerMapping.put("/logout", new LoginController());
     }
 
     @Override
@@ -34,6 +39,10 @@ public class MVCFilter implements Filter {
         String contextURI = req.getServletPath();
         System.out.println(contextURI);
         String path = ((HttpServletRequest) request).getRequestURI();
+
+        HttpSession session = req.getSession(true);
+        if (req.getSession(false).isNew())
+            session.setAttribute("access_level", AccessLevel.GUEST.getValue());
 
         if (controllerMapping.keySet().contains(contextURI)){
             MVCController controller = controllerMapping.get(contextURI);

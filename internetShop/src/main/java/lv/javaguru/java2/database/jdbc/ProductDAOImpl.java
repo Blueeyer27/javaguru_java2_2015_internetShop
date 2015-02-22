@@ -143,4 +143,36 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         }
     }
 
+    @Override
+    public List<Product> getRange(int startRow, int rowCount) throws DBException {
+        List<Product> products = new ArrayList<Product>();
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement
+                    = connection.prepareStatement("SELECT * FROM products ORDER BY productID "
+                    + "LIMIT " + rowCount + " OFFSET " + startRow);
+            //preparedStatement.setInt(1, rowCount);
+            //preparedStatement.setInt(2, startRow-1);
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setProductId(resultSet.getLong("ProductID"));
+                product.setName(resultSet.getString("Name"));
+                product.setDescription(resultSet.getString("Description"));
+                product.setPrice(resultSet.getFloat("Price"));
+                products.add(product);
+            }
+        } catch (Throwable e) {
+            System.out.println("Exception while getting customer list ProductDAOImpl.getList()");
+            e.printStackTrace();
+            throw new DBException(e);
+        } finally {
+            closeConnection(connection);
+        }
+        return products;
+    }
+
 }

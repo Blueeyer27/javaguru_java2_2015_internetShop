@@ -74,13 +74,12 @@ public class UsersController implements MVCController {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
-        user.setPersCode(persCode);
         user.setGender(gender);
         user.setPhone(phone);
         user.setEmail(email);
         user.setLogin(login);
-        user.setParole(parole);
-        user.setLevel(level);
+        user.setPassword(parole);
+        user.setAccessLevel(level);
         return user;
     }
 }

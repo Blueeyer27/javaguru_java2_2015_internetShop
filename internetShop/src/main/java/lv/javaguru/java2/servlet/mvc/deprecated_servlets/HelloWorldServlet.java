@@ -60,7 +60,6 @@ public class HelloWorldServlet extends HttpServlet {
         User user = new User();
         user.setName(firstName);
         user.setSurname(surname);
-        user.setPersCode(persCode);
         user.setGender(gender);
         return user;
     }

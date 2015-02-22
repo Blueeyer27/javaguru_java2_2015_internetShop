@@ -17,6 +17,8 @@ public interface ProductDAO {
 
     void update(Product product) throws DBException;
 
+    List<Product> getRange(int startRow, int rowCount) throws DBException;
+
     List<Product> getAll() throws DBException;
 
 }

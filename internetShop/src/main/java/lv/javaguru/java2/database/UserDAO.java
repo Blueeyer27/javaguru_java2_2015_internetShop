@@ -8,15 +8,15 @@ import java.util.List;
  * Created by Anna on 05.02.15.
  */
 public interface UserDAO {
-
     void create(User user) throws DBException;
 
     User getById(Long id) throws DBException;
+
+    User getByLogin(String login) throws DBException;
 
     void delete(Long id) throws DBException;
 
     void update(User user) throws DBException;
 
     List<User> getAll() throws DBException;
-
 }

@@ -18,15 +18,14 @@ DROP TABLE IF EXISTS `java2_test`.`zakupka`;
 
 CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
   `UserID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Login` CHAR(16) NOT NULL,
+  `Password` CHAR(80) NOT NULL,
   `Name` CHAR(32) NOT NULL,
   `Surname` CHAR(32) NOT NULL,
-  `Personal_Code` CHAR(12) NOT NULL,
   `Gender` CHAR(6) NOT NULL,
   `Phone` CHAR(15) NOT NULL,
   `Email` CHAR(30) NOT NULL,
-  `Login` CHAR(16) NOT NULL,
-  `Parole` CHAR(16) NOT NULL,
-  `Level` INT(5) NOT NULL,
+  `Access_Level` INT(3) NOT NULL,
   PRIMARY KEY (`UserID`)
 )
 ENGINE = InnoDB;
