@@ -24,6 +24,9 @@
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
         <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
+            if (products.size() < 1) {%>
+                <p>Product table in database is empty.</p>
+            <%  }
             for (Product prod : products) { %>
         <div id="column_w530">
             <div class="header_02"><%=prod.getName()%></div>
