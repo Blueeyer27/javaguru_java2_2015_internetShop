@@ -50,7 +50,15 @@ public class IndexController implements MVCController {
 
         try {
             products = productDAO.getRange((Integer.parseInt(page) - 1)*10, 11);
-            //products = productDAO.getAll();
+
+            // THIS IS JUST FOR TEST! (CREATE 100 NEW PRODUCTS IN DATABASE)
+            if (products.size() < 10) {
+                for (int i = 0; i < 100; i++) {
+                    productDAO.create(new Product("product" + i, "This is test product description.", 0.25f));
+                }
+                products = productDAO.getRange((Integer.parseInt(page) - 1)*10, 11);
+            }
+
         } catch (DBException e) {
             e.printStackTrace();
         }
