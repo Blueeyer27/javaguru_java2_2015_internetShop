@@ -23,6 +23,7 @@
 <div id="content_wrapper">
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
+
         <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
             if (products.size() < 1) {%>
                 <p>Product table in database is empty.</p>
@@ -44,7 +45,9 @@
             <input type="submit" value="Next page">
         </form>-->
         <%  } %>
+
     </div>
 </div>
+
 </body>
 </html>
