@@ -24,16 +24,19 @@ public class LoginController implements MVCController {
         HttpSession session = request.getSession(true);
         session.setAttribute("page_name", "Login");
 
-
-        if((Integer)session.getAttribute("access_level") > AccessLevel.GUEST.getValue())
+        int currentUserAccessLevel = (Integer) session.getAttribute("access_level");
+        boolean isUserLoggedIn = currentUserAccessLevel > AccessLevel.GUEST.getValue();
+        if (isUserLoggedIn) {
             if (request.getServletPath().equals("/logout")) {
                 //session.invalidate();
 
                 //session = request.getSession(true);
                 //session.setAttribute("access_level", AccessLevel.GUEST.getValue());
                 return new MVCModel("/logout.jsp");
+            } else {
+                return new MVCModel("/access.jsp", "Only guests can access this page.");
             }
-            else return new MVCModel("/access.jsp", "Only guests can access this page.");
+        }
 
         if (request.getMethod().equals("POST")) {
             String error = null;
@@ -42,7 +45,7 @@ public class LoginController implements MVCController {
 
             System.out.println("Login method: " + username + " " + password);
 
-            if(username.isEmpty() || password.isEmpty())
+            if (username.isEmpty() || password.isEmpty())
                 return new MVCModel("/login.jsp", "Login and password fields can't be empty.");
 
             UserDAO userDAO = new UserDAOImpl();

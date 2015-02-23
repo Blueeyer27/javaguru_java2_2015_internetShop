@@ -17,13 +17,10 @@
                 <td width="50"><b>ID</b></td>
                 <td width="100"><b>Name</b></td>
                 <td width="100"><b>Surname</b></td>
-                <td width="150"><b>Personal Code</b></td>
                 <td width="50"><b>Gender</b></td>
                 <td width="50"><b>Phone</b></td>
                 <td width="50"><b>Email</b></td>
                 <td width="50"><b>Login</b></td>
-                <td width="50"><b>Parole</b></td>
-                <td width="50"><b>Access level</b></td>
             </tr>
             <%
                 UsersController.RezList rezList = (UsersController.RezList) request.getAttribute("model");
@@ -34,13 +31,10 @@
                 <td width="50"><%=u.getId()%></td>
                 <td width="100"><%=u.getName()%></td>
                 <td width="100"><%=u.getSurname()%></td>
-                <td width="150"><%=u.getPersCode()%></td>
                 <td width="50"><%=u.getGender()%></td>
                 <td width="50"><%=u.getPhone()%></td>
                 <td width="50"><%=u.getEmail()%></td>
                 <td width="50"><%=u.getLogin()%></td>
-                <td width="50"><%=u.getParole()%></td>
-                <td width="50"><%=u.getLevel()%></td>
 
             </tr>
             <%}%>

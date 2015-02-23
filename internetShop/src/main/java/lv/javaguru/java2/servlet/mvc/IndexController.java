@@ -11,6 +11,7 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class IndexController implements MVCController {
                     "\nexample@gmail.com");
 
         ProductDAO productDAO = new ProductDAOImpl();
-        List<Product> products = null;
+        List<Product> products = new ArrayList<Product>();
 
         String page = request.getParameter("page");
         System.out.println("Requested page: " + page);
