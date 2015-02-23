@@ -27,7 +27,7 @@
             </a></div>
             <h3><a href="/java2/register" target="_self">Registration</a> |
                 <a href="/java2/login" target="_self">Login</a><br>
-                <a href="#" target="_self">My Cart:
+                <a href="/java2/cart" target="_self"> My Cart:
                     (<%=((HashMap<Integer, Integer>)session.getAttribute("in_cart")).size()%>)</a></h3>
             <% } else {%>
             <%="Hello, " + session.getAttribute("name") + " "

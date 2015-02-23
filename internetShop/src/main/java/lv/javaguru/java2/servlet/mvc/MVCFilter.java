@@ -27,6 +27,7 @@ public class MVCFilter implements Filter {
         controllerMapping.put("/login", new LoginController());
         controllerMapping.put("/logout", new LoginController());
         controllerMapping.put("/about", new AboutCompanyController());
+        controllerMapping.put("/cart", new CartController());
     }
 
     @Override
@@ -47,6 +48,9 @@ public class MVCFilter implements Filter {
             session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
             session.setAttribute("access_level", AccessLevel.GUEST.getValue());
         }
+
+        if (contextURI.equals("/index.jsp"))
+            contextURI = "/index";
 
         if (controllerMapping.keySet().contains(contextURI)){
             MVCController controller = controllerMapping.get(contextURI);
