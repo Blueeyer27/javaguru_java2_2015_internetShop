@@ -11,8 +11,9 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Anton on 2015.02.22..
@@ -22,8 +23,13 @@ public class IndexController implements MVCController {
         private List<Product> _products;
         private String _nextPage;
 
-        public List<Product> getProducts() { return _products; }
-        public String getNextPageURI() { return _nextPage; }
+        public List<Product> getProducts() {
+            return _products;
+        }
+
+        public String getNextPageURI() {
+            return _nextPage;
+        }
 
         public PageInfo(List<Product> products, String nextPageURI) {
             _products = products;
@@ -41,8 +47,20 @@ public class IndexController implements MVCController {
                     "\nContact site administrator for more information." +
                     "\nexample@gmail.com");
 
+        if (request.getParameter("cart") != null) {
+            Long prodID = Long.parseLong(request.getParameter("cart"));
+            if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
+                Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+                if (!inCart.containsKey(prodID))
+                    inCart.put(prodID, 1);
+                System.out.println(prodID);
+            } else {
+                //TODO: write logic for authorized users
+            }
+        }
+
         ProductDAO productDAO = new ProductDAOImpl();
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = null;
 
         String page = request.getParameter("page");
         System.out.println("Requested page: " + page);
@@ -50,7 +68,7 @@ public class IndexController implements MVCController {
         else if (Integer.parseInt(page) < 1) page = "1";
 
         try {
-            products = productDAO.getRange((Integer.parseInt(page) - 1)*10, 11);
+            products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
 
             // THIS IS JUST FOR TEST! (CREATE 100 NEW PRODUCTS IN DATABASE)
             //if (products.size() < 10) {
@@ -68,12 +86,12 @@ public class IndexController implements MVCController {
             System.out.println(p.getName());
         }
 
-        System.out.println("URL: " + request.getRequestURL());
-        System.out.println("Header: " + request.getHeader("referer"));
-        System.out.println("Context: " + request.getContextPath());
+        //System.out.println("URL: " + request.getRequestURL());
+        //System.out.println("Header: " + request.getHeader("referer"));
+        //System.out.println("Context: " + request.getContextPath());
         String nextPage = (request.getRequestURI() + "?page=" +
                 (Integer.parseInt(page) + 1));
-        System.out.println("URI: " + nextPage);
+        System.out.println("Next page: " + nextPage);
 
         return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
     }

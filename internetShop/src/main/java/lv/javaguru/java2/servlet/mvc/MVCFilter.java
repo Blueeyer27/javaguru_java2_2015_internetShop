@@ -42,8 +42,11 @@ public class MVCFilter implements Filter {
         String path = ((HttpServletRequest) request).getRequestURI();
 
         HttpSession session = req.getSession(true);
-        if (req.getSession(false).isNew())
+
+        if (session.isNew()) {
+            session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
             session.setAttribute("access_level", AccessLevel.GUEST.getValue());
+        }
 
         if (controllerMapping.keySet().contains(contextURI)){
             MVCController controller = controllerMapping.get(contextURI);
