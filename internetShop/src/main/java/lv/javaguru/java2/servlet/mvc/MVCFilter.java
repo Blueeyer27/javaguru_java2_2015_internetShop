@@ -26,6 +26,7 @@ public class MVCFilter implements Filter {
         controllerMapping.put("/register", new RegisterController());
         controllerMapping.put("/login", new LoginController());
         controllerMapping.put("/logout", new LoginController());
+        controllerMapping.put("/about", new AboutCompanyController());
     }
 
     @Override
