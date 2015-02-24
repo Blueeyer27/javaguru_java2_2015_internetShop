@@ -5,14 +5,13 @@ import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * Created by Anna on 17.02.15.
- */
+@Component
 public class UsersController implements MVCController {
 
     public class RezList{

@@ -8,6 +8,7 @@ import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.MVCController;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
- * Created by Anton on 2015.02.23..
- */
+@Component
 public class CartController implements MVCController {
 
     @Override

@@ -8,6 +8,7 @@ import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +17,7 @@ import javax.swing.text.html.HTML;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-/**
- * Created by Anton on 2015.02.18..
- */
+@Component
 public class RegisterController implements MVCController {
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {

@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Anton on 2015.02.22..
- */
+@Component
 public class IndexController implements MVCController {
     public class PageInfo {
         private List<Product> _products;
