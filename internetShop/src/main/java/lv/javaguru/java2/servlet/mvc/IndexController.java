@@ -21,7 +21,7 @@ import java.util.Map;
 public class IndexController implements MVCController {
 
     @Autowired
-    ProductDAO productDAO;
+    private ProductDAO productDAO;
 
     public class PageInfo {
         private List<Product> _products;

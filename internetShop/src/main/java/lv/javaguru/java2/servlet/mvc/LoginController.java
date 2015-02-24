@@ -20,7 +20,7 @@ import java.security.spec.InvalidKeySpecException;
 @Component
 public class LoginController implements MVCController {
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
 
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {

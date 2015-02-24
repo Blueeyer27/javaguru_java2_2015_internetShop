@@ -24,7 +24,8 @@ import java.util.Map.Entry;
 public class CartController implements MVCController {
 
     @Autowired
-    ProductDAO productDAO;
+    private ProductDAO productDAO;
+
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();

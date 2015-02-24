@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class UsersController implements MVCController {
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
 
     public class RezList{
         private List<User> users;
