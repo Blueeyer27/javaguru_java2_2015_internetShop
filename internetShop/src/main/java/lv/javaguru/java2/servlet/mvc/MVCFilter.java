@@ -30,6 +30,14 @@ public class MVCFilter implements Filter {
 
     @Override
     public void init (FilterConfig filterConfig) throws ServletException {
+
+        try {
+            springContext =
+                    new AnnotationConfigApplicationContext(SpringAppConfig.class);
+        } catch (BeansException e) {
+            logger.log(Level.INFO, "Spring context failed to start", e);
+        }
+
         controllerMapping = new HashMap<String, MVCController>();
         controllerMapping.put("/index", getBean(IndexController.class));
         controllerMapping.put("/users", getBean(UsersController.class));
@@ -48,14 +56,6 @@ public class MVCFilter implements Filter {
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
-
-        try {
-            springContext =
-                    new AnnotationConfigApplicationContext(SpringAppConfig.class);
-        } catch (BeansException e) {
-            logger.log(Level.INFO, "Spring context failed to start", e);
-        }
-
 
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse resp = (HttpServletResponse)response;
