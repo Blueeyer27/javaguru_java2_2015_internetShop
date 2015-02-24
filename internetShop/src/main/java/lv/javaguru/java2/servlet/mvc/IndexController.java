@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,10 @@ import java.util.Map;
 
 @Component
 public class IndexController implements MVCController {
+
+    @Autowired
+    ProductDAO productDAO;
+
     public class PageInfo {
         private List<Product> _products;
         private String _nextPage;
@@ -58,7 +63,6 @@ public class IndexController implements MVCController {
             }
         }
 
-        ProductDAO productDAO = new ProductDAOImpl();
         List<Product> products = null;
 
         String page = request.getParameter("page");

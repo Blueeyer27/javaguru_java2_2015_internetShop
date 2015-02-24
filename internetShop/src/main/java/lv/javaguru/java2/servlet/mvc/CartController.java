@@ -8,6 +8,7 @@ import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.MVCController;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,8 @@ import java.util.Map.Entry;
 @Component
 public class CartController implements MVCController {
 
+    @Autowired
+    ProductDAO productDAO;
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
@@ -33,7 +36,6 @@ public class CartController implements MVCController {
             Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
 
             if (products.size() > 0) {
-                ProductDAO productDAO = new ProductDAOImpl();
                 for (Entry<Long, Integer> entry : products.entrySet()) {
                     Long id = entry.getKey();
                     Integer count = entry.getValue();

@@ -8,6 +8,7 @@ import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,9 @@ import java.security.spec.InvalidKeySpecException;
 
 @Component
 public class RegisterController implements MVCController {
+    @Autowired
+    UserDAO userDAO;
+
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
@@ -41,7 +45,7 @@ public class RegisterController implements MVCController {
             if(checkFields(user))
                 return new MVCModel("/register.jsp", "All fields must be filled.");
 
-            UserDAO userDAO = new UserDAOImpl();
+
             User testUser = null;
             try {
                 testUser = userDAO.getByLogin(user.getLogin());

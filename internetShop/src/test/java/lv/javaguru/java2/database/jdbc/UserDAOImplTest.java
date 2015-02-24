@@ -31,13 +31,10 @@ public class UserDAOImplTest {
         assertEquals(user.getId(), userFromDB.getId());
         assertEquals(user.getName(), userFromDB.getName());
         assertEquals(user.getSurname(), userFromDB.getSurname());
-        assertEquals(user.getPersCode(), userFromDB.getPersCode());
         assertEquals(user.getGender(), userFromDB.getGender());
         assertEquals(user.getPhone(), userFromDB.getPhone());
         assertEquals(user.getEmail(), userFromDB.getEmail());
         assertEquals(user.getLogin(), userFromDB.getLogin());
-        assertEquals(user.getParole(), userFromDB.getParole());
-        assertEquals(user.getLevel(), userFromDB.getLevel());
     }
 
    /* @Test
@@ -91,13 +88,10 @@ public class UserDAOImplTest {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
-        user.setPersCode(persCode);
         user.setGender(gender);
         user.setPhone(phone);
         user.setEmail(email);
         user.setLogin(login);
-        user.setParole(parole);
-        user.setLevel(level);
         return user;
     }
 

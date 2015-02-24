@@ -5,6 +5,7 @@ import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Component
 public class UsersController implements MVCController {
+    @Autowired
+    UserDAO userDAO;
 
     public class RezList{
         private List<User> users;
@@ -34,7 +37,7 @@ public class UsersController implements MVCController {
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
-        UserDAO userDAO = new UserDAOImpl();
+
         List<User> users = null;
 
         User user1 = createUser("Name1", "Surname1", "111111-11111", "male", "21111111", "111@abc.lv", "login1", "parole1", 1);
