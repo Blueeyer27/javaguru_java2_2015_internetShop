@@ -6,10 +6,9 @@ public class Product {
     private String name;
     private String description;
     private float price;
+    private String imageURL;
 
-    public Product() {
-
-    }
+    public Product() { }
 
     public Product(String name, String description, float price) {
         this. name = name;
@@ -48,4 +47,7 @@ public class Product {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public void setImage(String imageURL) { this.imageURL = imageURL; }
+    public String getImage() { return imageURL; }
 }

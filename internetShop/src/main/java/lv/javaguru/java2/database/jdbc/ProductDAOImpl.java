@@ -28,10 +28,11 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("insert into products (Name, Description, Price) values (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    connection.prepareStatement("insert into products (Name, Description, Price, Picture) values (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setString(4, product.getImage());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -65,6 +66,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
                 product.setName(resultSet.getString("Name"));
                 product.setDescription(resultSet.getString("Description"));
                 product.setPrice(resultSet.getFloat("Price"));
+                product.setImage(resultSet.getString("Picture"));
             }
             return product;
         } catch (Throwable e) {
@@ -90,6 +92,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
                 product.setName(resultSet.getString("Name"));
                 product.setDescription(resultSet.getString("Description"));
                 product.setPrice(resultSet.getFloat("Price"));
+                product.setImage(resultSet.getString("Picture"));
                 products.add(product);
             }
         } catch (Throwable e) {
@@ -130,11 +133,12 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("update products set Name = ?, Description = ?, Price = ? " +
+                    .prepareStatement("update products set Name = ?, Description = ?, Price = ?, Picture = ? " +
                             "where ProductID = ?");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setString(4, product.getImage());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute ProductDAOImpl.update()");
@@ -165,6 +169,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
                 product.setName(resultSet.getString("Name"));
                 product.setDescription(resultSet.getString("Description"));
                 product.setPrice(resultSet.getFloat("Price"));
+                product.setImage(resultSet.getString("Picture"));
                 products.add(product);
             }
         } catch (Throwable e) {

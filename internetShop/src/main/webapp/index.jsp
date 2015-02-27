@@ -43,9 +43,17 @@
             if (products.size() < 1) {%>
         <p>Product table in database is empty.</p>
         <%  }
-            for (Product prod : products) { %>
+            for (Product prod : products) {
+                String picture = prod.getImage(); %>
         <div id="column_w530">
             <div class="header_02"><%=prod.getName()%></div>
+            <div class="img-50">
+            <% if (picture != null) {%>
+                    <img src="<%=prod.getImage()%>">
+            <% } else { %>
+                <img src="images/products/NoImage.gif">
+            <% } %>
+            </div>
             <p class="em_text"><%=prod.getDescription()%></p>
             <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
                 <%if (!inCart.containsKey(prod.getProductId())) {%>

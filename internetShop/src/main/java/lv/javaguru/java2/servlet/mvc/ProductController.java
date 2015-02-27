@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Anton on 2015.02.27..
@@ -26,16 +27,20 @@ public class ProductController implements MVCController {
         //TODO: show chosen product (/product?id=103 (param - id))
         //TODO: admin can edit
 
-        Long productID = 104l;
+        HttpSession session = request.getSession();
 
-        Product product = null;
+        if (request.getParameter("id") != null) {
+            Long productID = Long.parseLong(request.getParameter("id"));
+            Product product = null;
 
-        try {
-            product = productDAO.getById(productID);
-        } catch (DBException e) {
-            e.printStackTrace();
+            try {
+                product = productDAO.getById(productID);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+
+            return new MVCModel("/product.jsp", product);
         }
-
-        return new MVCModel("/product.jsp", product);
+        return new MVCModel("/product.jsp");
     }
 }
