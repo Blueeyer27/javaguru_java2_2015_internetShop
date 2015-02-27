@@ -46,6 +46,13 @@ public class MVCFilter implements Filter {
         controllerMapping.put("/logout", getBean(LoginController.class));
         controllerMapping.put("/about", getBean(AboutCompanyController.class));
         controllerMapping.put("/cart", getBean(CartController.class));
+        controllerMapping.put("/product", getBean(ProductController.class));
+
+        /*
+        TODO:
+        controllerMapping.put("/purchase", getBean(PurchaseController.class));
+        controllerMapping.put("/admin", getBean(AdminController.class));
+         */
     }
 
     private MVCController getBean(Class clazz){
