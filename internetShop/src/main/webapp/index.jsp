@@ -28,6 +28,11 @@
         window.location = uri + "?page=" + page + "&cart=" + id;
     }
 
+    function aboutProduct(id) {
+        var uri = document.documentURI.split('?')[0];
+        window.location = "product?id=" + id;
+    }
+
     function getURLParameter(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
     }
@@ -49,13 +54,16 @@
             <div class="header_02"><%=prod.getName()%></div>
             <div class="img-50">
             <% if (picture != null) {%>
-                    <img src="<%=prod.getImage()%>">
+                    <img src="<%=picture%>">
             <% } else { %>
                 <img src="images/products/NoImage.gif">
             <% } %>
             </div>
             <p class="em_text"><%=prod.getDescription()%></p>
             <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
+                <input id='<%=prod.getProductId()%>' type='submit' value='About'
+                       onclick='aboutProduct("<%=prod.getProductId()%>")'>
+                &nbsp;
                 <%if (!inCart.containsKey(prod.getProductId())) {%>
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
                        onclick='addProduct("<%=prod.getName()%>", "<%=prod.getProductId()%>")'>

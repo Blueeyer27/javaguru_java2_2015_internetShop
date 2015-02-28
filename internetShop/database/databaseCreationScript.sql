@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`products` (
   `Name` CHAR(32) NOT NULL,
   `Description` TEXT NOT NULL,
   `Price` decimal(20,6) unsigned NOT NULL,
+  `Picture` CHAR(255),
   PRIMARY KEY (`ProductID`)
 )
 ENGINE = InnoDB;
