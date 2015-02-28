@@ -72,6 +72,8 @@ public class LoginController implements MVCController {
                     session.setAttribute("name", user.getName());
                     session.setAttribute("surname", user.getSurname());
                     session.setAttribute("access_level", user.getAccessLevel());
+
+                    session.setAttribute("id", user.getId());
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
