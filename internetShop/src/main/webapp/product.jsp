@@ -60,6 +60,7 @@
             String username = (String) session.getAttribute("username");
         %>
         <div id="column_w530">
+            <% if (username != null) {%>
             <form method="POST" action="product">
                 <table>
                     <tr>
@@ -81,13 +82,16 @@
                     </tr>
                 </table>
             </form>
+            <% } else {%>
+            <p>Only registred users can post comments.</p>
+            <% } %>
             <table>
                 <% List<Comment> comments = (List<Comment>) request.getAttribute("all_comments");
                    if (comments != null) {
                        for(Comment comment : comments) {%>
                         <table>
                             <tr>
-                                <td><%=comment.getUserID() + ": "%></td>
+                                <td><%=comment.getUsername() + ": "%></td>
                                 <td><%=comment.getComment()%></td>
                             </tr>
                         </table>

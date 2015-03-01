@@ -5,13 +5,16 @@ package lv.javaguru.java2.domain;
  */
 public class Comment {
     private Long id, userID, productID;
-    private String comment;
+    private String comment, username;
 
     public Comment(Long userID, Long productID, String comment){
         this.comment = comment;
         this.userID = userID;
         this.productID = productID;
     }
+
+    public String getUsername() { return username; }
+    public void setUsername(String value) { username = value; }
 
     public Long getUserID() { return userID; }
     public void setUserID(Long value) { userID = value; }

@@ -4,6 +4,7 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.database.CommentDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Comment;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
@@ -21,6 +22,9 @@ import java.util.List;
 
 @Component
 public class ProductController implements MVCController {
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Autowired
     private ProductDAO productDAO;
@@ -56,6 +60,11 @@ public class ProductController implements MVCController {
 
             try {
                 comments = commentDAO.getAll(productID);
+
+                //TODO: add username in comments table and remove this....
+                for (Comment comment : comments) {
+                    comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
+                }
             } catch (DBException e) {
                 e.printStackTrace();
             }
