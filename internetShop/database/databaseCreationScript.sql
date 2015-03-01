@@ -41,6 +41,17 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+DROP TABLE IF EXISTS `java2_test`.`news` ;
+
+CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
+  `DateID` CHAR(30) NOT NULL,
+  `Title` CHAR(30) NOT NULL,
+  `Body` CHAR(80) NOT NULL,
+  PRIMARY KEY (`DateID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
 -- -----------------------------------------------------
 -- Table `java2_test`.`products`
 -- -----------------------------------------------------

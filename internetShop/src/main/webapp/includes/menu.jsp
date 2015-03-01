@@ -18,6 +18,7 @@
                 <li><a href="/java2/index">Home</a></li>
                 <li><a href="#">New In</a></li>
                 <li><a href="#">Sale</a></li>
+                <li><a href="/java2/news">News</a></li>
                 <li><a href="#" class="last">Company</a></li>
             </ul>
         </div>
