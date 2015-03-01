@@ -40,18 +40,6 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
-DROP TABLE IF EXISTS `java2_test`.`news` ;
-
-CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
-  `DateID` CHAR(30) NOT NULL,
-  `Title` CHAR(30) NOT NULL,
-  `Body` CHAR(80) NOT NULL,
-  PRIMARY KEY (`DateID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
 -- -----------------------------------------------------
 -- Table `java2_test`.`products`
 -- -----------------------------------------------------
@@ -105,6 +93,33 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+DROP TABLE IF EXISTS `java2_test`.`news` ;
+
+CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
+  `DateID` CHAR(30) NOT NULL,
+  `Title` CHAR(30) NOT NULL,
+  `Body` CHAR(80) NOT NULL,
+  PRIMARY KEY (`DateID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+DROP TABLE IF EXISTS `java2_test`.`newsBackup` ;
+CREATE TABLE IF NOT EXISTS `java2_test`.`newsBackup` (
+`DateID` CHAR(30) NOT NULL,
+  `Title` CHAR(30) NOT NULL,
+  `Body` CHAR(80) NOT NULL,
+  PRIMARY KEY (`DateID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+DELIMITER |
+CREATE TRIGGER `delete_newItem` before delete ON `news`
+FOR EACH ROW BEGIN
+  INSERT INTO newsBackup Set DateId = OLD.DateId, Title = OLD.Title, Body = OLD.Body;
+END
+
