@@ -12,10 +12,16 @@
 <html>
 <jsp:include page="includes/header.jsp"/>
 <body>
+<script>
+    function ShowOrHide(id) {
+        var block = document.getElementById(id).style;
+        block.display = (block.display == 'none') ? 'block' : 'none';
+    }
+</script>
 <jsp:include page="includes/menu.jsp"/>
 <%
-    if(request.getMethod().equals("POST") && request.getParameter("id") != null) {
-        response.sendRedirect("/java2/product?id=" + request.getParameter("id"));
+    if(request.getMethod().equals("POST") && request.getAttribute("id") != null) {
+        response.sendRedirect("/java2/product?id=" + request.getAttribute("id"));
     }
 %>
 <div id="content_wrapper">
@@ -46,6 +52,19 @@
                 <font color="#228b22">Product is in Cart.</font>
                 <% }%>
             </p>
+            <input id='upload' type='submit' value='Change Image'
+                   onclick='ShowOrHide("upload_image")'>
+            <div id="upload_image" style="display:none;">
+                <h3> Choose File to Upload </h3>
+                <form action="product" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="<%=prod.getProductId()%>">
+                    <input type="file" name="file">
+                    <input type="submit" name="upload" value="upload">
+                </form>
+                <div id="result">
+                    <h3>${requestScope["message"]}</h3>
+                </div>
+            </div>
 
             <div class="margin_bottom_20"></div>
             <div class="cleaner"></div>
@@ -78,7 +97,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type="SUBMIT" value="Post comment" name="submit"></td>
+                        <td><input type="SUBMIT" value="Post comment" name="comment"></td>
                     </tr>
                 </table>
             </form>
@@ -100,6 +119,7 @@
                     <p>Comment and be first.</p>
                 <% } %>
             </table>
+            <br><br><br>
         </div>
     </div>
 </div>

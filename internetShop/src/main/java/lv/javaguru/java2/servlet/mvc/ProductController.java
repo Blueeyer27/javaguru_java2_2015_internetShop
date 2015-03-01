@@ -1,6 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import lv.javaguru.java2.database.CommentDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,6 +27,8 @@ import java.util.List;
 
 @Component
 public class ProductController implements MVCController {
+
+    private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
     @Autowired
     private UserDAO userDAO;
@@ -38,21 +45,62 @@ public class ProductController implements MVCController {
 
         HttpSession session = request.getSession();
 
-        if (request.getParameter("id") != null) {
-            Long productID = Long.parseLong(request.getParameter("id"));
+        System.out.println("Product ID: " + request.getParameter("id"));
+        if(ServletFileUpload.isMultipartContent(request)){
+            if (request.getMethod().equals("POST"))
+                System.out.println("WOW");
+            System.out.println(request.getParameter("info"));
+            System.out.println(request.getAttribute("info"));
+            System.out.println("IN upload state");
+            try {
+                List<FileItem> multiparts = new ServletFileUpload(
+                        new DiskFileItemFactory()).parseRequest(request);
 
+                for(FileItem item : multiparts){
+                    if(!item.isFormField()){
+                        String name = new File(item.getName()).getName();
+                        item.write( new File(UPLOAD_DIRECTORY + File.separator + name));
+                    } else {
+                        String name = item.getFieldName();//text1
+                        String value = item.getString();
+                        request.setAttribute(name, value);
+                    }
+                }
+
+                //File uploaded successfully
+                System.out.println("File Uploaded Successfully");
+                //TODO: update picture in DB
+                request.setAttribute("message", "File Uploaded Successfully");
+            } catch (Exception ex) {
+                System.out.println("File Upload Failed due to " + ex);
+                request.setAttribute("message", "File Upload Failed due to " + ex);
+            }
+
+        }
+
+        if (request.getParameter("id") != null)
+            request.setAttribute("id", request.getParameter("id"));
+
+        if (request.getAttribute("id") != null) {
+            Long productID = Long.parseLong((String) request.getAttribute("id"));
+            System.out.println(productID + "  In POST?");
             if (request.getMethod().equals("POST")) {
-
-                try {
-                    commentDAO.create(new Comment(
-                            (Long) session.getAttribute("id"), //current user ID
-                            productID,
-                            request.getParameter("comment")
-                    ));
-                } catch (DBException e) {
-                    System.out.println("exception ;((");
-                    //TODO: handle exception when can't add comment
-                    e.printStackTrace();
+                System.out.println("In POST");
+                if (request.getParameter("comment") != null) {
+                    System.out.println("Comment button pressed!");
+                    try {
+                        commentDAO.create(new Comment(
+                                (Long) session.getAttribute("id"), //current user ID
+                                productID,
+                                request.getParameter("comment")
+                        ));
+                    } catch (DBException e) {
+                        System.out.println("exception ;((");
+                        //TODO: handle exception when can't add comment
+                        e.printStackTrace();
+                    }
+                } else if (request.getParameter("upload") != null) {
+                    System.out.println("Upload button pressed!");
                 }
             }
 
@@ -81,6 +129,7 @@ public class ProductController implements MVCController {
 
             return new MVCModel("/product.jsp", product);
         }
-        return new MVCModel("/access.jsp");
+
+        return new MVCModel("/access.jsp", "Product ID need to be end as parameter.");
     }
 }
