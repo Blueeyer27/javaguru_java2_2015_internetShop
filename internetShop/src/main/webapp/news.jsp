@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="lv.javaguru.java2.domain.NewItem" %>
+<%@ page import="lv.javaguru.java2.AccessLevel" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -20,51 +21,59 @@
     }
 </script>
 
-<jsp:include page="includes/menu.jsp"/>
-<div id="content_wrapper">
-    <div id="content">
-        <jsp:include page="includes/user_bar.jsp"/>
-        <%  List<NewItem> news = (List<NewItem>) request.getAttribute("model");
-            if (news.size() < 1) {%>
-        <p>No news</p>
-        <%  }
-            for (NewItem n : news) { %>
-        <div id="column_w530">
-            <div class="header_02"><%=n.getDateID()%></div>
-            <p class="em_text"><%=n.getTitle()%></p>
-            <p><%=n.getBody() + "\t"%></p>
+    <jsp:include page="includes/menu.jsp"/>
+    <div id="content_wrapper">
+        <div id="content">
+            <jsp:include page="includes/user_bar.jsp"/>
 
-            <input id='<%=n.getDateID()%>' type='submit' value='delete'
-                   onclick='deleteItem("<%=n.getDateID()%>")'>
+            <!-- ------------GETTING NEWS FROM DB---------- -->
+            <%  List<NewItem> news = (List<NewItem>) request.getAttribute("model");
+                if (news.size() < 1) {%>
+                    <p>No news</p>
+            <%  }
+                for (NewItem n : news) { %>
+                    <div id="column_w530">
+                        <div class="header_02"><%=n.getTitle()%></div>
+                        <p class="em_text"><%=n.getBody()%></p>
+                        <p><%=n.getDateID() + "\t"%></p>
 
-            <div class="margin_bottom_20"></div>
+
+                        <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
+                        <% if ((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) {%>
+                            <input id='<%=n.getDateID()%>' type='submit' value='delete'
+                                onclick='deleteItem("<%=n.getDateID()%>")'>
+                        <%}%>
+
+
+
+                        <div class="margin_bottom_20"></div>
+                        <div class="cleaner"></div>
+                    </div><br><br><br><br><br><br><br><br><br><br>
+            <%  } %>
             <div class="cleaner"></div>
-        </div><br><br><br><br><br><br><br><br><br><br>
-        <%  } %>
-        <div class="cleaner"></div>
 
+            <!-- --------------------FORM FOR INSERTING NEWS (ADMIN-VISIBLE)------------------------ -->
+            <% if ((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) {%>
+                <form method="POST" action="news">
+                    <table>
+                        <tr>
+                            <td>Title:</td>
+                            <td><input type="text" name="title"></td>
+                        </tr>
+                        <tr>
+                            <td>Body:</td>
+                            <td><input type="text" name="body"></td>
+                        </tr>
 
+                        <tr>
+                            <td></td>
+                            <td><input type="SUBMIT" value="Add" name="submit"></td>
+                        </tr>
+                    </table>
+                </form>
+            <%}%>
 
-
-        <form method="POST" action="news">
-            <table>
-                <tr>
-                    <td>Title:</td>
-                    <td><input type="text" name="title"></td>
-                </tr>
-                <tr>
-                    <td>Body:</td>
-                    <td><input type="text" name="body"></td>
-                </tr>
-
-                <tr>
-                    <td></td>
-                    <td><input type="SUBMIT" value="Add" name="submit"></td>
-                </tr>
-            </table>
-        </form>
-
+        </div>
     </div>
-</div>
 </body>
 </html>
