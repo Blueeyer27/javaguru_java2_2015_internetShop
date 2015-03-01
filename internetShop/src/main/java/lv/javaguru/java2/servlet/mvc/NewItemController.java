@@ -40,28 +40,12 @@ public class NewItemController implements MVCController {
 
     @Autowired
     private NewItemDAO newItemDAO;
-
-
     Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    //UserDAO userDAO = new UserDAOImpl();
+
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         session.setAttribute("page_name", "News");
-
-        UserDAO userDAO = new UserDAOImpl();
-        //creating admin account manually to test admin's level functions
-        try {
-            try {
-                createAdmin(userDAO);
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
 
         // automatic generator of news if there are less then 5 news in DB
         try {
@@ -138,21 +122,5 @@ public class NewItemController implements MVCController {
                     request.getParameter("title"),
                     request.getParameter("body"));
             return newItem;
-        }
-
-       private void createAdmin(UserDAO userDAO) throws DBException, InvalidKeySpecException, NoSuchAlgorithmException {
-            User admin = null;
-            try {
-              admin = userDAO.getByLogin("admin");
-            } catch (DBException e) {
-                e.printStackTrace();
-            }
-
-            if (admin == null){
-            userDAO.create(new User("AdminName", "AdminSurname",
-                    "male", "27868821", "admin@internetshop.lv",
-                    "admin", PasswordHash.createHash("admin"), 3));
-            }
-
         }
     }

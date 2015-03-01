@@ -39,7 +39,7 @@
 
 
                         <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
-                        <% if ((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) {%>
+                        <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
                             <input id='<%=n.getDateID()%>' type='submit' value='delete'
                                 onclick='deleteItem("<%=n.getDateID()%>")'>
                         <%}%>
@@ -53,7 +53,7 @@
             <div class="cleaner"></div>
 
             <!-- --------------------FORM FOR INSERTING NEWS (ADMIN-VISIBLE)------------------------ -->
-            <% if ((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) {%>
+            <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
                 <form method="POST" action="news">
                     <table>
                         <tr>
