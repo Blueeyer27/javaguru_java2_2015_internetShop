@@ -1,4 +1,6 @@
 <%@ page import="lv.javaguru.java2.domain.Product" %>
+<%@ page import="lv.javaguru.java2.domain.Comment" %>
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: Anton
@@ -11,7 +13,11 @@
 <jsp:include page="includes/header.jsp"/>
 <body>
 <jsp:include page="includes/menu.jsp"/>
-
+<%
+    if(request.getMethod().equals("POST") && request.getParameter("id") != null) {
+        response.sendRedirect("/java2/product?id=" + request.getParameter("id"));
+    }
+%>
 <div id="content_wrapper">
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
@@ -35,7 +41,7 @@
 
                 <%if (true) {%>
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
-                       onclick='addProduct("<%=prod.getName()%>", "<%=prod.getProductId()%>")'>
+                       onclick=''>
                 <% } else {%>
                 <font color="#228b22">Product is in Cart.</font>
                 <% }%>
@@ -50,19 +56,45 @@
         <p>Can't find product in database.</p>
         <% } %>
 
+        <%
+            String username = (String) session.getAttribute("username");
+        %>
         <div id="column_w530">
-            <%
-                int ID = 5;
-                String name = session.getAttribute("name") + " " + session.getAttribute("surname");
-            %>
-            <br>
+            <form method="POST" action="product">
+                <table>
+                    <tr>
+                        <td>Username:</td>
+                        <td><%=username%></td>
+                    </tr>
+                    <tr>
+                        <td>Comment:</td>
+                        <td><input type="hidden" name="id" value="<%=prod.getProductId()%>"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input style="height:100px;width:400px;font-size:14pt;"
+                                   type="text" name="comment"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="SUBMIT" value="Post comment" name="submit"></td>
+                    </tr>
+                </table>
+            </form>
             <table>
-                <tr>Name: </tr>
-                <tr><input name="name" value="<%=name%>" size="20" type="text"></tr>
-                <br>
-                <tr>Comment: </td><br>
-                    <td><input style="height:100px;width:400px;font-size:14pt;" name="id" value="HERE WILL BE COMMENT BOX!" size="20" height="50" type="text"></td>
-                </tr>
+                <% List<Comment> comments = (List<Comment>) request.getAttribute("all_comments");
+                   if (comments != null) {
+                       for(Comment comment : comments) {%>
+                        <table>
+                            <tr>
+                                <td><%=comment.getUserID() + ": "%></td>
+                                <td><%=comment.getComment()%></td>
+                            </tr>
+                        </table>
+                <%     }
+                   } else {%>
+                    <p>Comment and be first.</p>
+                <% } %>
             </table>
         </div>
     </div>

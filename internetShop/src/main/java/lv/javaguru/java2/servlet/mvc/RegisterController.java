@@ -58,6 +58,7 @@ public class RegisterController implements MVCController {
                     user.setPassword(PasswordHash.createHash(user.getPassword()));
                     try {
                         userDAO.create(user);
+                        session.setAttribute("id", userDAO.getByLogin(user.getLogin()).getId());
                     } catch (DBException e) {
                         e.printStackTrace();
                         return new MVCModel("/register.jsp", "Something gone wrong with DB.");
