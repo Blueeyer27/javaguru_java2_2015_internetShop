@@ -45,21 +45,16 @@ public class ProductController implements MVCController {
 
         HttpSession session = request.getSession();
 
-        System.out.println("Product ID: " + request.getParameter("id"));
-        if(ServletFileUpload.isMultipartContent(request)){
-            if (request.getMethod().equals("POST"))
-                System.out.println("WOW");
-            System.out.println(request.getParameter("info"));
-            System.out.println(request.getAttribute("info"));
-            System.out.println("IN upload state");
+        if (ServletFileUpload.isMultipartContent(request)) {
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
 
-                for(FileItem item : multiparts){
-                    if(!item.isFormField()){
-                        String name = new File(item.getName()).getName();
-                        item.write( new File(UPLOAD_DIRECTORY + File.separator + name));
+                String fileName = null;
+                for (FileItem item : multiparts) {
+                    if (!item.isFormField()) {
+                        fileName = new File(item.getName()).getName();
+                        item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
                     } else {
                         String name = item.getFieldName();//text1
                         String value = item.getString();
@@ -69,7 +64,8 @@ public class ProductController implements MVCController {
 
                 //File uploaded successfully
                 System.out.println("File Uploaded Successfully");
-                //TODO: update picture in DB
+
+                updateProductImage(Long.parseLong((String)request.getAttribute("id")), fileName);
                 request.setAttribute("message", "File Uploaded Successfully");
             } catch (Exception ex) {
                 System.out.println("File Upload Failed due to " + ex);
@@ -83,41 +79,29 @@ public class ProductController implements MVCController {
 
         if (request.getAttribute("id") != null) {
             Long productID = Long.parseLong((String) request.getAttribute("id"));
-            System.out.println(productID + "  In POST?");
+
             if (request.getMethod().equals("POST")) {
-                System.out.println("In POST");
+
+                // If comment button pressed
                 if (request.getParameter("comment") != null) {
-                    System.out.println("Comment button pressed!");
                     try {
-                        commentDAO.create(new Comment(
-                                (Long) session.getAttribute("id"), //current user ID
-                                productID,
-                                request.getParameter("comment")
-                        ));
+                        // Create new Comment if it's not empty
+                        String comment = null;
+                        if ((comment = request.getParameter("comment")) != null)
+                            commentDAO.create(new Comment(
+                                    (Long) session.getAttribute("id"), //current user ID
+                                    productID,
+                                    comment
+                            ));
                     } catch (DBException e) {
                         System.out.println("exception ;((");
                         //TODO: handle exception when can't add comment
                         e.printStackTrace();
                     }
-                } else if (request.getParameter("upload") != null) {
-                    System.out.println("Upload button pressed!");
                 }
             }
 
-            List<Comment> comments = null;
-
-            try {
-                comments = commentDAO.getAll(productID);
-
-                //TODO: add username in comments table and remove this....
-                for (Comment comment : comments) {
-                    comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
-                }
-            } catch (DBException e) {
-                e.printStackTrace();
-            }
-
-            request.setAttribute("all_comments", comments);
+            loadComments(request, productID);
 
             Product product = null;
 
@@ -130,6 +114,44 @@ public class ProductController implements MVCController {
             return new MVCModel("/product.jsp", product);
         }
 
-        return new MVCModel("/access.jsp", "Product ID need to be end as parameter.");
+        return new MVCModel("/access.jsp", "Product ID need to be send as parameter.");
+    }
+
+    private void updateProductImage(Long productID, String fileName) {
+        Product product = null;
+        //Get product from DB
+        try {
+            product = productDAO.getById(productID);
+        } catch (DBException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        product.setImage("/images/products/" + fileName);
+        System.out.println(product.getImage());
+
+        //Update product
+        try {
+            productDAO.update(product);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadComments(HttpServletRequest request, Long productID) {
+        List<Comment> comments = null;
+
+        try {
+            comments = commentDAO.getAll(productID);
+
+            //TODO: add username in comments table and remove this....
+            for (Comment comment : comments) {
+                comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
+            }
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+
+        request.setAttribute("all_comments", comments);
     }
 }

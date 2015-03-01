@@ -139,6 +139,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setFloat(3, product.getPrice());
             preparedStatement.setString(4, product.getImage());
+            preparedStatement.setLong(5, product.getProductId());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute ProductDAOImpl.update()");

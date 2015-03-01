@@ -35,7 +35,7 @@
             </div>
             <div class="img-50">
                 <% if (prod.getImage() != null) {%>
-                <img src="<%=prod.getImage()%>">
+                <img src="<%="/java2" + prod.getImage()%>">
                 <% } else { %>
                 <img src="images/products/NoImage.gif">
                 <% } %>
@@ -58,11 +58,13 @@
                 <h3> Choose File to Upload </h3>
                 <form action="product" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<%=prod.getProductId()%>">
-                    <input type="file" name="file">
+                    <input type="file" name="file" multiple accept="image/*">
                     <input type="submit" name="upload" value="upload">
                 </form>
                 <div id="result">
-                    <h3>${requestScope["message"]}</h3>
+
+                    <h3><font color="red"><%=request.getAttribute("message")%></font></h3>
+
                 </div>
             </div>
 

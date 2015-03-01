@@ -54,7 +54,7 @@
             <div class="header_02"><%=prod.getName()%></div>
             <div class="img-50">
             <% if (picture != null) {%>
-                    <img src="<%=picture%>">
+                    <img src="<%="/java2" + picture%>">
             <% } else { %>
                 <img src="images/products/NoImage.gif">
             <% } %>
