@@ -68,6 +68,7 @@ public class LoginController implements MVCController {
                 else {
                     System.out.println("Login Successful!");
 
+                    session.setAttribute("user_id", user.getId());
                     session.setAttribute("username", username);
                     session.setAttribute("name", user.getName());
                     session.setAttribute("surname", user.getSurname());

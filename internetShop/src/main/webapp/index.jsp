@@ -56,7 +56,7 @@
             <% if (picture != null) {%>
                     <img src="<%="/java2" + picture%>">
             <% } else { %>
-                <img src="images/products/NoImage.gif">
+                <img src="images/products/noimage.gif">
             <% } %>
             </div>
             <p class="em_text"><%=prod.getDescription()%></p>

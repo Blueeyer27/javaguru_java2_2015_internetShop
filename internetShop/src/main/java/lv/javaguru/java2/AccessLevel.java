@@ -1,5 +1,7 @@
 package lv.javaguru.java2;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by Anton on 2015.02.22..
  */
@@ -8,7 +10,7 @@ public enum AccessLevel {
     GUEST(1),
     CLIENT(2),
     MODERATOR(3),
-    ADMIN(3);
+    ADMIN(4);
 
     private final int value;
 
@@ -18,3 +20,4 @@ public enum AccessLevel {
 
     public int getValue() { return value; }
 }
+
