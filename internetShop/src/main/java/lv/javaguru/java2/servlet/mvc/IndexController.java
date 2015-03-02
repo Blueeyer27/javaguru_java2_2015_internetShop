@@ -1,6 +1,7 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
+import lv.javaguru.java2.AccessCheck;
 import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class IndexController implements MVCController {
+public class IndexController extends AccessCheck implements MVCController {
 
     @Autowired
     private ProductDAO productDAO;

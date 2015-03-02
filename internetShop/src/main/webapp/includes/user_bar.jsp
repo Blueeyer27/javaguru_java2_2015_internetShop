@@ -34,7 +34,7 @@
                     + session.getAttribute("surname") + "!"%>
             </a></div>
         <h3><a href="/java2/logout" target="_self">Logout</a> |
-            <a href="#" target="_self">Account</a><br>
+            <a href="/java2/user" target="_self">Account</a><br>
             <a href="#" target="_self">My Cart: (0)</a></h3>
         <% } %>
 
