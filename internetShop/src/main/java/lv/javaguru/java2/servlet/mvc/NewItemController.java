@@ -24,10 +24,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Thread.sleep;
 
@@ -67,6 +64,9 @@ public class NewItemController implements MVCController {
         // deleting new item by id
         deletingNewItem(request);
 
+        // adding likes
+        likeNewItem(request);
+
 
         // passing news from DB to page
         MVCModel model = null;
@@ -83,8 +83,8 @@ public class NewItemController implements MVCController {
 //---------------PROCEDURE DEFINATION-----------------------------------
 
         private void deletingNewItem(HttpServletRequest request){
-            if (request.getParameter("id") != null) {
-                String dateID = new String(request.getParameter("id"));
+            if (request.getParameter("idDelete") != null) {
+                String dateID = new String(request.getParameter("idDelete"));
                 try {
                     newItemDAO.delete(dateID);
                 } catch (DBException e) {
@@ -93,12 +93,26 @@ public class NewItemController implements MVCController {
             }
         }
 
+
+        private void likeNewItem(HttpServletRequest request){
+            if (request.getParameter("idLike") != null) {
+                String dateID = new String(request.getParameter("idLike"));
+                try {
+                    newItemDAO.update(newItemDAO.getById(dateID));
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         private void creatingMaterialsForTest() throws DBException {
+            Random rand = new Random();
             if(newItemDAO.getAll().size() < 5){
                 for (int i = 0; i<5; i++){
                     Timestamp stamp = new Timestamp(System.currentTimeMillis());
                     Date date = new Date(stamp.getTime());
-                    NewItem newItem = new NewItem(formatter.format(date), "Title-"+i, "This is a new number-"+i );
+                    NewItem newItem = new NewItem(formatter.format(date), "Title-"+i, "This is a new number-"+i, rand.nextInt(100));
                     try {
                         newItemDAO.create(newItem);
                     } catch (DBException e) {
@@ -120,7 +134,8 @@ public class NewItemController implements MVCController {
             NewItem newItem = new NewItem(
                     formatter.format(date),
                     request.getParameter("title"),
-                    request.getParameter("body"));
+                    request.getParameter("body"),
+                    0);
             return newItem;
         }
     }

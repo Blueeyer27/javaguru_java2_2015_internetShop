@@ -7,11 +7,13 @@ public class NewItem {
     private String dateID;
     private String title;
     private String body;
+    private int likes;
 
-    public NewItem(String dateID, String title, String body) {
+    public NewItem(String dateID, String title, String body, int likes) {
         this.dateID = dateID;
         this.title = title;
         this.body = body;
+        this.likes = likes;
     }
 
     public NewItem() {
@@ -39,5 +41,13 @@ public class NewItem {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

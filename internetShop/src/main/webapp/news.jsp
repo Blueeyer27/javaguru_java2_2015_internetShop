@@ -17,7 +17,12 @@
 <script>
     function deleteItem(id) {
         var uri = document.documentURI.split('?')[0];
-        window.location = "news?id=" + id;
+        window.location = "news?idDelete=" + id;
+    }
+
+    function likeItem(id) {
+        var uri = document.documentURI.split('?')[0];
+        window.location = "news?idLike=" + id;
     }
 </script>
 
@@ -35,6 +40,7 @@
                     <div id="column_w530">
                         <div class="header_02"><%=n.getTitle()%></div>
                         <p class="em_text"><%=n.getBody()%></p>
+                        <p><%=n.getLikes()%></p>
                         <p><%=n.getDateID() + "\t"%></p>
 
 
@@ -43,6 +49,14 @@
                             <input id='<%=n.getDateID()%>' type='submit' value='delete'
                                 onclick='deleteItem("<%=n.getDateID()%>")'>
                         <%}%>
+
+                        <!-- ----------------------BUTTON FOR LIKES------------------- -->
+                        <% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
+                        <input id='<%=n.getDateID()%>' type='submit' value='like'
+                               onclick='likeItem("<%=n.getDateID()%>")'>
+                        <%}%>
+
+
 
 
 
