@@ -3,6 +3,7 @@ package lv.javaguru.java2.servlet.mvc;
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessCheck;
 import lv.javaguru.java2.AccessLevel;
+import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
@@ -23,6 +24,9 @@ public class IndexController extends AccessCheck implements MVCController {
 
     @Autowired
     private ProductDAO productDAO;
+
+    @Autowired
+    private CartDAO cartDAO;
 
     public class PageInfo {
         private List<Product> _products;
@@ -60,7 +64,15 @@ public class IndexController extends AccessCheck implements MVCController {
                     inCart.put(prodID, 1);
                 System.out.println(prodID);
             } else {
-                //TODO: write logic for authorized users
+                Long userID = (Long) session.getAttribute("user_id");
+                try {
+                    //TODO: write logic for authorized users
+                    cartDAO.addElem(prodID, userID, 1, false);
+                    System.out.println("PRODUCT ADDED TO CART");
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
 

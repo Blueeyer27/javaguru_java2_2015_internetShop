@@ -47,6 +47,7 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
             //Integer dbCount = 0;
 
             if (resultSet.next()) {
+                System.out.println("Element exist!");
                 Integer dbCount = 0;
                 //dbProductID = resultSet.getLong("ProductID");
                 //dbUserID = resultSet.getLong("UserID");
@@ -55,9 +56,11 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
 
                 count += dbCount;
 
+                System.out.println(count);
+
                 prepStat = connect
                         .prepareStatement("update CARTS set Count = ?" +
-                                "where UserID = ? and ProductID = ? and IsOrdered = ?");
+                                " where UserID = ? and ProductID = ? and IsOrdered = ?");
                 prepStat.setInt(1, count);
                 prepStat.setLong(2, userID);
                 prepStat.setLong(3, productID);
@@ -65,6 +68,8 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
 
                 prepStat.executeUpdate();
             } else {
+                System.out.println("Element don't exist. Create new.");
+                System.out.println(productID + " " + userID + " " + count + " " + isOrdered);
                 prepStat =
                         connect.prepareStatement("insert into CARTS values " +
                                         "(?, ?, ?, ?)");
@@ -72,6 +77,8 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
                 prepStat.setLong(2, userID);
                 prepStat.setInt(3, count);
                 prepStat.setBoolean(4, isOrdered);
+
+                prepStat.executeUpdate();
             }
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.getByLogin()");

@@ -132,7 +132,6 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`carts` (
   `UserID` INT(11) NOT NULL,
   `Count` INT UNSIGNED NULL DEFAULT 0,
   `IsOrdered` TINYINT(1) NULL DEFAULT 0,
-  PRIMARY KEY (`ProductID`, `UserID`),
   FOREIGN KEY (`ProductID`) REFERENCES `java2_test`.`products` (`ProductID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
