@@ -43,6 +43,7 @@ public class NewItemController implements MVCController {
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         session.setAttribute("page_name", "News");
+        List<String> likedItems = (ArrayList<String>) session.getAttribute("liked");
 
         // automatic generator of news if there are less then 5 news in DB
         try {
@@ -65,7 +66,11 @@ public class NewItemController implements MVCController {
         deletingNewItem(request);
 
         // adding likes
-        likeNewItem(request);
+        if(!likedItems.contains(request.getParameter("idLike"))){
+            likeNewItem(request);
+            likedItems.add(request.getParameter("idLike"));
+        }
+
 
 
         // passing news from DB to page
@@ -76,6 +81,9 @@ public class NewItemController implements MVCController {
             e.printStackTrace();
         }
         return model;
+
+
+
 
 
     }
@@ -97,11 +105,11 @@ public class NewItemController implements MVCController {
         private void likeNewItem(HttpServletRequest request){
             if (request.getParameter("idLike") != null) {
                 String dateID = new String(request.getParameter("idLike"));
-                try {
-                    newItemDAO.update(newItemDAO.getById(dateID));
-                } catch (DBException e) {
-                    e.printStackTrace();
-                }
+                        try {
+                            newItemDAO.update(newItemDAO.getById(dateID));
+                        } catch (DBException e) {
+                            e.printStackTrace();
+                        }
             }
         }
 

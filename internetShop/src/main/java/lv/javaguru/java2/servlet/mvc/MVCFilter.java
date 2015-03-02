@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,6 +80,7 @@ public class MVCFilter implements Filter {
         if (session.isNew()) {
             session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
             session.setAttribute("access_level", AccessLevel.GUEST.getValue());
+            session.setAttribute("liked", new ArrayList<String>());
         }
 
         if (contextURI.equals("/index.jsp"))

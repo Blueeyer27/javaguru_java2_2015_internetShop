@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="lv.javaguru.java2.domain.NewItem" %>
 <%@ page import="lv.javaguru.java2.AccessLevel" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -26,6 +27,10 @@
     }
 </script>
 
+<%
+    ArrayList<String> likedItems = (ArrayList<String>) session.getAttribute("liked");
+%>
+
     <jsp:include page="includes/menu.jsp"/>
     <div id="content_wrapper">
         <div id="content">
@@ -40,7 +45,7 @@
                     <div id="column_w530">
                         <div class="header_02"><%=n.getTitle()%></div>
                         <p class="em_text"><%=n.getBody()%></p>
-                        <p><%=n.getLikes()%></p>
+                        <p><%=n.getLikes()%> people like this</p>
                         <p><%=n.getDateID() + "\t"%></p>
 
 
@@ -52,8 +57,12 @@
 
                         <!-- ----------------------BUTTON FOR LIKES------------------- -->
                         <% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
-                        <input id='<%=n.getDateID()%>' type='submit' value='like'
-                               onclick='likeItem("<%=n.getDateID()%>")'>
+                            <% if(!likedItems.contains(n.getDateID())){%>
+                                <input id='<%=n.getDateID()%>' type='submit' value='like'
+                                onclick='likeItem("<%=n.getDateID()%>")'>
+                            <%} else {%>
+                                <font color="#228b22"></font>
+                            <% }%>
                         <%}%>
 
 
