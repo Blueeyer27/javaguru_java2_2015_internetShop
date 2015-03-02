@@ -17,7 +17,11 @@
 
     <div class="column_w300_section_01">
         <div class="news_image_wrapper">
-            <img src="images/image_02.jpg" alt="image"/>
+            <% if ((Integer) session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {%>
+            <img src="/java2/images/users/guest.png" alt="image"/>
+            <% } else { %>
+            <img src="/java2/images/users/nophoto.gif" alt="image"/>
+            <% } %>
         </div>
 
         <div class="news_content">

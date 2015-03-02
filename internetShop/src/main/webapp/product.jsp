@@ -37,7 +37,7 @@
                 <% if (prod.getImage() != null) {%>
                 <img src="<%="/java2" + prod.getImage()%>">
                 <% } else { %>
-                <img src="images/products/NoImage.gif">
+                <img src="images/products/noimage.gif">
                 <% } %>
             </div>
             <p class="em_text"><%=prod.getDescription()%>

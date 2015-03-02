@@ -1,3 +1,4 @@
+<%@ page import="lv.javaguru.java2.domain.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: Anton
@@ -17,8 +18,29 @@
         <% if (request.getAttribute("model") instanceof String) {%>
         <p><%=request.getAttribute("model")%>
         </p>
-        <% } else {%>
-        <h3>Here will be information about user.</h3>
+        <% } else if (request.getAttribute("model") instanceof User) {
+            User user = (User) request.getAttribute("model");%>
+        <b>
+            <p>Name: <%=user.getName()%>
+            </p><br>
+
+            <p>Surname: <%=user.getSurname()%>
+            </p><br>
+
+            <p>Gender: <%=user.getGender()%>
+            </p><br>
+
+            <br><br>
+
+            <p>Phone: <%=user.getPhone()%>
+            </p><br>
+
+            <p>Email: <%=user.getEmail()%>
+            </p><br>
+
+            <p>Login: <%=user.getLogin()%>
+            </p><br>
+        </b>
         <% } %>
     </div>
 </div>

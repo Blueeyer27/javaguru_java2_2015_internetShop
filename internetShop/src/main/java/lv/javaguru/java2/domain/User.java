@@ -16,6 +16,7 @@ public class User {
     private String phone;
     private String email;
 
+    private String photoURL;
 
     public User() {
     }
@@ -32,6 +33,10 @@ public class User {
         this.password = password;
         this.access_level = access_level;
     }
+
+    public String getPhotoURL() { return photoURL; }
+    public void setPhotoURL(String value) { photoURL = value; }
+
 
     public long getId() {
         return id;
