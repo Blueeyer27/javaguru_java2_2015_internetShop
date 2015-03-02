@@ -10,7 +10,7 @@ public enum AccessLevel {
     GUEST(1),
     CLIENT(2),
     MODERATOR(3),
-    ADMIN(3);
+    ADMIN(4);
 
     private final int value;
 

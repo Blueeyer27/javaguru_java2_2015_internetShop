@@ -1,6 +1,7 @@
 <%@ page import="lv.javaguru.java2.domain.Product" %>
 <%@ page import="lv.javaguru.java2.domain.Comment" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lv.javaguru.java2.AccessLevel" %>
 <%--
   Created by IntelliJ IDEA.
   User: Anton
@@ -52,6 +53,8 @@
                 <font color="#228b22">Product is in Cart.</font>
                 <% }%>
             </p>
+            <% if ((Integer) session.getAttribute("access_level")
+                    >= AccessLevel.MODERATOR.getValue()) {%>
             <input id='upload' type='submit' value='Change Image'
                    onclick='ShowOrHide("upload_image")'>
             <div id="upload_image" style="display:none;">
@@ -67,7 +70,7 @@
 
                 </div>
             </div>
-
+            <% } %>
             <div class="margin_bottom_20"></div>
             <div class="cleaner"></div>
         </div>

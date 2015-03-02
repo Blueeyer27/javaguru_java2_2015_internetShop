@@ -12,6 +12,11 @@
 <jsp:include page="includes/header.jsp"/>
 <body>
 <jsp:include page="includes/menu.jsp"/>
+<script>
+    function productInfo(id) {
+        window.location = "product?id=" + id;
+    }
+</script>
 <div id="content_wrapper">
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
@@ -23,12 +28,21 @@
         <p><font color="#228b22">Your cart is empty.</font></p>
         <%  } else {
                 for (Product product : inCart) { %>
-        <p><%=product.getName() + " | " + product.getDescription() + " | " + product.getPrice()%></p>
+        <h3><a onclick="productInfo('<%=product.getProductId()%>')"><%=product.getName()%></a></h3>
+        <div class="img-25">
+            <% if (product.getImage() != null) {%>
+            <img src="<%="/java2" + product.getImage()%>">
+            <% } else { %>
+            <img src="images/products/noimage.gif">
+            <% } %>
+        </div>
+        <p><%=product.getDescription() + " | " + product.getPrice()%></p>
+        <br><br>
         <%  totalPrice+=product.getPrice();
                 }
             }%>
         <br><br>
-        <p><%="Total price = " + totalPrice%></p>
+        <p><b><h1><%="Total price = " + totalPrice%></h1></b></p>
     </div>
 </div>
 </body>
