@@ -68,13 +68,13 @@ public class LoginController implements MVCController {
                 else {
                     System.out.println("Login Successful!");
 
+                    session.removeAttribute("in_cart");
+
                     session.setAttribute("user_id", user.getId());
                     session.setAttribute("username", username);
                     session.setAttribute("name", user.getName());
                     session.setAttribute("surname", user.getSurname());
                     session.setAttribute("access_level", user.getAccessLevel());
-
-                    session.setAttribute("id", user.getId());
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

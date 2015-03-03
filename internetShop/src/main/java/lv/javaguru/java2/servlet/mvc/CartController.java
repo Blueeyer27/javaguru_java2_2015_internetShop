@@ -2,10 +2,13 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessLevel;
+import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
+import lv.javaguru.java2.domain.Cart;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.servlet.mvc.MVCController;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +29,15 @@ public class CartController implements MVCController {
     @Autowired
     private ProductDAO productDAO;
 
+    @Autowired
+    private CartDAO cartDAO;
+
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         session.setAttribute("page_name", "Products in cart");
 
-        List<Product> inCart = new ArrayList<Product>();
+        List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
         if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
             Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
@@ -44,7 +50,7 @@ public class CartController implements MVCController {
                     System.out.println("In cart: " + id);
 
                     try {
-                        inCart.add(productDAO.getById(id));
+                        inCart.add(new ProductInCart(productDAO.getById(id), count, false));
                     } catch (DBException e) {
                         //if exception => product don't exist anymore or something wrong with DB
                         //TODO: logic if product don't exist anymore
@@ -52,6 +58,18 @@ public class CartController implements MVCController {
                     }
                 }
             }
+        } else {
+            //TODO: don't forget about banned users
+            Long userID = (Long) session.getAttribute("user_id");
+            Cart cart = null;
+
+            try {
+                cart = cartDAO.getCart(userID);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+
+            inCart = cart.getProducts();
         }
 
         return new MVCModel("/cart.jsp", inCart);
