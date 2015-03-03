@@ -1,12 +1,28 @@
 package lv.javaguru.java2.domain;
 
+import javax.persistence.*;
+import java.sql.Date;
+
 /**
  * Created by Anna on 27.02.15.
  */
+
+@Entity
+@Table(name = "news")
 public class NewItem {
+
+    @Column(name="DateId",columnDefinition = "char(30)")
+    @Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String dateID;
+
+    @Column(name = "Title", columnDefinition = "CHAR(30)")
     private String title;
+
+    @Column(name = "Body", columnDefinition = "CHAR(80)")
     private String body;
+
+    @Column(name = "Likes", columnDefinition = "int(11)")
     private int likes;
 
     public NewItem(String dateID, String title, String body, int likes) {
