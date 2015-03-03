@@ -13,6 +13,7 @@ import lv.javaguru.java2.domain.Comment;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class ProductController implements MVCController {
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
     @Autowired
+    @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
 
     @Autowired
