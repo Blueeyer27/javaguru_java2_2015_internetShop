@@ -60,8 +60,14 @@ public class IndexController extends AccessCheck implements MVCController {
             Long prodID = Long.parseLong(request.getParameter("cart"));
             if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
                 Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
-                if (!inCart.containsKey(prodID))
+                if (!inCart.containsKey(prodID)) {
                     inCart.put(prodID, 1);
+                } else {
+                    Integer count = inCart.get(prodID);
+                    count++;
+                    inCart.put(prodID, count);
+                    System.out.println("New count of product: " + count);
+                }
                 System.out.println(prodID);
             } else {
                 Long userID = (Long) session.getAttribute("user_id");

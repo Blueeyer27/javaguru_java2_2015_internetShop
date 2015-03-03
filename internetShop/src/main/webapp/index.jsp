@@ -64,12 +64,13 @@
                 <input id='<%=prod.getProductId()%>' type='submit' value='About'
                        onclick='aboutProduct("<%=prod.getProductId()%>")'>
                 &nbsp;
-                <%if (!inCart.containsKey(prod.getProductId())) {%>
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
                        onclick='addProduct("<%=prod.getName()%>", "<%=prod.getProductId()%>")'>
-                <% } else {%>
-                <font color="#228b22">Product is in Cart.</font>
-                <% }%>
+                <%  if (inCart != null) {
+                        if (inCart.containsKey(prod.getProductId())) {%>
+                <font color="#228b22">Count of this product in your cart : <%=inCart.get(prod.getProductId())%></font>
+                <%      }
+                    } %>
             </p>
             <div class="margin_bottom_20"></div>
             <div class="cleaner"></div>

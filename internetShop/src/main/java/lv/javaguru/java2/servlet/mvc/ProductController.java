@@ -89,7 +89,7 @@ public class ProductController implements MVCController {
                         String comment = null;
                         if ((comment = request.getParameter("comment")) != null)
                             commentDAO.create(new Comment(
-                                    (Long) session.getAttribute("id"), //current user ID
+                                    (Long) session.getAttribute("user_id"), //current user ID
                                     productID,
                                     comment
                             ));
