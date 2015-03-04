@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
+import lv.javaguru.java2.domain.CartDB;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class IndexController extends AccessCheck implements MVCController {
     private ProductDAO productDAO;
 
     @Autowired
+    @Qualifier("ORM_CartDAO")
     private CartDAO cartDAO;
 
     public class PageInfo {
@@ -75,7 +77,7 @@ public class IndexController extends AccessCheck implements MVCController {
                 Long userID = (Long) session.getAttribute("user_id");
                 try {
                     //TODO: write logic for authorized users
-                    cartDAO.addElem(prodID, userID, 1, false);
+                    cartDAO.addElem(new CartDB(prodID, userID, 1, false));
                     System.out.println("PRODUCT ADDED TO CART");
                 } catch (DBException e) {
                     e.printStackTrace();

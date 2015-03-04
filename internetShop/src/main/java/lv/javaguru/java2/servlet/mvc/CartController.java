@@ -6,7 +6,6 @@ import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
-import lv.javaguru.java2.domain.Cart;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.servlet.mvc.MVCController;
@@ -32,6 +31,7 @@ public class CartController implements MVCController {
     private ProductDAO productDAO;
 
     @Autowired
+    @Qualifier("ORM_CartDAO")
     private CartDAO cartDAO;
 
     @Override
@@ -63,15 +63,12 @@ public class CartController implements MVCController {
         } else {
             //TODO: don't forget about banned users
             Long userID = (Long) session.getAttribute("user_id");
-            Cart cart = null;
 
             try {
-                cart = cartDAO.getCart(userID);
+                inCart = cartDAO.getCart(userID);
             } catch (DBException e) {
                 e.printStackTrace();
             }
-
-            inCart = cart.getProducts();
         }
 
         return new MVCModel("/cart.jsp", inCart);

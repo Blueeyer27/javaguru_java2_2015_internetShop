@@ -3,13 +3,16 @@ package lv.javaguru.java2.database.jdbc;
 import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.domain.Cart;
+import lv.javaguru.java2.domain.CartDB;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,13 +23,13 @@ import java.util.List;
  * Created by Anton on 2015.03.02..
  */
 
-@Component
+@Component("JDBC_CartDAO")
 public class CartDAOImpl extends DAOImpl implements CartDAO {
     @Autowired
     @Qualifier("ORM_ProductDAO")
     ProductDAO productDAO;
 
-    @Override
+    //@Override
     public void addElem(Long productID, Long userID,
                         Integer count, boolean isOrdered) throws DBException {
         Connection connect = null;
@@ -92,30 +95,40 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
-    public Cart getCart(Long userID) throws DBException {
-        Connection connection = null;
-        List<ProductInCart> products = new ArrayList<ProductInCart>();
-        try {
-            connection = getConnection();
-            PreparedStatement preparedStatement
-                    = connection.prepareStatement("SELECT * FROM CARTS");
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                Product product = productDAO.getById(resultSet.getLong("ProductID"));
-                products.add(new ProductInCart(product,
-                        resultSet.getInt("Count"),
-                        resultSet.getBoolean("IsOrdered")));
-            }
-        } catch (Throwable e) {
-            System.out.println("Exception while getting customer list ProductDAOImpl.getList()");
-            e.printStackTrace();
-            throw new DBException(e);
-        } finally {
-            closeConnection(connection);
-        }
-
-        return new Cart(userID, products);
+    public List<ProductInCart> getCart(Long userID) throws DBException {
+        return null;
     }
+
+    @Override
+    public void addElem(CartDB cart) throws DBException {
+        throw new NotImplementedException();
+    }
+
+//    @Override
+//    public Cart getCart(Long userID) throws DBException {
+//        Connection connection = null;
+//        List<ProductInCart> products = new ArrayList<ProductInCart>();
+//        try {
+//            connection = getConnection();
+//            PreparedStatement preparedStatement
+//                    = connection.prepareStatement("SELECT * FROM CARTS");
+//
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                Product product = productDAO.getById(resultSet.getLong("ProductID"));
+//                products.add(new ProductInCart(product,
+//                        resultSet.getInt("Count"),
+//                        resultSet.getBoolean("IsOrdered")));
+//            }
+//        } catch (Throwable e) {
+//            System.out.println("Exception while getting customer list ProductDAOImpl.getList()");
+//            e.printStackTrace();
+//            throw new DBException(e);
+//        } finally {
+//            closeConnection(connection);
+//        }
+//
+//        return new Cart(userID, products);
+//    }
 }
