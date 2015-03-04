@@ -7,6 +7,7 @@ import lv.javaguru.java2.domain.Cart;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -22,6 +23,7 @@ import java.util.List;
 @Component
 public class CartDAOImpl extends DAOImpl implements CartDAO {
     @Autowired
+    @Qualifier("ORM_ProductDAO")
     ProductDAO productDAO;
 
     @Override

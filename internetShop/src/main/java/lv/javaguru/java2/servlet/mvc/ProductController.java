@@ -36,6 +36,7 @@ public class ProductController implements MVCController {
     private UserDAO userDAO;
 
     @Autowired
+    @Qualifier("ORM_ProductDAO")
     private ProductDAO productDAO;
 
     @Autowired

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Tanya
  */
-@Component
+@Component("JDBC_ProductDAO")
 public class ProductDAOImpl extends DAOImpl implements ProductDAO {
 
     @Override
