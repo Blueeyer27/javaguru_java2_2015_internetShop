@@ -33,73 +33,15 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getById(Long id) throws DBException {
-//        Connection connection = null;
-//
-//        try {
-//            connection = getConnection();
-//            PreparedStatement preparedStatement = connection
-//                    .prepareStatement("select * from USERS where UserId = ?");
-//            preparedStatement.setLong(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            User user = null;
-//            if (resultSet.next()) {
-//                user = new User();
-//                user.setId(resultSet.getLong("UserId"));
-//                user.setLogin(resultSet.getString("Login"));
-//                user.setPassword(resultSet.getString("Password"));
-//                user.setName(resultSet.getString("Name"));
-//                user.setSurname(resultSet.getString("Surname"));
-//                user.setGender(resultSet.getString("Gender"));
-//                user.setPhone(resultSet.getString("Phone"));
-//                user.setEmail(resultSet.getString("Email"));
-//                user.setAccessLevel(resultSet.getInt("Access_Level"));
-//            }
-//            return user;
-//        } catch (Throwable e) {
-//            System.out.println("Exception while execute UserDAOImpl.getById()");
-//            e.printStackTrace();
-//            throw new DBException(e);
-//        } finally {
-//            closeConnection(connection);
-//        }
-        return new User();
+        Session session = sessionFactory.getCurrentSession();
+        return (User) session.get(User.class, id);
     }
 
     @Override
     public User getByLogin(String login) throws DBException {
-//        Connection connect = null;
-//
-//        System.out.println("getByLogin: " + login);
-//        try {
-//            connect = getConnection();
-//
-//            PreparedStatement prepStat = connect.prepareStatement("select * from USERS where Login = ?");
-//            prepStat.setString(1, login);
-//
-//            ResultSet resultSet = prepStat.executeQuery();
-//            User user = null;
-//            if (resultSet.next()) {
-//                user = new User();
-//                user.setId(resultSet.getLong("UserId"));
-//                user.setLogin(resultSet.getString("Login"));
-//                user.setPassword(resultSet.getString("Password"));
-//                user.setName(resultSet.getString("Name"));
-//                user.setSurname(resultSet.getString("Surname"));
-//                user.setGender(resultSet.getString("Gender"));
-//                user.setPhone(resultSet.getString("Phone"));
-//                user.setEmail(resultSet.getString("Email"));
-//                user.setAccessLevel(resultSet.getInt("Access_Level"));
-//            }
-//            return user;
-//        } catch (Throwable e) {
-//            System.out.println("Exception while execute UserDAOImpl.getByLogin()");
-//            e.printStackTrace();
-//            throw new DBException(e);
-//        } finally {
-//            closeConnection(connect);
-//        }
-
-        return new User();
+        Session session = sessionFactory.getCurrentSession();
+        // "username" - name of field (not table name)
+        return (User) session.createCriteria(User.class).add(Restrictions.eq("username", login)).uniqueResult();
     }
 
     public List<User> getAll() throws DBException {
@@ -109,44 +51,15 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void delete(Long id) throws DBException {
-//        Connection connection = null;
-//        try {
-//            connection = getConnection();
-//            PreparedStatement preparedStatement = connection
-//                    .prepareStatement("delete from USERS where UserId = ?");
-//            preparedStatement.setLong(1, id);
-//            preparedStatement.executeUpdate();
-//        } catch (Throwable e) {
-//            System.out.println("Exception while execute UserDAOImpl.delete()");
-//            e.printStackTrace();
-//            throw new DBException(e);
-//        } finally {
-//            closeConnection(connection);
-//        }
+        Session session = sessionFactory.getCurrentSession();
+        User user = (User) session.get(User.class, id);
+        session.delete(user);
     }
 
     @Override
     public void update(User user) throws DBException {
-//        if (user == null) {
-//            return;
-//        }
-//
-//        Connection connection = null;
-//        try {
-//            connection = getConnection();
-//            PreparedStatement preparedStatement = connection
-//                    .prepareStatement("update USERS set Surname = ?" +
-//                            "where UserId = ?");
-//            preparedStatement.setString(1, user.getSurname());
-//            preparedStatement.setLong(2, user.getId());
-//            preparedStatement.executeUpdate();
-//        } catch (Throwable e) {
-//            System.out.println("Exception while execute UserDAOImpl.update()");
-//            e.printStackTrace();
-//            throw new DBException(e);
-//        } finally {
-//            closeConnection(connection);
-//        }
+        Session session = sessionFactory.getCurrentSession();
+        session.update(user);
     }
 
 }
