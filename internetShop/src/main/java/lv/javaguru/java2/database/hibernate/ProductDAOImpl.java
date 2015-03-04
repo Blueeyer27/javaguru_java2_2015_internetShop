@@ -39,7 +39,8 @@ public class ProductDAOImpl implements ProductDAO {
     public void delete(Long id) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         Product product = (Product) session.get(Product.class, id);
-        session.delete(product);
+        if (product != null)
+            session.delete(product);
     }
 
     @Override
