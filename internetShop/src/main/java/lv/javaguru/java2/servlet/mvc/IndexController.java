@@ -60,6 +60,17 @@ public class IndexController extends AccessCheck implements MVCController {
                     "\nContact site administrator for more information." +
                     "\nexample@gmail.com");
 
+        if ((request.getParameter("delete") != null)
+                && ((Integer) session.getAttribute("access_level") >= AccessLevel.MODERATOR.getValue())) {
+            Long prodID = Long.parseLong(request.getParameter("delete"));
+            try {
+                productDAO.delete(prodID);
+            } catch (DBException e) {
+                //TODO: make logic if failure
+                e.printStackTrace();
+            }
+        }
+
         if (request.getParameter("cart") != null) {
             Long prodID = Long.parseLong(request.getParameter("cart"));
             if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {

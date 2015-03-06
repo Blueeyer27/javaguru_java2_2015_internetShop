@@ -45,19 +45,36 @@ public class CartController implements MVCController {
             Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
 
             if (products.size() > 0) {
+                // This array is fo ID of items which don't exist in DB anymore
+                List<Long> toRemove = new ArrayList<Long>();
+
                 for (Entry<Long, Integer> entry : products.entrySet()) {
                     Long id = entry.getKey();
                     Integer count = entry.getValue();
 
                     System.out.println("In cart: " + id);
 
+                    Product product = null;
+                    boolean deleted = false;
+
                     try {
-                        inCart.add(new ProductInCart(productDAO.getById(id), count, false));
+                        product = productDAO.getById(id);
+
+                        if (product != null)
+                            inCart.add(new ProductInCart(product, count, false));
+                        else
+                            //Product don't exist in DB
+                            toRemove.add(id);
+
                     } catch (DBException e) {
                         //if exception => product don't exist anymore or something wrong with DB
                         //TODO: logic if product don't exist anymore
                         e.printStackTrace();
                     }
+                }
+
+                for (Long removeID : toRemove) {
+                    products.remove(removeID);
                 }
             }
         } else {
