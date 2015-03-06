@@ -3,6 +3,7 @@
 <%@ page import="lv.javaguru.java2.servlet.mvc.IndexController" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="lv.javaguru.java2.AccessLevel" %>
 <%--
   Created by IntelliJ IDEA.
   User: Anton
@@ -19,13 +20,30 @@
         window.location = link;
     }
 
-    function addProduct(name, id) {
+    function productOperation(name, id, operation) {
         var uri = document.documentURI.split('?')[0];
         var page = getURLParameter("page");
         if (page == null) page = 1;
 
-        window.alert("Product " + name + " added to your cart.");
-        window.location = uri + "?page=" + page + "&cart=" + id;
+        switch (operation) {
+            case "put" :
+                window.alert("Product " + name + " added to your cart.");
+                window.location = uri + "?page=" + page + "&cart=" + id;
+                break;
+            case "remove" :
+                window.alert("Product " + name + " removed from your cart.");
+                window.location = uri + "?page=" + page + "&remove=" + id;
+                break;
+            case "delete" :
+                window.location = uri + "?page=" + page + "&delete=" + id;
+                break;
+            default :
+                window.alert("Incorrect operation!");
+        }
+    }
+
+    function createProduct() {
+        window.location = "/java2/create";
     }
 
     function aboutProduct(id) {
@@ -34,7 +52,8 @@
     }
 
     function getURLParameter(name) {
-        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)
+                || [,""])[1].replace(/\+/g, '%20')) || null
     }
 </script>
 <%
@@ -47,10 +66,15 @@
         <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
             if (products.size() < 1) {%>
         <p>Product table in database is empty.</p>
-        <%  }
+        <%  } %>
+        <div id="column_w530">
+            <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>
+            <input type='submit' value='Add New Product'
+                   onclick='createProduct()'><br><br>
+            <% }%>
+        <%
             for (Product prod : products) {
                 String picture = prod.getImage(); %>
-        <div id="column_w530">
             <div class="header_02"><%=prod.getName()%></div>
             <div class="img-50">
             <% if (picture != null) {%>
@@ -65,17 +89,28 @@
                        onclick='aboutProduct("<%=prod.getProductId()%>")'>
                 &nbsp;
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
-                       onclick='addProduct("<%=prod.getName()%>", "<%=prod.getProductId()%>")'>
+                       onclick='productOperation("<%=prod.getName()%>", "<%=prod.getProductId()%>", "put")'>
                 <%  if (inCart != null) {
                         if (inCart.containsKey(prod.getProductId())) {%>
                 <font color="#228b22">Count of this product in your cart : <%=inCart.get(prod.getProductId())%></font>
+                <br><br>
+                <input id='<%=prod.getProductId()%>' type='submit' value='Remove From Cart'
+                       onclick='productOperation("<%=prod.getName()%>", "<%=prod.getProductId()%>", "remove")'>
+
                 <%      }
                     } %>
+
+                <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue())
+                        { %>
+                <input id='<%=prod.getProductId()%>' type='submit' value='Delete'
+                       onclick='productOperation("<%=prod.getName()%>", "<%=prod.getProductId()%>", "delete")'>
+                     <% }%>
             </p>
-            <div class="margin_bottom_20"></div>
-            <div class="cleaner"></div>
+         <%  } %>
+         <div class="margin_bottom_20"></div>
+         <div class="cleaner"></div>
         </div><br><br><br><br><br><br><br><br><br><br>
-        <%  } %>
+
         <div class="cleaner"></div>
         <%  if (products.size() > 10) { %>
         <input type='submit' value='Next Page'

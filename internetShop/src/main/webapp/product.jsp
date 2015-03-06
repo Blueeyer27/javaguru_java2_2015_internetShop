@@ -18,6 +18,10 @@
         var block = document.getElementById(id).style;
         block.display = (block.display == 'none') ? 'block' : 'none';
     }
+
+    function deleteProduct(id) {
+        window.location = "/java2/index?delete=" + id;
+    }
 </script>
 <jsp:include page="includes/menu.jsp"/>
 <%
@@ -57,6 +61,14 @@
                     >= AccessLevel.MODERATOR.getValue()) {%>
             <input id='upload' type='submit' value='Change Image'
                    onclick='ShowOrHide("upload_image")'>
+
+            <input id='edit' type='submit' value='Edit'
+                   onclick='ShowOrHide("edit_form")'>
+
+            <input id='delete' type='submit' value='Delete'
+                   onclick='deleteProduct("<%=prod.getProductId()%>")'>
+
+
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
                 <form action="product" method="POST" enctype="multipart/form-data">
@@ -64,12 +76,18 @@
                     <input type="file" name="file" multiple accept="image/*">
                     <input type="submit" name="upload" value="upload">
                 </form>
-                <div id="result">
+                <%--<div id="result">--%>
 
-                    <h3><font color="red"><%=request.getAttribute("message")%></font></h3>
+                    <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
 
-                </div>
+                <%--</div>--%>
             </div>
+
+
+            <div id="edit_form" style="display:none;">
+                <h3> Here will be form </h3>
+            </div>
+
             <% } %>
             <div class="margin_bottom_20"></div>
             <div class="cleaner"></div>
