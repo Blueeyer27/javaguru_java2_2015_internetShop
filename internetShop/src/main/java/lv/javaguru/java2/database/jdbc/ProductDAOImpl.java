@@ -4,6 +4,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.Product;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,6 +104,12 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
             closeConnection(connection);
         }
         return products;
+    }
+
+    @Override
+    public Long getTotal() throws DBException {
+        System.out.println("getProductCount() method in jdbc don't work.");
+        throw new NotImplementedException();
     }
 
     @Override

@@ -21,4 +21,5 @@ public interface ProductDAO {
 
     List<Product> getAll() throws DBException;
 
+    Long getTotal() throws DBException;
 }

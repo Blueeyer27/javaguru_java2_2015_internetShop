@@ -64,16 +64,19 @@
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
         <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
-            if (products.size() < 1) {%>
-        <p>Product table in database is empty.</p>
-        <%  } %>
+            if (products != null) { %>
         <div id="column_w530">
             <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>
             <input type='submit' value='Add New Product'
                    onclick='createProduct()'><br><br>
             <% }%>
         <%
-            for (Product prod : products) {
+            int lastElem = 1;
+            if (products.size() <= 10) lastElem = 0;
+
+            for (int i = products.size() - 1; i >= lastElem; i--) {
+            //for (Product prod : products) {
+                Product prod = products.get(i);
                 String picture = prod.getImage(); %>
             <div class="header_02"><%=prod.getName()%></div>
             <div class="img-50">
@@ -116,6 +119,9 @@
         <input type='submit' value='Next Page'
                onclick='nextPage("<%=((IndexController.PageInfo)request.getAttribute("model")).getNextPageURI()%>")'/>
         <%  } %>
+        <% } else {%>
+        <p><font color="#006400">Page don't exist or product table in database is empty.</font></p>
+        <% }%>
     </div>
 </div>
 </body>

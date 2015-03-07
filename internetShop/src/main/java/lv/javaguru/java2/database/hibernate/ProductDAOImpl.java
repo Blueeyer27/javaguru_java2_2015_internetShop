@@ -5,6 +5,7 @@ import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.Product;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,13 +53,37 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public List<Product> getRange(int startRow, int rowCount) throws DBException {
         Session session = sessionFactory.getCurrentSession();
+
+        Integer productCount = ((Number) session.createCriteria(Product.class)
+                .setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
+        System.out.println("Products total: " + productCount
+                + " Start row: " + startRow + " Row count: " + rowCount);
+
+        Integer difference = productCount - startRow - rowCount;
+
+        if (difference < 10)
+            if (productCount - startRow <= 0) return null;
+            else return session.createCriteria(Product.class)
+                    .setFirstResult((difference < 0) ? 0 : difference)
+                    .setMaxResults(productCount - startRow).list();
+
         return session.createCriteria(Product.class)
-                .setFirstResult(startRow).setMaxResults(rowCount).list();
+                .setFirstResult((difference < 0) ? 0 : difference)
+                .setMaxResults(rowCount).list();
     }
 
     @Override
     public List<Product> getAll() throws DBException {
         Session session = sessionFactory.getCurrentSession();
         return session.createCriteria(Product.class).list();
+    }
+
+    @Override
+    public Long getTotal() throws DBException {
+        Session session = sessionFactory.getCurrentSession();
+
+        return ((Number) session.createCriteria(Product.class)
+                .setProjection(Projections.rowCount()).uniqueResult()).longValue();
     }
 }

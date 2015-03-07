@@ -108,7 +108,7 @@ public class IndexController extends AccessCheck implements MVCController {
             products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
 
             // THIS IS JUST FOR TEST! (CREATE 100 NEW PRODUCTS IN DATABASE)
-            if (products.size() < 10) {
+            if (productDAO.getTotal() < 1) {
                 for (int i = 0; i < 100; i++) {
                     productDAO.create(new Product("product" + i, "This is test product description.", 0.25f));
                 }
@@ -119,9 +119,9 @@ public class IndexController extends AccessCheck implements MVCController {
             e.printStackTrace();
         }
 
-        for (Product p : products) {
-            System.out.println(p.getName());
-        }
+//        for (Product p : products) {
+//            System.out.println(p.getName());
+//        }
 
         //System.out.println("URL: " + request.getRequestURL());
         //System.out.println("Header: " + request.getHeader("referer"));

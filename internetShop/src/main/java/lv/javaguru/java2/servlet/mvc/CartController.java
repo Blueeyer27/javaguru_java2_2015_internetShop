@@ -54,8 +54,7 @@ public class CartController implements MVCController {
 
                     System.out.println("In cart: " + id);
 
-                    Product product = null;
-                    boolean deleted = false;
+                    Product product;
 
                     try {
                         product = productDAO.getById(id);
@@ -67,8 +66,7 @@ public class CartController implements MVCController {
                             toRemove.add(id);
 
                     } catch (DBException e) {
-                        //if exception => product don't exist anymore or something wrong with DB
-                        //TODO: logic if product don't exist anymore
+                        //TODO: logic if something wrong with DB
                         e.printStackTrace();
                     }
                 }
