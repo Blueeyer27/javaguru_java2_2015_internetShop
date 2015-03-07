@@ -8,6 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <jsp:include page="includes/header.jsp"/>
+<%  String error = null;
+    if (request.getAttribute("model") != null
+            && request.getAttribute("model") instanceof String)
+        error = (String) request.getAttribute("model");
+    if(error != null) {
+        if (error.equals("Success!")){%>
+<meta http-equiv="refresh" content="1;url=/java2/index" />
+<%      }
+    }%>
 <body>
 <jsp:include page="includes/menu.jsp"/>
 
@@ -17,8 +26,7 @@
                onclick='ShowOrHide("test_div")'><br><br>
         <jsp:include page="includes/user_bar.jsp"/>
         <jsp:include page="includes/product_form.jsp"/>
-        <% String error = (String) request.getAttribute("model");
-        if (error != null) {%>
+        <% if (error != null) {%>
         <tr>
         <td></td>
         <td><font color="red"><%="Error: " + error%>

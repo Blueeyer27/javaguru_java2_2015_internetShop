@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Anton on 2015.03.07..
@@ -34,7 +36,11 @@ public class AddProductController extends AccessCheck implements MVCController {
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
-        if (ServletFileUpload.isMultipartContent(request) && 2 == 1) {
+        if (ServletFileUpload.isMultipartContent(request)) {
+            Map<String, String> params = new HashMap<String, String>();
+
+            Product product = new Product();
+
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
@@ -42,48 +48,52 @@ public class AddProductController extends AccessCheck implements MVCController {
                 String fileName = null;
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
-                        fileName = new File(item.getName()).getName();
-                        item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+                        if (item.getName().length() > 0) {
+                            fileName = new File(item.getName()).getName();
+                            item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+                            product.setImage("/images/products/" + fileName);
+                        }
                     } else {
-                        String name = item.getFieldName();
-                        String value = item.getString();
-                        request.setAttribute(name, value);
+                        params.put(item.getFieldName(),
+                                item.getString());
+
+                        System.out.println(item.getFieldName() + " : " + item.getString());
                     }
                 }
-
-                //File uploaded successfully
-                System.out.println("File Uploaded Successfully");
-
-                updateProductImage(Long.parseLong((String)request.getAttribute("id")), fileName);
-                request.setAttribute("message", "File Uploaded Successfully");
             } catch (Exception ex) {
-                System.out.println("File Upload Failed due to " + ex);
-                request.setAttribute("message", "File Upload Failed due to " + ex);
+                ex.printStackTrace();
             }
 
+            try {
+                if (Float.parseFloat(params.get("price")) <= 0.01f)
+                    return new MVCModel("/add_product.jsp", "Product price can't be less than 0.01");
+            } catch (NumberFormatException ex) {
+                return new MVCModel("/add_product.jsp", "Incorrect price format. Example: \"0.25\"");
+            }
+
+            product.setDescription(params.get("description"));
+            product.setName(params.get("product_name"));
+            product.setPrice(Float.parseFloat(params.get("price")));
+
+            if (checkFields(product))
+                return new MVCModel("/add_product.jsp", "All fields must be filled.");
+
+            try {
+                productDAO.create(product);
+            } catch (DBException e) {
+                e.printStackTrace();
+                return new MVCModel("/add_product.jsp", "DB error. Try again.");
+            }
+            return new MVCModel("/add_product.jsp", "Success!");
         }
 
-        return new MVCModel("/add_product.jsp", "test");
+        return new MVCModel("/add_product.jsp");
     }
 
-    private void updateProductImage(Long productID, String fileName) {
-        Product product = null;
-        //Get product from DB
-        try {
-            product = productDAO.getById(productID);
-        } catch (DBException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        product.setImage("/images/products/" + fileName);
-        System.out.println(product.getImage());
-
-        //Update product
-        try {
-            productDAO.update(product);
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
+    private boolean checkFields(Product product) {
+        //TODO: check for maximal size
+        return (product.getDescription().isEmpty()
+                || product.getName().isEmpty()
+                || product.getPrice() <= 0);
     }
 }
