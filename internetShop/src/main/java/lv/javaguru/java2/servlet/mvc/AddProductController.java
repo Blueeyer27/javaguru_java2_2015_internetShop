@@ -1,7 +1,6 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
-import lv.javaguru.java2.AccessCheck;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.Product;
@@ -25,7 +24,7 @@ import java.util.Map;
  */
 
 @Component
-public class AddProductController extends AccessCheck implements MVCController {
+public class AddProductController implements MVCController {
 
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 

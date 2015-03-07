@@ -1,7 +1,6 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
-import lv.javaguru.java2.AccessCheck;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @Component
-public class UserInfoController extends AccessCheck implements MVCController {
+public class UserInfoController implements MVCController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     UserDAO userDAO;
