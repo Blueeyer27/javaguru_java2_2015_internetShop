@@ -51,7 +51,7 @@ public class MVCFilter implements Filter {
         controllerMapping.put("/product", getBean(ProductController.class));
         controllerMapping.put("/news", getBean(NewItemController.class));
         controllerMapping.put("/user", getBean(UserInfoController.class));
-
+        controllerMapping.put("/add_product", getBean(AddProductController.class));
         /*
         TODO:
         controllerMapping.put("/purchase", getBean(PurchaseController.class));

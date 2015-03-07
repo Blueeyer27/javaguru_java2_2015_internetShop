@@ -68,7 +68,8 @@
         <div id="column_w530">
             <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>
             <input type='submit' value='Add New Product'
-                   onclick='createProduct()'><br><br>
+                   onclick='ShowOrHide("test_div")'><br><br>
+            <jsp:include page="includes/product_form.jsp"/>
             <% }%>
         <%
             int lastElem = 1;

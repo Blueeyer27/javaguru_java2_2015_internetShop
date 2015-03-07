@@ -36,6 +36,11 @@
             if (prod != null) {%>
 
         <div id="column_w530">
+            <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>
+            <input type='submit' value='Add New Product'
+                   onclick='ShowOrHide("test_div")'><br><br>
+            <jsp:include page="includes/product_form.jsp"/>
+            <% }%>
             <div class="header_02"><%=prod.getName()%>
             </div>
             <div class="img-50">
