@@ -37,7 +37,6 @@ public class CartController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-//        session.setAttribute("page_name", "Products in cart");
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
@@ -76,7 +75,6 @@ public class CartController extends AccessController {
                 }
             }
         } else {
-            //TODO: don't forget about banned users
             Long userID = (Long) session.getAttribute("user_id");
 
             try {

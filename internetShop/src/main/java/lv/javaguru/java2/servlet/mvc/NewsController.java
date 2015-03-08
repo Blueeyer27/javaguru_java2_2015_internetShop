@@ -31,7 +31,7 @@ public class NewsController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-//        session.setAttribute("page_name", "News");
+
         List<String> likedItems = (ArrayList<String>) session.getAttribute("liked");
 
         // automatic generator of news if there are less then 5 news in DB

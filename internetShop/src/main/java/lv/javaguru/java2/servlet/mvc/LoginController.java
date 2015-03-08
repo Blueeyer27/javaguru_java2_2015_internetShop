@@ -27,21 +27,9 @@ public class LoginController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession(true);
-//        session.setAttribute("page_name", "Login");
 
-//        int currentUserAccessLevel = (Integer) session.getAttribute("access_level");
-//        boolean isUserLoggedIn = currentUserAccessLevel > AccessLevel.GUEST.getValue();
-//        if (isUserLoggedIn)
-            if (request.getServletPath().equals("/logout")) {
-                //session.invalidate();
-
-                //session = request.getSession(true);
-                //session.setAttribute("access_level", AccessLevel.GUEST.getValue());
-                return new MVCModel("/logout.jsp");
-            }
-//            else {
-//                return new MVCModel("/access.jsp", "Only guests can access this page.");
-//            }
+        if (request.getServletPath().equals("/logout"))
+            return new MVCModel("/logout.jsp");
 
         if (request.getMethod().equals("POST")) {
             String error = null;

@@ -25,7 +25,6 @@ public class UserInfoController extends AccessController {
 
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-        //checkUserAccess(request);
         HttpSession session = request.getSession();
 
         String currLogin = (String) session.getAttribute("username");

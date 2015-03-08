@@ -28,10 +28,6 @@ public class RegisterController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-//        session.setAttribute("page_name", "Registration");
-
-//        if((Integer)session.getAttribute("access_level") > AccessLevel.GUEST.getValue())
-//            return new MVCModel("/access.jsp", "Only guests can access this page.");
 
         if (request.getMethod().equals("POST")) {
             User user = new User(

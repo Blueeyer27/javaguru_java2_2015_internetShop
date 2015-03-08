@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AboutCompanyController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-
         return new MVCModel("/about.jsp");
     }
 }

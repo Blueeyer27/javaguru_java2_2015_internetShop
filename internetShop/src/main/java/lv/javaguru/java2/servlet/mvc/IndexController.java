@@ -52,12 +52,6 @@ public class IndexController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-//        session.setAttribute("page_name", "Home page");
-
-//        if ((Integer) session.getAttribute("access_level") == AccessLevel.BANNED.getValue())
-//            return new MVCModel("/access.jsp", "You have been banned. " +
-//                    "\nContact site administrator for more information." +
-//                    "\nexample@gmail.com");
 
         if ((request.getParameter("delete") != null)) {
             Long prodID = Long.parseLong(request.getParameter("delete"));
@@ -117,13 +111,6 @@ public class IndexController extends AccessController {
             e.printStackTrace();
         }
 
-//        for (Product p : products) {
-//            System.out.println(p.getName());
-//        }
-
-        //System.out.println("URL: " + request.getRequestURL());
-        //System.out.println("Header: " + request.getHeader("referer"));
-        //System.out.println("Context: " + request.getContextPath());
         String nextPage = (request.getRequestURI() + "?page=" +
                 (Integer.parseInt(page) + 1));
         System.out.println("Next page: " + nextPage);
