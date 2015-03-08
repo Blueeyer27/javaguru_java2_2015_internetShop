@@ -78,6 +78,8 @@ public abstract class AccessController implements MVCController {
                     break;
                 case USER:
                     session.setAttribute("page_name", "Profile Information");
+                    if (access_level < AccessLevel.CLIENT.getValue())
+                        message = "Only logged in users can access this page.";
                     break;
                 case ADD_PRODUCT:
                     session.setAttribute("page_name", "Add Product");

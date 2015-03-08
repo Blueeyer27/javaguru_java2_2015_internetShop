@@ -9,6 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <jsp:include page="includes/header.jsp"/>
+<script>
+    function ShowOrHide(id) {
+        var block = document.getElementById(id).style;
+        block.display = (block.display == 'none') ? 'block' : 'none';
+    }
+</script>
 <body>
 <jsp:include page="includes/menu.jsp"/>
 
@@ -39,10 +45,22 @@
             </p><br>
 
             <p>Login: <%=user.getLogin()%>
-            </p><br>
-        </b>
-        <% } %>
-    </div>
-</div>
+            </p><br><br><br><br>
+            <input id='upload' type='submit' value='Change Profile Photo'
+                   onclick='ShowOrHide("upload_image")'>
+            <div id="upload_image" style="display:none;">
+                <h3> Choose File to Upload </h3>
+                <form action="product" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="file" multiple accept="image/*">
+                    <input type="submit" name="upload" value="upload">
+                </form>
+                <%--<div id="result">--%>
+
+                <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
+
+                <%--</div>--%>
+            </div>
+            </b>
+            <% } %>
 </body>
 </html>

@@ -8,19 +8,25 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title><%=session.getAttribute("page_name")%></title>
-    <% if ((Integer) session.getAttribute("access_level")
-            != AccessLevel.BANNED.getValue()) {%>
-    <meta http-equiv="refresh" content="3;url=/java2/index" />
-    <% } %>
-</head>
-<body>
-<h1>Access Denied!</h1>
-<p>Reason: <%=request.getAttribute("model")%></p>
+<jsp:include page="includes/header.jsp"/>
 <% if ((Integer) session.getAttribute("access_level")
         != AccessLevel.BANNED.getValue()) {%>
-<p>Redirection in 3 seconds...</p>
+<meta http-equiv="refresh" content="3;url=/java2/index"/>
 <% } %>
+<body>
+<jsp:include page="includes/menu.jsp"/>
+
+<div id="content_wrapper">
+    <div id="content">
+        <h1>Access Denied!</h1>
+
+        <p>Reason: <%=request.getAttribute("model")%>
+        </p>
+        <% if ((Integer) session.getAttribute("access_level")
+                != AccessLevel.BANNED.getValue()) {%>
+        <p>Redirection in 3 seconds...</p>
+        <% } %>
+    </div>
+</div>
 </body>
 </html>
