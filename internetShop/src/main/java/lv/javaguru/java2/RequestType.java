@@ -26,7 +26,8 @@ public enum RequestType {
     PRODUCT("/product"),
     NEWS("/news"),
     USER("/user"),
-    ADD_PRODUCT("/add_product");
+    ADD_PRODUCT("/add_product"),
+    TRANSFER("/transfer");
 
     private String typeValue;
 
@@ -40,7 +41,7 @@ public enum RequestType {
                 return type;
             }
         }
-        throw null;
+        return null;
     }
 
     public String getTypeValue() {

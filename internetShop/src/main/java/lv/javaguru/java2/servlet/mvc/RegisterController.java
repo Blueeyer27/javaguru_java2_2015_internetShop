@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class RegisterController extends AccessController {
@@ -38,7 +40,7 @@ public class RegisterController extends AccessController {
                     request.getParameter("password"),
                     AccessLevel.CLIENT.getValue());
 
-            if(checkFields(user))
+            if(!checkFields(user))
                 return new MVCModel("/register.jsp", "All fields must be filled.");
 
 
@@ -64,6 +66,15 @@ public class RegisterController extends AccessController {
                     session.setAttribute("name", request.getParameter("name"));
                     session.setAttribute("surname", request.getParameter("surname"));
                     session.setAttribute("access_level", AccessLevel.CLIENT.getValue());
+
+                    Map<Long, Integer> inCart
+                            = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+
+                    if (inCart.size() > 0) {
+                        session.setAttribute("transfer", "yes");
+                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+                                "Do you want to transfer them on your account?");
+                    }
                 } else {
                     return new MVCModel("/register.jsp", "This login is already in use.");
                 }
@@ -78,7 +89,7 @@ public class RegisterController extends AccessController {
     }
 
     private boolean checkFields(User user) {
-        return (user.getEmail().isEmpty()
+        return !(user.getEmail().isEmpty()
                 || user.getGender().isEmpty()
                 || user.getPhone().isEmpty()
                 || user.getName().isEmpty()

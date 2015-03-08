@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class LoginController extends AccessController {
@@ -56,13 +58,24 @@ public class LoginController extends AccessController {
                 else {
                     System.out.println("Login Successful!");
 
-                    session.removeAttribute("in_cart");
+                    //session.removeAttribute("in_cart");
 
                     session.setAttribute("user_id", user.getId());
                     session.setAttribute("username", username);
                     session.setAttribute("name", user.getName());
                     session.setAttribute("surname", user.getSurname());
                     session.setAttribute("access_level", user.getAccessLevel());
+
+                    Map<Long, Integer> inCart
+                            = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+
+                    if (inCart.size() > 0) {
+                        session.setAttribute("transfer", "yes");
+                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+                                "Do you want to transfer them on your account?");
+                    } else {
+                        //TODO: load cart from DB to session
+                    }
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

@@ -12,14 +12,13 @@ import javax.servlet.http.HttpSession;
 
 public abstract class AccessController implements MVCController {
 
-    private Integer access_level = 0;
-
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         String message = null;
-        access_level = (Integer) session.getAttribute("access_level");
-
+        Integer access_level = (Integer) session.getAttribute("access_level");
+        String transfer = (String) session.getAttribute("transfer");
+        
         if (access_level ==  AccessLevel.BANNED.getValue()) {
             session.setAttribute("page_name", "Access Denied");
 
@@ -27,8 +26,13 @@ public abstract class AccessController implements MVCController {
                     "\nContact site administrator for more information." +
                     "\nexample@gmail.com";
         }
+        else if (transfer != null
+                && !request.getServletPath().equals("/transfer")) {
+            System.out.println("Transfer: " + transfer);
+            return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+                    "Do you want to transfer them on your account?");
+        }
         else {
-            //TODO: Check access
             RequestType requestURI = RequestType.getType(request.getServletPath());
 
             switch(requestURI) {
@@ -80,7 +84,14 @@ public abstract class AccessController implements MVCController {
                     if (access_level < AccessLevel.MODERATOR.getValue())
                         message = "Only Moderator or Administrator can add products.";
                     break;
+                case TRANSFER:
+                    if (access_level < AccessLevel.CLIENT.getValue())
+                        message = "Only registred users can access this page.";
+                    else if (transfer == null)
+                        message = "You don't have product to transfer.";
+                    break;
                 default:
+                    session.setAttribute("page_name", "Transfer Products");
                     session.setAttribute("page_name", "Access Denied");
                     message = "This page doesn't exist.";
             }

@@ -64,27 +64,12 @@ public class IndexController extends AccessController {
 
         if (request.getParameter("cart") != null) {
             Long prodID = Long.parseLong(request.getParameter("cart"));
-            if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
-                Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
-                if (!inCart.containsKey(prodID)) {
-                    inCart.put(prodID, 1);
-                } else {
-                    Integer count = inCart.get(prodID);
-                    count++;
-                    inCart.put(prodID, count);
-                    System.out.println("New count of product: " + count);
-                }
-                System.out.println(prodID);
-            } else {
-                Long userID = (Long) session.getAttribute("user_id");
-                try {
-                    //TODO: write logic for authorized users
-                    cartDAO.addElem(new CartDB(prodID, userID, 1, false));
-                    System.out.println("PRODUCT ADDED TO CART");
-                } catch (DBException e) {
-                    e.printStackTrace();
-                }
 
+            putInSessionCart(prodID, session);
+
+            if ((Integer) session.getAttribute("access_level")
+                    > AccessLevel.GUEST.getValue()) {
+                putInDBCart(prodID, session);
             }
         }
 
@@ -103,7 +88,7 @@ public class IndexController extends AccessController {
                 for (int i = 0; i < 100; i++) {
                     productDAO.create(new Product("product" + i, "This is test product description.", 0.25f));
                 }
-                products = productDAO.getRange((Integer.parseInt(page) - 1)*10, 11);
+                products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
             }
 
         } catch (DBException e) {
@@ -115,5 +100,27 @@ public class IndexController extends AccessController {
         System.out.println("Next page: " + nextPage);
 
         return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
+    }
+
+    private void putInDBCart(Long prodID, HttpSession session) {
+        Long userID = (Long) session.getAttribute("user_id");
+        try {
+            cartDAO.addElem(new CartDB(prodID, userID, 1, false));
+            System.out.println("PRODUCT ADDED TO CART");
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void putInSessionCart(Long prodID, HttpSession session) {
+        Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+        if (!inCart.containsKey(prodID)) {
+            inCart.put(prodID, 1);
+        } else {
+            Integer count = inCart.get(prodID);
+            count++;
+            inCart.put(prodID, count);
+            System.out.println("New count of product: " + count);
+        }
     }
 }
