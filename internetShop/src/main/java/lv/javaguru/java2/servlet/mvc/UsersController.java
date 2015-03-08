@@ -2,7 +2,6 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.database.*;
-import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;

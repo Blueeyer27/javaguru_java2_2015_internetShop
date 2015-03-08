@@ -5,7 +5,6 @@ import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.database.jdbc.ProductDAOImpl;
 import lv.javaguru.java2.domain.CartDB;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;

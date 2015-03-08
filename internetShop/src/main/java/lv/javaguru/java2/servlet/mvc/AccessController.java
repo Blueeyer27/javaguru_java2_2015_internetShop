@@ -5,7 +5,6 @@ import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.RequestType;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
