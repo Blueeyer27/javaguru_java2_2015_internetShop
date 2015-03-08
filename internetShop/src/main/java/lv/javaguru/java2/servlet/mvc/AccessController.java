@@ -12,12 +12,15 @@ import javax.servlet.http.HttpSession;
 
 public abstract class AccessController implements MVCController {
 
+    private Integer access_level = 0;
+
     @Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         String message = null;
-        if ((Integer) session.getAttribute("access_level") ==
-                AccessLevel.BANNED.getValue()) {
+        access_level = (Integer) session.getAttribute("access_level");
+
+        if (access_level ==  AccessLevel.BANNED.getValue()) {
             session.setAttribute("page_name", "Access Denied");
 
             message = "You have been banned. " +
@@ -31,26 +34,39 @@ public abstract class AccessController implements MVCController {
             switch(requestURI) {
                 case INDEX:
                     session.setAttribute("page_name", "Home page");
+                    if ((request.getParameter("delete") != null)
+                            && access_level < AccessLevel.MODERATOR.getValue())
+                        message = "Only Moderator or Administrator can delete products.";
                     break;
                 case REGISTER:
+                    session.setAttribute("page_name", "Registration");
                     break;
                 case LOGIN:
+                    session.setAttribute("page_name", "Login");
                     break;
                 case LOGOUT:
+                    session.setAttribute("page_name", "Logout");
                     break;
                 case ABOUT:
+                    session.setAttribute("page_name", "About Us");
                     break;
                 case CART:
+                    session.setAttribute("page_name", "My Cart");
                     break;
                 case PRODUCT:
+                    session.setAttribute("page_name", "About Product");
                     break;
                 case NEWS:
+                    session.setAttribute("page_name", "News");
                     break;
                 case USER:
+                    session.setAttribute("page_name", "Profile Information");
                     break;
                 case ADD_PRODUCT:
+                    session.setAttribute("page_name", "Add Product");
                     break;
                 default:
+                    session.setAttribute("page_name", "Access Denied");
                     message = "This page doesn't exist.";
             }
         }

@@ -59,8 +59,7 @@ public class IndexController extends AccessController {
 //                    "\nContact site administrator for more information." +
 //                    "\nexample@gmail.com");
 
-        if ((request.getParameter("delete") != null)
-                && ((Integer) session.getAttribute("access_level") >= AccessLevel.MODERATOR.getValue())) {
+        if ((request.getParameter("delete") != null)) {
             Long prodID = Long.parseLong(request.getParameter("delete"));
             try {
                 productDAO.delete(prodID);

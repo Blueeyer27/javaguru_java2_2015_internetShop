@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class AboutCompanyController implements MVCController {
+public class AboutCompanyController extends AccessController {
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
         return new MVCModel("/about.jsp");
     }
