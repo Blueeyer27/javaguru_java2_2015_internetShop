@@ -2,8 +2,10 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.PasswordHash;
+import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.domain.CartDB;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,6 +26,10 @@ public class LoginController extends AccessController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
+
+    @Autowired
+    @Qualifier("ORM_CartDAO")
+    CartDAO cartDAO;
 
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
@@ -70,11 +77,11 @@ public class LoginController extends AccessController {
                             = (HashMap<Long, Integer>) session.getAttribute("in_cart");
 
                     if (inCart.size() > 0) {
-                        session.setAttribute("transfer", "yes");
+                        session.setAttribute("transfer", "transfer");
                         return new MVCModel("/transfer.jsp", "You have products in your cart. " +
                                 "Do you want to transfer them on your account?");
                     } else {
-                        //TODO: load cart from DB to session
+                        loadCartToSession(session, user.getId());
                     }
                 }
             } catch (NoSuchAlgorithmException e) {
@@ -86,5 +93,27 @@ public class LoginController extends AccessController {
         }
 
         return new MVCModel("/login.jsp", null);
+    }
+
+    private void loadCartToSession(HttpSession session, Long userID) {
+        Map<Long, Integer> sessionCart = new HashMap<Long, Integer>();
+        List<CartDB> cart = null;
+        try {
+            cart = cartDAO.getCart(userID);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+
+        if (cart != null)
+            for (CartDB elem : cart) {
+                if (!elem.getIsOrdered()
+                        && !sessionCart.containsKey(elem.getProductId())) {
+                    sessionCart.put(elem.getProductId(),
+                            elem.getCount());
+                }
+            }
+
+        session.removeAttribute("in_cart");
+        session.setAttribute("in_cart", sessionCart);
     }
 }

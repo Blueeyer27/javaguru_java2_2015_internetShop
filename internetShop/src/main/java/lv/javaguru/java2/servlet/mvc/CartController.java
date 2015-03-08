@@ -76,7 +76,7 @@ public class CartController extends AccessController {
             Long userID = (Long) session.getAttribute("user_id");
 
             try {
-                inCart = cartDAO.getCart(userID);
+                inCart = cartDAO.getCartWithProd(userID);
             } catch (DBException e) {
                 e.printStackTrace();
             }

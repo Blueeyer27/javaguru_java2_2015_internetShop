@@ -11,6 +11,7 @@ import java.util.List;
 public interface CartDAO {
     void addElem(CartDB cart) throws DBException;
     //void addElem(Long productID, Long userID, Integer count, boolean isOrdered) throws DBException;
-    List<ProductInCart> getCart(Long userID) throws DBException;
+    List<ProductInCart> getCartWithProd(Long userID) throws DBException;
+    List<CartDB> getCart(Long userID) throws DBException;
     //void updateElem(Long productID, Long userID, Integer toAdd) throws DBException;
 }

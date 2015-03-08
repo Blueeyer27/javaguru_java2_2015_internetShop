@@ -95,8 +95,13 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
-    public List<ProductInCart> getCart(Long userID) throws DBException {
+    public List<ProductInCart> getCartWithProd(Long userID) throws DBException {
         return null;
+    }
+
+    @Override
+    public List<CartDB> getCart(Long userID) throws DBException {
+        throw new NotImplementedException();
     }
 
     @Override

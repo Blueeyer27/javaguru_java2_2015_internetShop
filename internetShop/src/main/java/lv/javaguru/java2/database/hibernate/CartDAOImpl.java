@@ -49,7 +49,7 @@ public class CartDAOImpl implements CartDAO {
 //        System.out.println("cartDB: " + cartDB.getID() + " " + cartDB.getProductId() + " " + cartDB.getCount() + " " + cartDB.getUserID() + " " + cartDB.getIsOrdered());
 //
         if(cartDB != null) {
-            cartDB.setCount(cartDB.getCount() + 1);
+            cartDB.setCount(cartDB.getCount() + cart.getCount());
             session.update(cartDB);
         } else {
             System.out.println("Cart don't exist. Create new product.");
@@ -63,7 +63,7 @@ public class CartDAOImpl implements CartDAO {
 //    }
 
     @Override
-    public List<ProductInCart> getCart(Long userID) throws DBException {
+    public List<ProductInCart> getCartWithProd(Long userID) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         List<CartDB> carts = (List<CartDB>) session.createCriteria(CartDB.class)
                 .add(Restrictions.eq("userID", userID)).list();
@@ -84,5 +84,12 @@ public class CartDAOImpl implements CartDAO {
 
             return products;
         } else return null;
+    }
+
+    @Override
+    public List<CartDB> getCart(Long userID) throws DBException {
+        Session session = sessionFactory.getCurrentSession();
+        return (List<CartDB>) session.createCriteria(CartDB.class)
+                .add(Restrictions.eq("userID", userID)).list();
     }
 }

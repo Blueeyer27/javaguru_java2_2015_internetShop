@@ -13,6 +13,10 @@
         window.location = "/java2/transfer?answer=" + answer;
     }
 </script>
+<% if (request.getAttribute("model")
+        == null) {%>
+<meta http-equiv="refresh" content="0.01;url=/java2/cart" />
+<% } %>
 <body>
 <jsp:include page="includes/menu.jsp"/>
 
