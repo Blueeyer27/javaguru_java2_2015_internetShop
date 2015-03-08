@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @Component
-public class CartController implements MVCController {
+public class CartController extends AccessController {
 
     @Autowired
     @Qualifier("ORM_ProductDAO")
@@ -35,9 +35,9 @@ public class CartController implements MVCController {
     private CartDAO cartDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Products in cart");
+//        session.setAttribute("page_name", "Products in cart");
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 

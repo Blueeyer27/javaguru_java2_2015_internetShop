@@ -20,18 +20,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 @Component
-public class RegisterController implements MVCController {
+public class RegisterController extends AccessController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Registration");
+//        session.setAttribute("page_name", "Registration");
 
-        if((Integer)session.getAttribute("access_level") > AccessLevel.GUEST.getValue())
-            return new MVCModel("/access.jsp", "Only guests can access this page.");
+//        if((Integer)session.getAttribute("access_level") > AccessLevel.GUEST.getValue())
+//            return new MVCModel("/access.jsp", "Only guests can access this page.");
 
         if (request.getMethod().equals("POST")) {
             User user = new User(

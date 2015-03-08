@@ -18,13 +18,13 @@ import javax.servlet.http.HttpSession;
  */
 
 @Component
-public class UserInfoController implements MVCController {
+public class UserInfoController extends AccessController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     UserDAO userDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         //checkUserAccess(request);
         HttpSession session = request.getSession();
 

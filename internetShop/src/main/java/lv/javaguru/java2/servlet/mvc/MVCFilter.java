@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +48,7 @@ public class MVCFilter implements Filter {
         controllerMapping.put("/about", getBean(AboutCompanyController.class));
         controllerMapping.put("/cart", getBean(CartController.class));
         controllerMapping.put("/product", getBean(ProductController.class));
-        controllerMapping.put("/news", getBean(NewItemController.class));
+        controllerMapping.put("/news", getBean(NewsController.class));
         controllerMapping.put("/user", getBean(UserInfoController.class));
         controllerMapping.put("/add_product", getBean(AddProductController.class));
         /*

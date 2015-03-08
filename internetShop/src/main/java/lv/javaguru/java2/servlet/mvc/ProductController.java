@@ -27,7 +27,7 @@ import java.util.List;
  */
 
 @Component
-public class ProductController implements MVCController {
+public class ProductController extends AccessController {
 
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
@@ -43,9 +43,7 @@ public class ProductController implements MVCController {
     private CommentDAO commentDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-        //TODO: admin can edit
-
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
 
         if (ServletFileUpload.isMultipartContent(request)) {

@@ -19,29 +19,29 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 @Component
-public class LoginController implements MVCController {
+public class LoginController extends AccessController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession(true);
-        session.setAttribute("page_name", "Login");
+//        session.setAttribute("page_name", "Login");
 
-        int currentUserAccessLevel = (Integer) session.getAttribute("access_level");
-        boolean isUserLoggedIn = currentUserAccessLevel > AccessLevel.GUEST.getValue();
-        if (isUserLoggedIn) {
+//        int currentUserAccessLevel = (Integer) session.getAttribute("access_level");
+//        boolean isUserLoggedIn = currentUserAccessLevel > AccessLevel.GUEST.getValue();
+//        if (isUserLoggedIn)
             if (request.getServletPath().equals("/logout")) {
                 //session.invalidate();
 
                 //session = request.getSession(true);
                 //session.setAttribute("access_level", AccessLevel.GUEST.getValue());
                 return new MVCModel("/logout.jsp");
-            } else {
-                return new MVCModel("/access.jsp", "Only guests can access this page.");
             }
-        }
+//            else {
+//                return new MVCModel("/access.jsp", "Only guests can access this page.");
+//            }
 
         if (request.getMethod().equals("POST")) {
             String error = null;

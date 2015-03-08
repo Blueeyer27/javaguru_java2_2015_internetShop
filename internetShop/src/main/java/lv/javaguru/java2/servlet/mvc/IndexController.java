@@ -52,7 +52,7 @@ public class IndexController extends AccessController {
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Home page");
+//        session.setAttribute("page_name", "Home page");
 
 //        if ((Integer) session.getAttribute("access_level") == AccessLevel.BANNED.getValue())
 //            return new MVCModel("/access.jsp", "You have been banned. " +

@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 @Component
-public class AddProductController implements MVCController {
+public class AddProductController extends AccessController {
 
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
@@ -33,7 +33,7 @@ public class AddProductController implements MVCController {
     ProductDAO productDAO;
 
     @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
         if (ServletFileUpload.isMultipartContent(request)) {
             Map<String, String> params = new HashMap<String, String>();
