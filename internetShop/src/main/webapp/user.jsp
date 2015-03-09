@@ -46,11 +46,18 @@
 
             <p>Login: <%=user.getLogin()%>
             </p><br><br><br><br>
+            <p><h1>User Photo</h1></p><br>
+            <% if (session.getAttribute("photo") != null) { %>
+            <img src="<%="/java2" + session.getAttribute("photo")%>" alt="image"/>
+            <% } else {%>
+            <img src="/java2/images/users/nophoto.gif" alt="image"/>
+            <% } %>
+            <br><br>
             <input id='upload' type='submit' value='Change Profile Photo'
                    onclick='ShowOrHide("upload_image")'>
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
-                <form action="product" method="POST" enctype="multipart/form-data">
+                <form action="user" method="POST" enctype="multipart/form-data">
                     <input type="file" name="file" multiple accept="image/*">
                     <input type="submit" name="upload" value="upload">
                 </form>
