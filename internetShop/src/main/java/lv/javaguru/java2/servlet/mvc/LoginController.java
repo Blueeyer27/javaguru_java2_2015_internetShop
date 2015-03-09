@@ -73,6 +73,8 @@ public class LoginController extends AccessController {
                     session.setAttribute("surname", user.getSurname());
                     session.setAttribute("access_level", user.getAccessLevel());
 
+                    session.setAttribute("photo", user.getPhotoURL());
+
                     Map<Long, Integer> inCart
                             = (HashMap<Long, Integer>) session.getAttribute("in_cart");
 

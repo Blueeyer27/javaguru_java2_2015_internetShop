@@ -46,7 +46,8 @@ public class User {
     @Column(name = "Email", columnDefinition = "CHAR(30)")
     private String email;
 
-    private transient String photoURL;
+    @Column(name = "Photo", columnDefinition = "CHAR(255)")
+    private String photoURL;
 
     public User() {
     }

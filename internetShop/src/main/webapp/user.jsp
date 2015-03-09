@@ -21,10 +21,13 @@
 <div id="content_wrapper">
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
-        <% if (request.getAttribute("model") instanceof String) {%>
-        <p><%=request.getAttribute("model")%>
-        </p>
-        <% } else if (request.getAttribute("model") instanceof User) {
+        <% if (request.getAttribute("message") instanceof String) {%>
+        <h3><p style="color: darkred">
+            <%="Error: " + request.getAttribute("message")%>
+        </p></h3>
+            <br><br><br>
+        <% }
+            if (request.getAttribute("model") instanceof User) {
             User user = (User) request.getAttribute("model");%>
         <b>
             <p>Name: <%=user.getName()%>
@@ -46,13 +49,89 @@
 
             <p>Login: <%=user.getLogin()%>
             </p><br><br><br><br>
+            <p><h1>User Photo</h1></p><br>
+            <% if (session.getAttribute("photo") != null) { %>
+            <img src="<%="/java2" + session.getAttribute("photo")%>" alt="image"/>
+            <% } else {%>
+            <img src="/java2/images/users/nophoto.gif" alt="image"/>
+            <% } %>
+            <br><br>
             <input id='upload' type='submit' value='Change Profile Photo'
                    onclick='ShowOrHide("upload_image")'>
+            <input id='update' type='submit' value='Update Information'
+                   onclick='ShowOrHide("update_info")'>
+            <input id='password' type='submit' value='Change Password'
+                   onclick='ShowOrHide("change_password")'>
+
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
-                <form action="product" method="POST" enctype="multipart/form-data">
+                <form action="user" method="POST" enctype="multipart/form-data">
                     <input type="file" name="file" multiple accept="image/*">
                     <input type="submit" name="upload" value="upload">
+                </form>
+                <%--<div id="result">--%>
+
+                <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
+
+                <%--</div>--%>
+            </div>
+            <br><br>
+            <div id="update_info" style="display:none;">
+                <form method="POST" action="user">
+                    <table>
+                        <tr>
+                            <td>Name:</td>
+                            <td><input type="text" name="name"
+                                       value="<%=user.getName()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Surname:</td>
+                            <td><input type="text" name="surname"
+                                       value="<%=user.getSurname()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td><input type="text" name="gender"
+                                       value="<%=user.getGender()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Phone:</td>
+                            <td><input type="text" name="phone"
+                                       value="<%=user.getPhone()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="text" name="email"
+                                       value="<%=user.getEmail()%>"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="SUBMIT" value="Update" name="update"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <br>
+            <div id="change_password" style="display:none;">
+                <form action="user" method="POST">
+                    <table>
+                        <tr>
+                            <td>Old password: </td>
+                            <td><input type="password" name="password"></td>
+                        </tr>
+                        <tr>
+                            <td>New password: </td>
+                            <td><input type="password" name="new_password1"></td>
+                        </tr>
+                        <tr>
+                            <td>New password again: </td>
+                            <td><input type="password" name="new_password2"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" name="change" value="Change"></td>
+                        </tr>
+                    </table>
                 </form>
                 <%--<div id="result">--%>
 

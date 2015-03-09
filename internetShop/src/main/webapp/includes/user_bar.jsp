@@ -19,7 +19,9 @@
         <div class="news_image_wrapper">
             <% if ((Integer) session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {%>
             <img src="/java2/images/users/guest.png" alt="image"/>
-            <% } else { %>
+            <% } else if (session.getAttribute("photo") != null) { %>
+            <img src="<%="/java2" + session.getAttribute("photo")%>" alt="image"/>
+            <% } else {%>
             <img src="/java2/images/users/nophoto.gif" alt="image"/>
             <% } %>
         </div>
