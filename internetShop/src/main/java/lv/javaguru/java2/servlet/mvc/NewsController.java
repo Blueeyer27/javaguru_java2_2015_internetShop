@@ -6,6 +6,7 @@ import lv.javaguru.java2.database.NewItemDAO;
 import lv.javaguru.java2.domain.NewItem;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import static java.lang.Thread.sleep;
 public class NewsController extends AccessController {
 
     @Autowired
+    @Qualifier("ORM_NewItemDAO")
     private NewItemDAO newItemDAO;
     Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
@@ -32,7 +34,7 @@ public class NewsController extends AccessController {
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
 
-        List<String> likedItems = (ArrayList<String>) session.getAttribute("liked");
+        ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
 
         // automatic generator of news if there are less then 5 news in DB
         try {
@@ -54,13 +56,10 @@ public class NewsController extends AccessController {
         }
 
         // deleting new item by id
-        deletingNewItem(request);
+        removingNewItem(request);
 
         // adding likes
-        if (!likedItems.contains(request.getParameter("idLike"))) {
-            likeNewItem(request);
-            likedItems.add(request.getParameter("idLike"));
-        }
+        likeNewItem(request, likedItems);
 
         // passing news from DB to page
         MVCModel model = null;
@@ -74,26 +73,32 @@ public class NewsController extends AccessController {
     }
 
 //---------------PROCEDURE DEFINATION-----------------------------------
-    private void deletingNewItem(HttpServletRequest request) {
-        if (request.getParameter("idDelete") != null) {
-            String dateID = new String(request.getParameter("idDelete"));
+    private void removingNewItem(HttpServletRequest request) {
+        if (request.getParameter("idRemove") != null) {
+            //String dateID = new String(request.getParameter("idDelete"));
+            long num = Long.parseLong(request.getParameter("idRemove"));
             try {
-                newItemDAO.delete(dateID);
+                newItemDAO.delete(num);
             } catch (DBException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void likeNewItem(HttpServletRequest request) {
+    private ArrayList<Long> likeNewItem(HttpServletRequest request, ArrayList<Long> likedItems) {
         if (request.getParameter("idLike") != null) {
-            String dateID = new String(request.getParameter("idLike"));
-            try {
-                newItemDAO.update(newItemDAO.getById(dateID));
-            } catch (DBException e) {
-                e.printStackTrace();
+            //String dateID = new String(request.getParameter("idLike"));
+            long num = Long.parseLong(request.getParameter("idLike"));
+            if(!likedItems.contains(num)){
+                try {
+                    newItemDAO.update(newItemDAO.getById(num));
+                    likedItems.add(num);
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        return likedItems;
     }
 
     private void creatingMaterialsForTest() throws DBException, InterruptedException {

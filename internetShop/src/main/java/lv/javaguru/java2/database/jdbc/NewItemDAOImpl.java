@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Anna on 27.02.15.
  */
 
-@Component
+@Component("JDBC_NewItemDAO")
 public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
 
 
@@ -31,13 +31,17 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("insert into News values (?, ?, ?, ?)");
+                    connection.prepareStatement("insert into News values (default, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, newItem.getDateID());
             preparedStatement.setString(2, newItem.getTitle());
             preparedStatement.setString(3, newItem.getBody());
             preparedStatement.setInt(4, newItem.getLikes());
 
             preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()){
+                newItem.setNum(rs.getLong(1));
+            }
         } catch (Throwable e) {
             System.out.println("Exception");
             e.printStackTrace();
@@ -60,6 +64,7 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 NewItem newItem = new NewItem();
+                newItem.setNum(resultSet.getLong("Num"));
                 newItem.setDateID(resultSet.getString("DateId"));
                 newItem.setTitle(resultSet.getString("Title"));
                 newItem.setBody(resultSet.getString("Body"));
@@ -77,13 +82,13 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
     }
 
     @Override
-    public void delete(String id) throws DBException {
+    public void delete(long id) throws DBException {
         Connection connection = null;
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("delete from news where DateID = ?");
-            preparedStatement.setString(1, id);
+                    .prepareStatement("delete from news where Num = ?");
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception");
@@ -95,20 +100,23 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
     }
 
     @Override
-    public NewItem getById(String id) throws DBException {
+    public NewItem getById(long id) throws DBException {
         Connection connection = null;
 
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("select * from News where DateId = ?");
-            preparedStatement.setString(1, id);
+                    .prepareStatement("select * from News where Num = ?");
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             NewItem newItem = null;
             if (resultSet.next()) {
                 newItem = new NewItem();
-                newItem.setLikes(resultSet.getInt("Likes"));
                 newItem.setDateID(resultSet.getString("DateId"));
+                newItem.setTitle(resultSet.getString("Title"));
+                newItem.setBody(resultSet.getString("Body"));
+                newItem.setLikes(resultSet.getInt("Likes"));
+                newItem.setNum(resultSet.getLong("Num"));
             }
             return newItem;
         } catch (Throwable e) {
@@ -130,9 +138,9 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
         try {
             connection = getConnection();
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("update news set Likes = ? where DateId = ?");
+                    .prepareStatement("update news set Likes = ? where Num = ?");
             preparedStatement.setInt(1, (newItem.getLikes() + 1));
-            preparedStatement.setString(2, newItem.getDateID());
+            preparedStatement.setLong(2, newItem.getNum());
             preparedStatement.executeUpdate();
         } catch (Throwable e) {
             System.out.println("Exception while execute UserDAOImpl.update()");

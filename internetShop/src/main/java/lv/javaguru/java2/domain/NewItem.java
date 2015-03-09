@@ -3,15 +3,28 @@ package lv.javaguru.java2.domain;
 import javax.persistence.*;
 import java.sql.Date;
 
-/**
- * Created by Anna on 27.02.15.
- */
+import javax.persistence.*;
+
+@Entity
+@Table(name = "news")
 
 public class NewItem {
 
+    @Column(name="Num",columnDefinition = "int(11)")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long num;
+
+    @Column(name="DateId",columnDefinition = "CHAR(30)")
     private String dateID;
+
+    @Column(name="Title",columnDefinition = "CHAR(30)")
     private String title;
+
+    @Column(name="Body",columnDefinition = "CHAR(80)")
     private String body;
+
+    @Column(name="Likes",columnDefinition = "INT(11)")
     private int likes;
 
     public NewItem(String dateID, String title, String body, int likes) {
@@ -23,6 +36,7 @@ public class NewItem {
 
     public NewItem() {
     }
+
 
     public String getDateID() {
         return dateID;
@@ -55,4 +69,8 @@ public class NewItem {
     public void setLikes(int likes) {
         this.likes = likes;
     }
+
+    public long getNum() { return num; }
+
+    public void setNum(long num) { this.num = num; }
 }
