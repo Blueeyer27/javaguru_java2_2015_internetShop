@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
   `Phone` CHAR(15) NOT NULL,
   `Email` CHAR(30) NOT NULL,
   `Access_Level` INT(3) NOT NULL,
+  `Photo` CHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`UserID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

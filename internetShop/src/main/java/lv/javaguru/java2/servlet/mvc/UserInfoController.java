@@ -77,11 +77,40 @@ public class UserInfoController extends AccessController {
                     }
                 }
             } else {
-                //TODO: when just info update
+                if(!checkFields(request)) {
+                    request.setAttribute("message", "Fields can't be empty...");
+                    return new MVCModel("/user.jsp", user);
+                } else {
+                    updateUserInfo(user, request);
+
+                    boolean updated = true;
+                    try {
+                        userDAO.update(user);
+                    } catch (DBException e) {
+                        updated = false;
+                        e.printStackTrace();
+                    }
+
+                    if (updated) {
+                        session.removeAttribute("name");
+                        session.removeAttribute("surname");
+
+                        session.setAttribute("name", user.getName());
+                        session.setAttribute("surname", user.getSurname());
+                    }
+                }
             }
         }
 
         return new MVCModel("/user.jsp", user);
+    }
+
+    private void updateUserInfo(User user, HttpServletRequest request) {
+        user.setName(request.getParameter("name"));
+        user.setSurname(request.getParameter("surname"));
+        user.setGender(request.getParameter("gender"));
+        user.setPhone(request.getParameter("phone"));
+        user.setEmail(request.getParameter("email"));
     }
 
     private void updateUserPhoto(User user, String fileName, HttpSession session)
@@ -95,5 +124,13 @@ public class UserInfoController extends AccessController {
 
         session.removeAttribute("photo");
         session.setAttribute("photo", "/images/users/" + fileName);
+    }
+
+    private boolean checkFields(HttpServletRequest request) {
+        return !(request.getParameter("name").isEmpty()
+                || request.getParameter("surname").isEmpty()
+                || request.getParameter("gender").isEmpty()
+                || request.getParameter("phone").isEmpty()
+                || request.getParameter("email").isEmpty());
     }
 }

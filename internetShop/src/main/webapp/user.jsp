@@ -21,10 +21,13 @@
 <div id="content_wrapper">
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
-        <% if (request.getAttribute("model") instanceof String) {%>
-        <p><%=request.getAttribute("model")%>
-        </p>
-        <% } else if (request.getAttribute("model") instanceof User) {
+        <% if (request.getAttribute("message") instanceof String) {%>
+        <h1><p style="color: darkred">
+            <%="Error: " + request.getAttribute("message")%>
+        </p></h1>
+            <br><br><br>
+        <% }
+            if (request.getAttribute("model") instanceof User) {
             User user = (User) request.getAttribute("model");%>
         <b>
             <p>Name: <%=user.getName()%>
@@ -55,6 +58,9 @@
             <br><br>
             <input id='upload' type='submit' value='Change Profile Photo'
                    onclick='ShowOrHide("upload_image")'>
+            <input id='update' type='submit' value='Update Information'
+                   onclick='ShowOrHide("update_info")'>
+
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
                 <form action="user" method="POST" enctype="multipart/form-data">
@@ -66,6 +72,42 @@
                 <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
 
                 <%--</div>--%>
+            </div>
+            <br><br>
+            <div id="update_info" style="display:none;">
+                <form method="POST" action="user">
+                    <table>
+                        <tr>
+                            <td>Name:</td>
+                            <td><input type="text" name="name"
+                                       value="<%=user.getName()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Surname:</td>
+                            <td><input type="text" name="surname"
+                                       value="<%=user.getSurname()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td><input type="text" name="gender"
+                                       value="<%=user.getGender()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Phone:</td>
+                            <td><input type="text" name="phone"
+                                       value="<%=user.getPhone()%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="text" name="email"
+                                       value="<%=user.getEmail()%>"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="SUBMIT" value="Update" name="submit"></td>
+                        </tr>
+                    </table>
+                </form>
             </div>
             </b>
             <% } %>
