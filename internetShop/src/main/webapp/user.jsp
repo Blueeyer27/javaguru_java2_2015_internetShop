@@ -22,9 +22,9 @@
     <div id="content">
         <jsp:include page="includes/user_bar.jsp"/>
         <% if (request.getAttribute("message") instanceof String) {%>
-        <h1><p style="color: darkred">
+        <h3><p style="color: darkred">
             <%="Error: " + request.getAttribute("message")%>
-        </p></h1>
+        </p></h3>
             <br><br><br>
         <% }
             if (request.getAttribute("model") instanceof User) {
@@ -60,6 +60,8 @@
                    onclick='ShowOrHide("upload_image")'>
             <input id='update' type='submit' value='Update Information'
                    onclick='ShowOrHide("update_info")'>
+            <input id='password' type='submit' value='Change Password'
+                   onclick='ShowOrHide("change_password")'>
 
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
@@ -104,10 +106,38 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input type="SUBMIT" value="Update" name="submit"></td>
+                            <td><input type="SUBMIT" value="Update" name="update"></td>
                         </tr>
                     </table>
                 </form>
+            </div>
+            <br>
+            <div id="change_password" style="display:none;">
+                <form action="user" method="POST">
+                    <table>
+                        <tr>
+                            <td>Old password: </td>
+                            <td><input type="password" name="password"></td>
+                        </tr>
+                        <tr>
+                            <td>New password: </td>
+                            <td><input type="password" name="new_password1"></td>
+                        </tr>
+                        <tr>
+                            <td>New password again: </td>
+                            <td><input type="password" name="new_password2"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" name="change" value="Change"></td>
+                        </tr>
+                    </table>
+                </form>
+                <%--<div id="result">--%>
+
+                <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
+
+                <%--</div>--%>
             </div>
             </b>
             <% } %>
