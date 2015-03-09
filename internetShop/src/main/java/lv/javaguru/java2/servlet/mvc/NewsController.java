@@ -30,6 +30,10 @@ public class NewsController extends AccessController {
     private NewItemDAO newItemDAO;
     Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
+    public void setNewItemDAO(NewItemDAO newItemDAO) {
+        this.newItemDAO = newItemDAO;
+    }
+
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
