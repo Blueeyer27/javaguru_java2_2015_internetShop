@@ -79,7 +79,7 @@ public class MVCFilter implements Filter {
         if (session.isNew()) {
             session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
             session.setAttribute("access_level", AccessLevel.GUEST.getValue());
-            session.setAttribute("liked", new ArrayList<String>());
+            session.setAttribute("liked", new ArrayList<Long>());
         }
 
         if (contextURI.equals("/index.jsp"))

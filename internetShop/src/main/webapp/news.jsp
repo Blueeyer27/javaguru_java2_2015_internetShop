@@ -16,9 +16,9 @@
 <body>
 
 <script>
-    function deleteItem(id) {
+    function removeItem(id) {
         var uri = document.documentURI.split('?')[0];
-        window.location = "news?idDelete=" + id;
+        window.location = "news?idRemove=" + id;
     }
 
     function likeItem(id) {
@@ -28,13 +28,35 @@
 </script>
 
 <%
-    ArrayList<String> likedItems = (ArrayList<String>) session.getAttribute("liked");
+    ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
 %>
 
     <jsp:include page="includes/menu.jsp"/>
     <div id="content_wrapper">
         <div id="content">
             <jsp:include page="includes/user_bar.jsp"/>
+
+            <!-- --------------------FORM FOR INSERTING NEWS (ADMIN-VISIBLE)------------------------ -->
+            <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
+            <form method="POST" action="news">
+                <font size="6" style="color:blue">Add a new here!</font>
+                <table>
+                    <tr>
+                        <td>Title:</td>
+                        <td><input type="text" name="title"></td>
+                    </tr>
+                    <tr>
+                        <td>Body:</td>
+                        <td><input type="text" name="body"></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input type="SUBMIT" value="Add" name="submit"></td>
+                    </tr>
+                </table>
+            </form>
+            <%}%>
 
             <!-- ------------GETTING NEWS FROM DB---------- -->
             <%  List<NewItem> news = (List<NewItem>) request.getAttribute("model");
@@ -51,15 +73,15 @@
 
                         <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
                         <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
-                            <input id='<%=n.getDateID()%>' type='submit' value='delete'
-                                onclick='deleteItem("<%=n.getDateID()%>")'>
+                            <input id='<%=n.getNum()%>' type='submit' value='Move to archive'
+                                onclick='removeItem("<%=n.getNum()%>")'>
                         <%}%>
 
                         <!-- ----------------------BUTTON FOR LIKES------------------- -->
                         <% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
-                            <% if(!likedItems.contains(n.getDateID())){%>
-                                <input id='<%=n.getDateID()%>' type='submit' value='like'
-                                onclick='likeItem("<%=n.getDateID()%>")'>
+                            <% if(!likedItems.contains(n.getNum())){%>
+                                <input id='<%=n.getNum()%>' type='submit' value='Like'
+                                onclick='likeItem("<%=n.getNum()%>")'>
                             <%} else {%>
                                 <font color="#228b22"></font>
                             <% }%>
@@ -75,26 +97,6 @@
             <%  } %>
             <div class="cleaner"></div>
 
-            <!-- --------------------FORM FOR INSERTING NEWS (ADMIN-VISIBLE)------------------------ -->
-            <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
-                <form method="POST" action="news">
-                    <table>
-                        <tr>
-                            <td>Title:</td>
-                            <td><input type="text" name="title"></td>
-                        </tr>
-                        <tr>
-                            <td>Body:</td>
-                            <td><input type="text" name="body"></td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td><input type="SUBMIT" value="Add" name="submit"></td>
-                        </tr>
-                    </table>
-                </form>
-            <%}%>
 
         </div>
     </div>

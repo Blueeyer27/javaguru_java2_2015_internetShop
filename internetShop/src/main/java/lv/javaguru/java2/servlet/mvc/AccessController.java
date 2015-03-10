@@ -73,7 +73,8 @@ public abstract class AccessController implements MVCController {
                 case NEWS:
                     session.setAttribute("page_name", "News");
                     if (request.getMethod().equals("POST"))
-                        if (access_level < AccessLevel.MODERATOR.getValue())
+                        //if (access_level < AccessLevel.MODERATOR.getValue())
+                        if (access_level < AccessLevel.CLIENT.getValue())
                             message = "Only Moderator or Administrator can add news.";
                     break;
                 case USER:

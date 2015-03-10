@@ -12,11 +12,11 @@ public interface NewItemDAO {
 
     void create(NewItem newItem)throws DBException;
 
-    NewItem getById(String id)throws DBException;
+    NewItem getById(long id)throws DBException;
 
     List<NewItem> getAll() throws DBException;
 
-    void delete(String id) throws DBException;
+    void delete(long id) throws DBException;
 
     void update (NewItem newItem) throws DBException;
 }

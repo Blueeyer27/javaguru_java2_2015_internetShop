@@ -85,11 +85,12 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `java2_test`.`news` ;
 
 CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
+  `Num` INT(11) NOT NULL AUTO_INCREMENT,
   `DateID` CHAR(30) NOT NULL,
   `Title` CHAR(30) NOT NULL,
   `Body` CHAR(80) NOT NULL,
   `Likes` INT(11),
-  PRIMARY KEY (`DateID`))
+  PRIMARY KEY (`Num`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -100,11 +101,12 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `java2_test`.`newsbackup` ;
 
 CREATE TABLE IF NOT EXISTS `java2_test`.`newsbackup` (
+  `Num` INT(11) NOT NULL AUTO_INCREMENT,
   `DateID` CHAR(30) NOT NULL,
   `Title` CHAR(30) NOT NULL,
   `Body` CHAR(80) NOT NULL,
   `Likes` INT(11),
-  PRIMARY KEY (`DateID`))
+  PRIMARY KEY (`Num`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -163,7 +165,7 @@ TRIGGER `java2_test`.`delete_newItem`
 BEFORE DELETE ON `java2_test`.`news`
 FOR EACH ROW
 BEGIN
-  INSERT INTO newsBackup Set DateId = OLD.DateId, Title = OLD.Title, Body = OLD.Body, Likes = OLD.Likes;
+  INSERT INTO newsBackup Set Num = OLD.Num, DateId = OLD.DateId, Title = OLD.Title, Body = OLD.Body, Likes = OLD.Likes;
 END$$
 
 
