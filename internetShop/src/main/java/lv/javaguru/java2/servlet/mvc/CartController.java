@@ -38,6 +38,22 @@ public class CartController extends AccessController {
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
+        if (request.getParameter("remove_id") != null) {
+            Long prodID = Long.parseLong(request.getParameter("remove_id"));
+
+            Map<Long, Integer> inSessionCart
+                    = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+            if (inSessionCart.containsKey(prodID)) {
+                inSessionCart.remove(prodID);
+
+                if ((Integer) session.getAttribute("access_level")
+                        > AccessLevel.GUEST.getValue()) {
+                    Long userID = (Long) session.getAttribute("user_id");
+                    cartDAO.removeFromCart(prodID, userID);
+                }
+            }
+        }
+
         if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
             Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
 

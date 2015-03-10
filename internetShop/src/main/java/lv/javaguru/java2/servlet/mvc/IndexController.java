@@ -62,6 +62,21 @@ public class IndexController extends AccessController {
             }
         }
 
+        if (request.getParameter("remove") != null) {
+            Long prodID = Long.parseLong(request.getParameter("remove"));
+
+            Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+            if (inCart.containsKey(prodID)) {
+                inCart.remove(prodID);
+
+                if ((Integer) session.getAttribute("access_level")
+                        > AccessLevel.GUEST.getValue()) {
+                    Long userID = (Long) session.getAttribute("user_id");
+                    cartDAO.removeFromCart(prodID, userID);
+                }
+            }
+        }
+
         if (request.getParameter("cart") != null) {
             Long prodID = Long.parseLong(request.getParameter("cart"));
 

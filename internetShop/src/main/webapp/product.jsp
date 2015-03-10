@@ -55,12 +55,10 @@
 
             <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
 
-                <%if (true) {%>
+
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
                        onclick=''>
-                <% } else {%>
-                <font color="#228b22">Product is in Cart.</font>
-                <% }%>
+
             </p>
             <% if ((Integer) session.getAttribute("access_level")
                     >= AccessLevel.MODERATOR.getValue()) {%>

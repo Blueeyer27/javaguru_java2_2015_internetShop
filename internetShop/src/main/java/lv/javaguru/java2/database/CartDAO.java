@@ -13,5 +13,7 @@ public interface CartDAO {
     //void addElem(Long productID, Long userID, Integer count, boolean isOrdered) throws DBException;
     List<ProductInCart> getCartWithProd(Long userID) throws DBException;
     List<CartDB> getCart(Long userID) throws DBException;
+
+    void removeFromCart(Long prodID, Long userID);
     //void updateElem(Long productID, Long userID, Integer toAdd) throws DBException;
 }

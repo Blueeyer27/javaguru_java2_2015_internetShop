@@ -105,6 +105,11 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
+    public void removeFromCart(Long prodID, Long userID) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     public void addElem(CartDB cart) throws DBException {
         throw new NotImplementedException();
     }

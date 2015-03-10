@@ -96,10 +96,11 @@
                        onclick='productOperation("<%=prod.getName()%>", "<%=prod.getProductId()%>", "put")'>
                 <%  if (inCart != null) {
                         if (inCart.containsKey(prod.getProductId())) {%>
-                <font color="#228b22">Count of this product in your cart : <%=inCart.get(prod.getProductId())%></font>
-                <br><br>
                 <input id='<%=prod.getProductId()%>' type='submit' value='Remove From Cart'
                        onclick='productOperation("<%=prod.getName()%>", "<%=prod.getProductId()%>", "remove")'>
+                <br>
+                <font color="#228b22">Count of this product in your cart : <%=inCart.get(prod.getProductId())%></font>
+                <br><br>
 
                 <%      }
                     } %>

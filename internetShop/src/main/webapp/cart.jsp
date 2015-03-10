@@ -17,6 +17,11 @@
     function productInfo(id) {
         window.location = "product?id=" + id;
     }
+
+    function removeFromCart(id, name) {
+        window.alert("Product " + name + " removed from your cart.");
+        window.location = "cart?remove_id=" + id;
+    }
 </script>
 <div id="content_wrapper">
     <div id="content">
@@ -40,6 +45,9 @@
         <p><%=product.getDescription() + " | Price for one: "
                 + product.getPrice()
                 + "$ | Count: " + product.getCount()%></p>
+        <br>
+        <input id='<%=product.getProductId()%>' type='submit' value='Remove From Cart'
+               onclick='removeFromCart("<%=product.getProductId()%>", "<%=product.getName()%>")'>
         <br><br>
         <%  totalPrice+=(product.getPrice()*product.getCount());
                 }

@@ -92,4 +92,16 @@ public class CartDAOImpl implements CartDAO {
         return (List<CartDB>) session.createCriteria(CartDB.class)
                 .add(Restrictions.eq("userID", userID)).list();
     }
+
+    @Override
+    public void removeFromCart(Long prodID, Long userID) {
+        Session session = sessionFactory.getCurrentSession();
+
+        CartDB cartDB = (CartDB) session.createCriteria(CartDB.class)
+                .add(Restrictions.eq("userID", userID))
+                .add(Restrictions.eq("productID", prodID))
+                .add(Restrictions.eq("isOrdered", false)).uniqueResult();
+
+        session.delete(cartDB);
+    }
 }
