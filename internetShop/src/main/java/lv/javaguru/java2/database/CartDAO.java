@@ -1,6 +1,7 @@
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.domain.CartDB;
+import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
 
 import java.util.List;
@@ -14,6 +15,6 @@ public interface CartDAO {
     List<ProductInCart> getCartWithProd(Long userID) throws DBException;
     List<CartDB> getCart(Long userID) throws DBException;
 
-    void removeFromCart(Long prodID, Long userID);
+    void removeFromCart(Product product, Long userID);
     //void updateElem(Long productID, Long userID, Integer toAdd) throws DBException;
 }

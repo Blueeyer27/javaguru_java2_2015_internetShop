@@ -108,9 +108,10 @@ public class LoginController extends AccessController {
 
         if (cart != null)
             for (CartDB elem : cart) {
+                System.out.println("THIS IS: " + elem.getProductID().getProductId());
                 if (!elem.getIsOrdered()
-                        && !sessionCart.containsKey(elem.getProductId())) {
-                    sessionCart.put(elem.getProductId(),
+                        && !sessionCart.containsKey(elem.getProductID())) {
+                    sessionCart.put(elem.getProductID().getProductId(),
                             elem.getCount());
                 }
             }

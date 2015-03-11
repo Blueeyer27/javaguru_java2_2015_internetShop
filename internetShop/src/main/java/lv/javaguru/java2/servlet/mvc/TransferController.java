@@ -43,11 +43,11 @@ public class TransferController extends AccessController {
                     Long id = entry.getKey();
                     Integer count = entry.getValue();
 
-                    try {
-                        cartDAO.addElem(new CartDB(id, userID, count, false));
-                    } catch (DBException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        cartDAO.addElem(new CartDB(id, userID, count, false));
+//                    } catch (DBException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
 
@@ -64,11 +64,11 @@ public class TransferController extends AccessController {
 
             if (cart != null)
                 for (CartDB elem : cart) {
-                    if (!elem.getIsOrdered()
-                        && !sessionCart.containsKey(elem.getProductId())) {
-                        sessionCart.put(elem.getProductId(),
-                                elem.getCount());
-                    }
+//                    if (!elem.getIsOrdered()
+//                        && !sessionCart.containsKey(elem.getProductId())) {
+//                        sessionCart.put(elem.getProductId(),
+//                                elem.getCount());
+//                    }
                 }
 
             session.setAttribute("in_cart", sessionCart);

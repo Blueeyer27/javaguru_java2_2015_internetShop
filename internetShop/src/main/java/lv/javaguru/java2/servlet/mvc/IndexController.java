@@ -72,7 +72,11 @@ public class IndexController extends AccessController {
                 if ((Integer) session.getAttribute("access_level")
                         > AccessLevel.GUEST.getValue()) {
                     Long userID = (Long) session.getAttribute("user_id");
-                    cartDAO.removeFromCart(prodID, userID);
+                    try {
+                        cartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                    } catch (DBException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -120,7 +124,8 @@ public class IndexController extends AccessController {
     private void putInDBCart(Long prodID, HttpSession session) {
         Long userID = (Long) session.getAttribute("user_id");
         try {
-            cartDAO.addElem(new CartDB(prodID, userID, 1, false));
+
+            cartDAO.addElem(new CartDB(productDAO.getById(prodID), userID, 1, false));
             System.out.println("PRODUCT ADDED TO CART");
         } catch (DBException e) {
             e.printStackTrace();

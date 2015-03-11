@@ -7,6 +7,7 @@ import lv.javaguru.java2.domain.CartDB;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
 import org.hibernate.SessionFactory;
+import org.mockito.internal.matchers.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -105,6 +106,11 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
+    public void removeFromCart(Product product, Long userID) {
+        throw new NotImplementedException();
+    }
+
+    //@Override
     public void removeFromCart(Long prodID, Long userID) {
         throw new NotImplementedException();
     }

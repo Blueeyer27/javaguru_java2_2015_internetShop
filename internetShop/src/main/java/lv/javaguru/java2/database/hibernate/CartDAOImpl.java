@@ -4,6 +4,7 @@ import lv.javaguru.java2.database.CartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.CartDB;
+import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.User;
 import org.hibernate.Session;
@@ -41,13 +42,15 @@ public class CartDAOImpl implements CartDAO {
 
 //        System.out.println("cart: " + cart.getID() + cart.getProductId() + " " + cart.getCount() + " " + cart.getUserID() + " " + cart.getIsOrdered());
 //         "username" - name of field (not table name)
+        System.out.println("Searching!!!");
         CartDB cartDB = (CartDB) session.createCriteria(CartDB.class)
                 .add(Restrictions.eq("userID", cart.getUserID()))
-                .add(Restrictions.eq("productID", cart.getProductId()))
+                .add(Restrictions.eq("productID", cart.getProductID()))
                 .add(Restrictions.eq("isOrdered", cart.getIsOrdered())).uniqueResult();
 //
 //        System.out.println("cartDB: " + cartDB.getID() + " " + cartDB.getProductId() + " " + cartDB.getCount() + " " + cartDB.getUserID() + " " + cartDB.getIsOrdered());
 //
+        System.out.println("Check for null");
         if(cartDB != null) {
             cartDB.setCount(cartDB.getCount() + cart.getCount());
             session.update(cartDB);
@@ -69,14 +72,14 @@ public class CartDAOImpl implements CartDAO {
                 .add(Restrictions.eq("userID", userID)).list();
 
         for (CartDB cart : carts) {
-            System.out.println("Product ID in cart: " + cart.getProductId());
+            System.out.println("Product ID in cart: " + cart.getProductID());
         }
 
         if (carts != null) {
             List<ProductInCart> products = new ArrayList<ProductInCart>();
             for (CartDB cart : carts) {
                 products.add(new ProductInCart(
-                        product.getById(cart.getProductId()),
+                        cart.getProductID(),
                         cart.getCount(),
                         cart.getIsOrdered()))
                 ;
@@ -94,12 +97,12 @@ public class CartDAOImpl implements CartDAO {
     }
 
     @Override
-    public void removeFromCart(Long prodID, Long userID) {
+    public void removeFromCart(Product product, Long userID) {
         Session session = sessionFactory.getCurrentSession();
 
         CartDB cartDB = (CartDB) session.createCriteria(CartDB.class)
                 .add(Restrictions.eq("userID", userID))
-                .add(Restrictions.eq("productID", prodID))
+                .add(Restrictions.eq("productID", product))
                 .add(Restrictions.eq("isOrdered", false)).uniqueResult();
 
         session.delete(cartDB);

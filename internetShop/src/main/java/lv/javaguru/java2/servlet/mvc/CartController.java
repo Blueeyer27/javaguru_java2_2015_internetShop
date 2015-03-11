@@ -49,7 +49,11 @@ public class CartController extends AccessController {
                 if ((Integer) session.getAttribute("access_level")
                         > AccessLevel.GUEST.getValue()) {
                     Long userID = (Long) session.getAttribute("user_id");
-                    cartDAO.removeFromCart(prodID, userID);
+                    try {
+                        cartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                    } catch (DBException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
