@@ -1,9 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
-import lv.javaguru.java2.database.CartDAO;
+import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.domain.CartDB;
+import lv.javaguru.java2.database.ProductDAO;
+import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +24,12 @@ import java.util.Map;
 @Component
 public class TransferController extends AccessController {
     @Autowired
-    @Qualifier("ORM_CartDAO")
-    CartDAO cartDAO;
+    @Qualifier("ORM_ProductInCartDAO")
+    ProductInCartDAO productInCartDAO;
+
+    @Autowired
+    @Qualifier("ORM_ProductDAO")
+    ProductDAO productDAO;
 
     @Override
     MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
@@ -43,11 +48,12 @@ public class TransferController extends AccessController {
                     Long id = entry.getKey();
                     Integer count = entry.getValue();
 
-//                    try {
-//                        cartDAO.addElem(new CartDB(id, userID, count, false));
-//                    } catch (DBException e) {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        productInCartDAO.addElem(new ProductInCart(productDAO.getById(id),
+                                userID, count, false));
+                    } catch (DBException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -55,20 +61,20 @@ public class TransferController extends AccessController {
             session.removeAttribute("in_cart");
 
             Map<Long, Integer> sessionCart = new HashMap<Long, Integer>();
-            List<CartDB> cart = null;
+            List<ProductInCart> cart = null;
             try {
-                cart = cartDAO.getCart(userID);
+                cart = productInCartDAO.getCart(userID);
             } catch (DBException e) {
                 e.printStackTrace();
             }
 
             if (cart != null)
-                for (CartDB elem : cart) {
-//                    if (!elem.getIsOrdered()
-//                        && !sessionCart.containsKey(elem.getProductId())) {
-//                        sessionCart.put(elem.getProductId(),
-//                                elem.getCount());
-//                    }
+                for (ProductInCart elem : cart) {
+                    if (!elem.getIsOrdered()
+                        && !sessionCart.containsKey(elem.getProduct().getProductId())) {
+                        sessionCart.put(elem.getProduct().getProductId(),
+                                elem.getCount());
+                    }
                 }
 
             session.setAttribute("in_cart", sessionCart);

@@ -2,10 +2,10 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.PasswordHash;
-import lv.javaguru.java2.database.CartDAO;
+import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.domain.CartDB;
+import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.User;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class LoginController extends AccessController {
     private UserDAO userDAO;
 
     @Autowired
-    @Qualifier("ORM_CartDAO")
-    CartDAO cartDAO;
+    @Qualifier("ORM_ProductInCartDAO")
+    ProductInCartDAO productInCartDAO;
 
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
@@ -99,19 +99,19 @@ public class LoginController extends AccessController {
 
     private void loadCartToSession(HttpSession session, Long userID) {
         Map<Long, Integer> sessionCart = new HashMap<Long, Integer>();
-        List<CartDB> cart = null;
+        List<ProductInCart> cart = null;
         try {
-            cart = cartDAO.getCart(userID);
+            cart = productInCartDAO.getCart(userID);
         } catch (DBException e) {
             e.printStackTrace();
         }
 
         if (cart != null)
-            for (CartDB elem : cart) {
-                System.out.println("THIS IS: " + elem.getProductID().getProductId());
+            for (ProductInCart elem : cart) {
+                System.out.println("THIS IS: " + elem.getProduct().getProductId());
                 if (!elem.getIsOrdered()
-                        && !sessionCart.containsKey(elem.getProductID())) {
-                    sessionCart.put(elem.getProductID().getProductId(),
+                        && !sessionCart.containsKey(elem.getProduct())) {
+                    sessionCart.put(elem.getProduct().getProductId(),
                             elem.getCount());
                 }
             }

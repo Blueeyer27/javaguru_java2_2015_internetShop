@@ -33,7 +33,8 @@
         <br><br><br>
         <p><font color="#228b22">Your cart is empty.</font></p>
         <%  } else {
-                for (ProductInCart product : inCart) { %>
+                for (ProductInCart prod : inCart) {
+                    Product product = prod.getProduct(); %>
         <h3><a onclick="productInfo('<%=product.getProductId()%>')"><%=product.getName()%></a></h3>
         <div class="img-25">
             <% if (product.getImage() != null) {%>
@@ -44,12 +45,12 @@
         </div>
         <p><%=product.getDescription() + " | Price for one: "
                 + product.getPrice()
-                + "$ | Count: " + product.getCount()%></p>
+                + "$ | Count: " + prod.getCount()%></p>
         <br>
         <input id='<%=product.getProductId()%>' type='submit' value='Remove From Cart'
                onclick='removeFromCart("<%=product.getProductId()%>", "<%=product.getName()%>")'>
         <br><br>
-        <%  totalPrice+=(product.getPrice()*product.getCount());
+        <%  totalPrice+=(product.getPrice()*prod.getCount());
                 }
             }%>
         <br><br>

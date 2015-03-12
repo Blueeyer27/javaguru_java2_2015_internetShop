@@ -130,9 +130,9 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `java2_test`.`carts`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `java2_test`.`carts` ;
+DROP TABLE IF EXISTS `java2_test`.`productInCart` ;
 
-CREATE TABLE IF NOT EXISTS `java2_test`.`carts` (
+CREATE TABLE IF NOT EXISTS `java2_test`.`productInCart` (
   `ID` INT(11) NOT NULL AUTO_INCREMENT,
   `ProductID` INT(11) NOT NULL,
   `UserID` INT(11) NOT NULL,

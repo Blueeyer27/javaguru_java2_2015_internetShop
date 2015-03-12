@@ -1,23 +1,18 @@
 package lv.javaguru.java2.database.jdbc;
 
-import lv.javaguru.java2.database.CartDAO;
+import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.domain.CartDB;
-import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
-import org.hibernate.SessionFactory;
-import org.mockito.internal.matchers.Not;
+import lv.javaguru.java2.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +20,7 @@ import java.util.List;
  */
 
 @Component("JDBC_CartDAO")
-public class CartDAOImpl extends DAOImpl implements CartDAO {
+public class ProductInCartDAOImpl extends DAOImpl implements ProductInCartDAO {
     @Autowired
     @Qualifier("ORM_ProductDAO")
     ProductDAO productDAO;
@@ -39,7 +34,7 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
         try {
             connect = getConnection();
 
-            PreparedStatement prepStat = connect.prepareStatement("select * from CARTS " +
+            PreparedStatement prepStat = connect.prepareStatement("select * from productInCart " +
                     "where UserID = ? and ProductID = ? and IsOrdered = ?");
             prepStat.setLong(1, userID);
             prepStat.setLong(2, productID);
@@ -101,7 +96,7 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
-    public List<CartDB> getCart(Long userID) throws DBException {
+    public List<ProductInCart> getCart(Long userID) throws DBException {
         throw new NotImplementedException();
     }
 
@@ -116,7 +111,7 @@ public class CartDAOImpl extends DAOImpl implements CartDAO {
     }
 
     @Override
-    public void addElem(CartDB cart) throws DBException {
+    public void addElem(ProductInCart cart) throws DBException {
         throw new NotImplementedException();
     }
 

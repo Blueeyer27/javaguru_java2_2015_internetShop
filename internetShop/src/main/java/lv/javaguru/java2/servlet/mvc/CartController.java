@@ -2,11 +2,11 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessLevel;
-import lv.javaguru.java2.database.CartDAO;
+import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.domain.ProductInCart;
+import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,8 +29,8 @@ public class CartController extends AccessController {
     private ProductDAO productDAO;
 
     @Autowired
-    @Qualifier("ORM_CartDAO")
-    private CartDAO cartDAO;
+    @Qualifier("ORM_ProductInCartDAO")
+    private ProductInCartDAO productInCartDAO;
 
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
@@ -50,7 +50,7 @@ public class CartController extends AccessController {
                         > AccessLevel.GUEST.getValue()) {
                     Long userID = (Long) session.getAttribute("user_id");
                     try {
-                        cartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                        productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
                     } catch (DBException e) {
                         e.printStackTrace();
                     }
@@ -96,7 +96,7 @@ public class CartController extends AccessController {
             Long userID = (Long) session.getAttribute("user_id");
 
             try {
-                inCart = cartDAO.getCartWithProd(userID);
+                inCart = productInCartDAO.getCartWithProd(userID);
             } catch (DBException e) {
                 e.printStackTrace();
             }

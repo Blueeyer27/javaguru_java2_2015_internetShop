@@ -2,10 +2,10 @@ package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessLevel;
-import lv.javaguru.java2.database.CartDAO;
+import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.domain.CartDB;
+import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class IndexController extends AccessController {
     private ProductDAO productDAO;
 
     @Autowired
-    @Qualifier("ORM_CartDAO")
-    private CartDAO cartDAO;
+    @Qualifier("ORM_ProductInCartDAO")
+    private ProductInCartDAO productInCartDAO;
 
     public class PageInfo {
         private List<Product> _products;
@@ -73,7 +73,7 @@ public class IndexController extends AccessController {
                         > AccessLevel.GUEST.getValue()) {
                     Long userID = (Long) session.getAttribute("user_id");
                     try {
-                        cartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                        productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
                     } catch (DBException e) {
                         e.printStackTrace();
                     }
@@ -125,7 +125,7 @@ public class IndexController extends AccessController {
         Long userID = (Long) session.getAttribute("user_id");
         try {
 
-            cartDAO.addElem(new CartDB(productDAO.getById(prodID), userID, 1, false));
+            productInCartDAO.addElem(new ProductInCart(productDAO.getById(prodID), userID, 1, false));
             System.out.println("PRODUCT ADDED TO CART");
         } catch (DBException e) {
             e.printStackTrace();
