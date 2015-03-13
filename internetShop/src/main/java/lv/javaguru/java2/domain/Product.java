@@ -35,16 +35,22 @@ public class Product {
     @Column(name = "Picture", columnDefinition = "CHAR(255)")
     protected String imageURL;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER, orphanRemoval = true)
     protected List<Comment> comments;
 
-    public Product() { }
+    public Product() {
+
+    }
 
     public Product(String name, String description, float price) {
         this. name = name;
         this.description = description;
         this.price = price;
     }
+
+    public List<Comment> getComments() { return comments; }
+    //public void setComments(List<Comment> value) { comments = value; }
 
     public long getProductId() {
         return productId;

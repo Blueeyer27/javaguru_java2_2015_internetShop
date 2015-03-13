@@ -91,7 +91,7 @@ public class ProductController extends AccessController {
                         String comment = null;
                         if ((comment = request.getParameter("comment")) != null)
                             commentDAO.create(new Comment(
-                                    (Long) session.getAttribute("user_id"), //current user ID
+                                    userDAO.getById((Long) session.getAttribute("user_id")), //current user ID
                                     productDAO.getById(productID),
                                     comment
                             ));
@@ -103,7 +103,7 @@ public class ProductController extends AccessController {
                 }
             }
 
-            loadComments(request, productID);
+            //loadComments(request, productID);
 
             Product product = null;
 
@@ -112,6 +112,9 @@ public class ProductController extends AccessController {
             } catch (DBException e) {
                 e.printStackTrace();
             }
+
+            if (product != null)
+                loadComments(request, product);
 
             return new MVCModel("/product.jsp", product);
         }
@@ -146,13 +149,29 @@ public class ProductController extends AccessController {
         try {
             comments = commentDAO.getAll(productID);
 
-            //TODO: add username in comments table and remove this....
-            for (Comment comment : comments) {
-                comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
-            }
+            //for (Comment comment : comments) {
+                //comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
+            //}
         } catch (DBException e) {
             e.printStackTrace();
         }
+
+        request.setAttribute("all_comments", comments);
+    }
+
+
+    private void loadComments(HttpServletRequest request, Product product) {
+        List<Comment> comments = null;
+
+//        try {
+            comments = product.getComments();
+
+//            for (Comment comment : comments) {
+//                comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
+//            }
+//        } catch (DBException e) {
+//            e.printStackTrace();
+//        }
 
         request.setAttribute("all_comments", comments);
     }

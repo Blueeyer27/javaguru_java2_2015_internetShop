@@ -23,10 +23,14 @@ public class Comment {
     @Column(name="ID",columnDefinition = "INT(11)")
     private Long id;
 
-    @Column(name="UserID",columnDefinition = "INT(11)")
-    private Long userID;
+//    @Column(name="UserID",columnDefinition = "INT(11)")
+//    private Long userID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "UserID")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProductID")
     private Product product;
 
@@ -42,15 +46,16 @@ public class Comment {
 
     }
 
-    public Comment(Long userID, Product product, String comment){
+    public Comment(User user, Product product, String comment){
         this.comment = comment;
-        this.userID = userID;
+        //this.userID = userID;
         //this.productID = productID;
+        this.user = user;
         this.product = product;
     }
 
-    public Long getUserID() { return userID; }
-    public void setUserID(Long value) { userID = value; }
+    public Long getUserID() { return user.getId(); }
+    //public void setUserID(Long value) { userID = value; }
 
     public Long getId() { return id; }
     public void setId(Long value) { id = value; }
@@ -61,8 +66,8 @@ public class Comment {
     public String getComment() { return comment; }
     public void setComment(String value) { comment = value; }
 
-    public String getUsername() { return "UsernameID=" + userID; }
-    public void setUsername(String value) { value = value; }
+    public String getUsername() { return user.getLogin(); }
+//    public void setUsername(String value) { value = value; }
 
     public Product getProduct() { return product; }
     public void setProduct(Product value) { product = value; }
