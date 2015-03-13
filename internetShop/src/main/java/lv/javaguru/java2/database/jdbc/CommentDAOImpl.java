@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Anton on 2015.03.01..
  */
 
-@Component
+@Component("JDBC_CommentDAO")
 public class CommentDAOImpl extends DAOImpl implements CommentDAO {
     @Override
     public void create(Comment comment) throws DBException {

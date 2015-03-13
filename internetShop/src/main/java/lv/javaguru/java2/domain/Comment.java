@@ -1,20 +1,48 @@
 package lv.javaguru.java2.domain;
 
+import lv.javaguru.java2.database.CommentDAO;
+
+import javax.persistence.*;
+
 /**
  * Created by Anton on 2015.03.01..
  */
+
+@Entity
+@Table(name = "comments")
 public class Comment {
-    private Long id, userID, productID;
-    private String comment, username;
+    /*
+   `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Comment` CHAR(255) NULL DEFAULT NULL,
+  `UserID` INT(11) NOT NULL,
+  `ProductID` INT(11) NOT NULL
+    */
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="ID",columnDefinition = "INT(11)")
+    private Long id;
+
+    @Column(name="UserID",columnDefinition = "INT(11)")
+    private Long userID;
+
+    @Column(name="ProductID",columnDefinition = "INT(11)")
+    private Long productID;
+
+    @Column(name = "Comment", columnDefinition = "CHAR(255)")
+    private String comment;
+
+    //private String username;
+
+    public Comment() {
+
+    }
 
     public Comment(Long userID, Long productID, String comment){
         this.comment = comment;
         this.userID = userID;
         this.productID = productID;
     }
-
-    public String getUsername() { return username; }
-    public void setUsername(String value) { username = value; }
 
     public Long getUserID() { return userID; }
     public void setUserID(Long value) { userID = value; }
@@ -27,4 +55,7 @@ public class Comment {
 
     public String getComment() { return comment; }
     public void setComment(String value) { comment = value; }
+
+    public String getUsername() { return "UsernameID=" + userID; }
+    public void setUsername(String value) { value = value; }
 }

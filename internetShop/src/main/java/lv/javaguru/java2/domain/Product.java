@@ -1,6 +1,7 @@
 package lv.javaguru.java2.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -33,6 +34,9 @@ public class Product {
 
     @Column(name = "Picture", columnDefinition = "CHAR(255)")
     protected String imageURL;
+
+//    @OneToMany
+//    protected List<Comment> comments;
 
     public Product() { }
 

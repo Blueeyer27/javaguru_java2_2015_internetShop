@@ -1,6 +1,7 @@
 package lv.javaguru.java2.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,8 +18,8 @@ public class User {
 //    `Access_Level` INT(3) NOT NULL,
 //    PRIMARY KEY (`UserID`))
 
-    @Column(name="UserId",columnDefinition = "int(11)")
     @Id
+    @Column(name="UserId",columnDefinition = "int(11)")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -48,6 +49,10 @@ public class User {
 
     @Column(name = "Photo", columnDefinition = "CHAR(255)")
     private String photoURL;
+
+//    @OneToMany(fetch=FetchType.EAGER)
+//    @JoinTable(name = "productInCart")
+//    private List<ProductInCart> cart;
 
     public User() {
     }

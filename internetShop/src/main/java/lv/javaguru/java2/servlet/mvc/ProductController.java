@@ -40,6 +40,7 @@ public class ProductController extends AccessController {
     private ProductDAO productDAO;
 
     @Autowired
+    @Qualifier("ORM_CommentDAO")
     private CommentDAO commentDAO;
 
     @Override
