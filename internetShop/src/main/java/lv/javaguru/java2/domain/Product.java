@@ -35,8 +35,8 @@ public class Product {
     @Column(name = "Picture", columnDefinition = "CHAR(255)")
     protected String imageURL;
 
-//    @OneToMany
-//    protected List<Comment> comments;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    protected List<Comment> comments;
 
     public Product() { }
 

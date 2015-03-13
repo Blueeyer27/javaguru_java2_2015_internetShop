@@ -92,7 +92,7 @@ public class ProductController extends AccessController {
                         if ((comment = request.getParameter("comment")) != null)
                             commentDAO.create(new Comment(
                                     (Long) session.getAttribute("user_id"), //current user ID
-                                    productID,
+                                    productDAO.getById(productID),
                                     comment
                             ));
                     } catch (DBException e) {

@@ -96,6 +96,8 @@ public class ProductInCartDAOImpl implements ProductInCartDAO {
                 .add(Restrictions.eq("product", product))
                 .add(Restrictions.eq("isOrdered", false)).uniqueResult();
 
+        //System.out.println("Remove: " + productInCart.getProductId());
+
         session.delete(productInCart);
     }
 }

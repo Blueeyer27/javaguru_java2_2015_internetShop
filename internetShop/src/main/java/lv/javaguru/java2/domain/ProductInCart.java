@@ -27,6 +27,9 @@ public class ProductInCart {
     @JoinColumn(name = "ProductID")
     private Product product;
 
+    @Transient
+    private Long productID;
+
     @Column(name="UserID",columnDefinition = "INT(11)")
     private long userID;
 
@@ -69,8 +72,8 @@ public ProductInCart(Product product, Long userID,
     public long getUserID() { return userID; }
     public void setUserID(long value) { this.userID = value; }
 
-//    public long getProductId() { return productID.getProductId(); }
-//    public void setProductId(long value) { this.productID.setProductId(value); }
+//    public long getProductId() { return productID; }
+//    public void setProductId(long value) { productID = value; }
 
     public Integer getCount() { return count; }
     public void setCount(int value) { count = value; }

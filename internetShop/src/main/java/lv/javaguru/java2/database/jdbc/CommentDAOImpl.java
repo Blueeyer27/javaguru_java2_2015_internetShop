@@ -33,7 +33,7 @@ public class CommentDAOImpl extends DAOImpl implements CommentDAO {
                             PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, comment.getComment());
             preparedStatement.setLong(2, comment.getUserID());
-            preparedStatement.setLong(3, comment.getProductID());
+//            preparedStatement.setLong(3, comment.getProductID());
 
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -75,13 +75,13 @@ public class CommentDAOImpl extends DAOImpl implements CommentDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Comment comment = new Comment(
-                   resultSet.getLong("UserID"),
-                   resultSet.getLong("ProductID"),
-                   resultSet.getString("Comment")
-                );
-                comment.setId(resultSet.getLong("ID"));
-                comments.add(comment);
+//                Comment comment = new Comment(
+//                   resultSet.getLong("UserID"),
+//                   resultSet.getLong("ProductID"),
+//                   resultSet.getString("Comment")
+//                );
+//                comment.setId(resultSet.getLong("ID"));
+//                comments.add(comment);
             }
         } catch (Throwable e) {
             System.out.println("Exception in CommentDAOImpl.getList()");
