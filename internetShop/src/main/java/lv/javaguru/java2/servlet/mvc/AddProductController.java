@@ -37,28 +37,13 @@ public class AddProductController extends AccessController {
 
         if (ServletFileUpload.isMultipartContent(request)) {
             Map<String, String> params = new HashMap<String, String>();
-
             Product product = new Product();
 
             try {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
 
-                String fileName = null;
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        if (item.getName().length() > 0) {
-                            fileName = new File(item.getName()).getName();
-                            item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
-                            product.setImage("/images/products/" + fileName);
-                        }
-                    } else {
-                        params.put(item.getFieldName(),
-                                item.getString());
-
-                        System.out.println(item.getFieldName() + " : " + item.getString());
-                    }
-                }
+                params = getParamsMap(multiparts, product);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -70,9 +55,7 @@ public class AddProductController extends AccessController {
                 return new MVCModel("/add_product.jsp", "Incorrect price format. Example: \"0.25\"");
             }
 
-            product.setDescription(params.get("description"));
-            product.setName(params.get("product_name"));
-            product.setPrice(Float.parseFloat(params.get("price")));
+            setProductInfo(params, product);
 
             if (checkFields(product))
                 return new MVCModel("/add_product.jsp", "All fields must be filled.");
@@ -87,6 +70,33 @@ public class AddProductController extends AccessController {
         }
 
         return new MVCModel("/add_product.jsp");
+    }
+
+    private void setProductInfo(Map<String, String> params, Product product) {
+        product.setDescription(params.get("description"));
+        product.setName(params.get("product_name"));
+        product.setPrice(Float.parseFloat(params.get("price")));
+    }
+
+    private Map<String, String> getParamsMap(List<FileItem> multiparts, Product product) throws Exception {
+        Map<String, String> params = new HashMap<String, String>();
+
+        for (FileItem item : multiparts) {
+            if (!item.isFormField()) {
+                // If upload photo request
+                if (item.getName().length() > 0) {
+                    String fileName = new File(item.getName()).getName();
+                    item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+                    product.setImage("/images/products/" + fileName);
+                }
+            } else {
+                params.put(item.getFieldName(),
+                        item.getString());
+                //System.out.println(item.getFieldName() + " : " + item.getString());
+            }
+        }
+
+        return params;
     }
 
     private boolean checkFields(Product product) {

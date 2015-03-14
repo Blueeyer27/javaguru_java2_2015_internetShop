@@ -41,21 +41,146 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`users` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'user','500:9264b8d6aa64:c45a22fcac32','Name','Surname','male','12341234123','mail@email.com',2,NULL),
+(2,'admin','500:d8d8f4a119d9:bdfe6839461e','Anton','Kamolins','male','211223344','email@gmail.com',4,NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 -- -----------------------------------------------------
 -- Table `java2_test`.`products`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `java2_test`.`products` ;
 
-CREATE TABLE IF NOT EXISTS `java2_test`.`products` (
-  `ProductID` INT(11) NOT NULL AUTO_INCREMENT,
-  `Name` CHAR(32) NOT NULL,
-  `Description` TEXT NOT NULL,
-  `Price` DECIMAL(20,6) UNSIGNED NOT NULL,
-  `Picture` CHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`ProductID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `products` (
+  `ProductID` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` char(32) NOT NULL,
+  `Description` text NOT NULL,
+  `Price` decimal(20,6) unsigned NOT NULL,
+  `Picture` char(255) DEFAULT NULL,
+  PRIMARY KEY (`ProductID`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (1,'product0','This is test product description.',0.250000,NULL),
+(2,'product1','This is test product description.',0.250000,NULL),
+(3,'product2','This is test product description.',0.250000,NULL),
+(4,'product3','This is test product description.',0.250000,NULL),
+(5,'product4','This is test product description.',0.250000,NULL),
+(6,'product5','This is test product description.',0.250000,NULL),
+(7,'product6','This is test product description.',0.250000,NULL),
+(8,'product7','This is test product description.',0.250000,NULL),
+(9,'product8','This is test product description.',0.250000,NULL),
+(10,'product9','This is test product description.',0.250000,NULL),
+(11,'product10','This is test product description.',0.250000,NULL),
+(12,'product11','This is test product description.',0.250000,NULL),
+(13,'product12','This is test product description.',0.250000,NULL),
+(14,'product13','This is test product description.',0.250000,NULL),
+(15,'product14','This is test product description.',0.250000,NULL),
+(16,'product15','This is test product description.',0.250000,NULL),
+(17,'product16','This is test product description.',0.250000,NULL),
+(18,'product17','This is test product description.',0.250000,NULL),
+(19,'product18','This is test product description.',0.250000,NULL),
+(20,'product19','This is test product description.',0.250000,NULL),
+(21,'product20','This is test product description.',0.250000,NULL),
+(22,'product21','This is test product description.',0.250000,NULL),
+(23,'product22','This is test product description.',0.250000,NULL),
+(24,'product23','This is test product description.',0.250000,NULL),
+(25,'product24','This is test product description.',0.250000,NULL),
+(26,'product25','This is test product description.',0.250000,NULL),
+(27,'product26','This is test product description.',0.250000,NULL),
+(28,'product27','This is test product description.',0.250000,NULL),
+(29,'product28','This is test product description.',0.250000,NULL),
+(30,'product29','This is test product description.',0.250000,NULL),
+(31,'product30','This is test product description.',0.250000,NULL),
+(32,'product31','This is test product description.',0.250000,NULL),
+(33,'product32','This is test product description.',0.250000,NULL),
+(34,'product33','This is test product description.',0.250000,NULL),
+(35,'product34','This is test product description.',0.250000,NULL),
+(36,'product35','This is test product description.',0.250000,NULL),
+(37,'product36','This is test product description.',0.250000,NULL),
+(38,'product37','This is test product description.',0.250000,NULL),
+(39,'product38','This is test product description.',0.250000,NULL),
+(40,'product39','This is test product description.',0.250000,NULL),
+(41,'product40','This is test product description.',0.250000,NULL),
+(42,'product41','This is test product description.',0.250000,NULL),
+(43,'product42','This is test product description.',0.250000,NULL),
+(44,'product43','This is test product description.',0.250000,NULL),
+(45,'product44','This is test product description.',0.250000,NULL),
+(46,'product45','This is test product description.',0.250000,NULL),
+(47,'product46','This is test product description.',0.250000,NULL),
+(48,'product47','This is test product description.',0.250000,NULL),
+(49,'product48','This is test product description.',0.250000,NULL),
+(50,'product49','This is test product description.',0.250000,NULL),
+(51,'product50','This is test product description.',0.250000,NULL),
+(52,'product51','This is test product description.',0.250000,NULL),
+(53,'product52','This is test product description.',0.250000,NULL),
+(54,'product53','This is test product description.',0.250000,NULL),
+(55,'product54','This is test product description.',0.250000,NULL),
+(56,'product55','This is test product description.',0.250000,NULL),
+(57,'product56','This is test product description.',0.250000,NULL),
+(58,'product57','This is test product description.',0.250000,NULL),
+(59,'product58','This is test product description.',0.250000,NULL),
+(60,'product59','This is test product description.',0.250000,NULL),
+(61,'product60','This is test product description.',0.250000,NULL),
+(62,'product61','This is test product description.',0.250000,NULL),
+(63,'product62','This is test product description.',0.250000,NULL),
+(64,'product63','This is test product description.',0.250000,NULL),
+(65,'product64','This is test product description.',0.250000,NULL),
+(66,'product65','This is test product description.',0.250000,NULL),
+(67,'product66','This is test product description.',0.250000,NULL),
+(68,'product67','This is test product description.',0.250000,NULL),
+(69,'product68','This is test product description.',0.250000,NULL),
+(70,'product69','This is test product description.',0.250000,NULL),
+(71,'product70','This is test product description.',0.250000,NULL),
+(72,'product71','This is test product description.',0.250000,NULL),
+(73,'product72','This is test product description.',0.250000,NULL),
+(74,'product73','This is test product description.',0.250000,NULL),
+(75,'product74','This is test product description.',0.250000,NULL),
+(76,'product75','This is test product description.',0.250000,NULL),
+(77,'product76','This is test product description.',0.250000,NULL),
+(78,'product77','This is test product description.',0.250000,NULL),
+(79,'product78','This is test product description.',0.250000,NULL),
+(80,'product79','This is test product description.',0.250000,NULL),
+(81,'product80','This is test product description.',0.250000,NULL),
+(82,'product81','This is test product description.',0.250000,NULL),
+(83,'product82','This is test product description.',0.250000,NULL),
+(84,'product83','This is test product description.',0.250000,NULL),
+(85,'product84','This is test product description.',0.250000,NULL),
+(86,'product85','This is test product description.',0.250000,NULL),
+(87,'product86','This is test product description.',0.250000,NULL),
+(88,'product87','This is test product description.',0.250000,NULL),
+(89,'product88','This is test product description.',0.250000,NULL),
+(90,'product89','This is test product description.',0.250000,NULL),
+(91,'product90','This is test product description.',0.250000,NULL),
+(92,'product91','This is test product description.',0.250000,NULL),
+(94,'product93','This is test product description.',0.250000,NULL),
+(95,'product94','This is test product description.',0.250000,NULL),
+(96,'product95','This is test product description.',0.250000,NULL),
+(97,'product96','This is test product description.',0.250000,NULL),
+(98,'product97','This is test product description.',0.250000,NULL),
+(99,'product98','This is test product description.',0.250000,NULL),
+(100,'product99','This is test product description.',0.250000,NULL),
+(101,'test1','nice product test1',1.990000,NULL),
+(102,'test2','awesome product',1.500000,'/images/products/labtocat.png'),
+(103,'Product_test','This is very good product',1.990000,'/images/products/1_2971.png');
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 
 -- -----------------------------------------------------
@@ -77,6 +202,36 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`comments` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+INSERT INTO `comments` VALUES (6,'wow',1,100),
+(7,'test',1,99),
+(8,'wow',1,1),
+(9,'nice',1,6),
+(10,'I like it!',1,102),
+(13,'nice!',1,92),
+(18,'awesome',1,92),
+(19,'fdsfsdf',1,92),
+(20,'fdsfsdfsd',1,92),
+(21,'test comment',1,92),
+(22,'test comment',1,92),
+(23,'test comment',1,92),
+(24,'test comment',1,92),
+(25,'test comment',1,92),
+(26,'test comment',1,92),
+(27,'vbxbbbfndfn',1,92),
+(28,'gfdggbgngfnh',1,92),
+(29,'gfgfgnfdnf',1,92),
+(30,'agfbfdbgdnfg',1,92),
+(31,'wow',1,102),
+(32,'awesome',1,102);
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 -- -----------------------------------------------------
@@ -147,6 +302,19 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`productInCart` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+--
+-- Dumping data for table `productincart`
+--
+
+LOCK TABLES `productincart` WRITE;
+/*!40000 ALTER TABLE `productincart` DISABLE KEYS */;
+INSERT INTO `productincart` VALUES (1,99,1,2,0),
+(3,102,1,2,0),
+(4,103,2,1,0);
+/*!40000 ALTER TABLE `productincart` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
