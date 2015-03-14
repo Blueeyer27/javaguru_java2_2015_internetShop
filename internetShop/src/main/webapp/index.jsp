@@ -89,7 +89,11 @@
             </div>
             <p class="em_text"><%=prod.getDescription()%></p>
             <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
-                <%--<%="Commented " + prod.getComments().size() + " time(s)" + "\t"%>&nbsp;&nbsp;--%>
+                <%--<%  int commentsCount = 0;--%>
+                    <%--if (prod.getComments() != null) {--%>
+                        <%--commentsCount = prod.getComments().size();--%>
+                    <%--}%>--%>
+                <%--<%="Commented " + commentsCount + " time(s)" + "\t"%>&nbsp;&nbsp;--%>
                 <input id='<%=prod.getProductId()%>' type='submit' value='About'
                        onclick='aboutProduct("<%=prod.getProductId()%>")'>
                 &nbsp;

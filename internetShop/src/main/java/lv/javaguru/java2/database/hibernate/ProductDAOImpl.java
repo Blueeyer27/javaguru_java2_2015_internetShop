@@ -111,25 +111,6 @@ public class ProductDAOImpl implements ProductDAO {
     public List<Product> getAll() throws DBException {
         Session session = sessionFactory.getCurrentSession();
 
-//        ProjectionList productProj = Projections.projectionList();
-//
-//        for (String prop : sessionFactory.getClassMetadata(Product.class)
-//                .getPropertyNames()) {
-//            System.out.println("Property: " + prop);
-//            productProj.add(Projections.alias(Projections.property(prop), prop));
-//        }
-
-//        List<Product> test = session.createCriteria(Product.class)
-//                .setProjection(productProj
-//                .add(Projections.property("productId"), "productId"))
-//                .setFirstResult(90)
-//                .setMaxResults(5)
-//                .addOrder(Order.asc("productId"))
-//                .setResultTransformer(Transformers.aliasToBean(Product.class)).list();
-
-//        for (Product one : test)
-//            System.out.println("Here: " + one.getProductId() + " " + one.getName());
-
         return session.createCriteria(Product.class)
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .addOrder(Order.asc("productId")).list();

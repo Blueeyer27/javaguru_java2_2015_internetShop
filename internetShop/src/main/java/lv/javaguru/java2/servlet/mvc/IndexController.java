@@ -104,7 +104,7 @@ public class IndexController extends AccessController {
             //products = productDAO.getAll();
 
             for (Product product : products)
-                System.out.println(product.getDescription());
+                System.out.println(product.getProductId());
 
             System.out.println("GGSGS: " + products.get(0).getName());
             for (Product product : products)

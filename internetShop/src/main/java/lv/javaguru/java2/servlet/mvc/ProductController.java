@@ -82,6 +82,7 @@ public class ProductController extends AccessController {
         if (request.getAttribute("id") != null) {
             Long productID = Long.parseLong((String) request.getAttribute("id"));
 
+            System.out.println("THERE IT IS WHAT I NEED: " + productID);
             if (request.getMethod().equals("POST")) {
 
                 // If comment button pressed
@@ -92,9 +93,8 @@ public class ProductController extends AccessController {
                         if ((comment = request.getParameter("comment")) != null)
                             commentDAO.create(new Comment(
                                     userDAO.getById((Long) session.getAttribute("user_id")), //current user ID
-                                    productDAO.getById(productID),
-                                    comment
-                            ));
+                                    productID,
+                                    comment));
                     } catch (DBException e) {
                         System.out.println("exception ;((");
                         //TODO: handle exception when can't add comment

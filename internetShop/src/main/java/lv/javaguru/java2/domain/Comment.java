@@ -46,10 +46,10 @@ public class Comment {
 
     }
 
-    public Comment(User user, Product product, String comment){
+    public Comment(User user, Long productID, String comment){
         this.comment = comment;
         //this.userID = userID;
-        //this.productID = productID;
+        this.productID = productID;
         this.user = user;
         //this.product = product;
     }
