@@ -5,6 +5,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.Product;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -64,6 +65,7 @@ public class ProductInCartDAOImpl implements ProductInCartDAO {
     public List<ProductInCart> getCartWithProd(Long userID) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         List<ProductInCart> carts = (List<ProductInCart>) session.createCriteria(ProductInCart.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("userID", userID)).list();
 
         for (ProductInCart cart : carts) {
@@ -84,6 +86,7 @@ public class ProductInCartDAOImpl implements ProductInCartDAO {
     public List<ProductInCart> getCart(Long userID) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         return (List<ProductInCart>) session.createCriteria(ProductInCart.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("userID", userID)).list();
     }
 

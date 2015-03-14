@@ -48,54 +48,29 @@ public class IndexController extends AccessController {
         }
     }
 
+    HttpSession session;
+
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-        HttpSession session = request.getSession();
+        session = request.getSession();
 
         if ((request.getParameter("delete") != null)) {
-            Long prodID = Long.parseLong(request.getParameter("delete"));
-            try {
-                productDAO.delete(prodID);
-            } catch (DBException e) {
-                //TODO: make logic if failure
-                e.printStackTrace();
-            }
+            deleteProduct(request);
         }
 
         if (request.getParameter("remove") != null) {
-            Long prodID = Long.parseLong(request.getParameter("remove"));
-
-            Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
-            if (inCart.containsKey(prodID)) {
-                inCart.remove(prodID);
-
-                if ((Integer) session.getAttribute("access_level")
-                        > AccessLevel.GUEST.getValue()) {
-                    Long userID = (Long) session.getAttribute("user_id");
-                    try {
-                        productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
-                    } catch (DBException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            removeProduct(request);
         }
 
         if (request.getParameter("cart") != null) {
             Long prodID = Long.parseLong(request.getParameter("cart"));
-
             putInSessionCart(prodID, session);
-
-            if ((Integer) session.getAttribute("access_level")
-                    > AccessLevel.GUEST.getValue()) {
-                putInDBCart(prodID, session);
-            }
         }
 
         List<Product> products = null;
 
         String page = request.getParameter("page");
-        System.out.println("Requested page: " + page);
+        //System.out.println("Requested page: " + page);
         if (page == null) page = "1";
         else if (Integer.parseInt(page) < 1) page = "1";
 
@@ -108,9 +83,38 @@ public class IndexController extends AccessController {
 
         String nextPage = (request.getRequestURI() + "?page=" +
                 (Integer.parseInt(page) + 1));
-        System.out.println("Next page: " + nextPage);
+        //System.out.println("Next page: " + nextPage);
 
         return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
+    }
+
+    private void removeProduct(HttpServletRequest request) {
+        Long prodID = Long.parseLong(request.getParameter("remove"));
+
+        Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+        if (inCart.containsKey(prodID)) {
+            inCart.remove(prodID);
+
+            if ((Integer) session.getAttribute("access_level")
+                    > AccessLevel.GUEST.getValue()) {
+                Long userID = (Long) session.getAttribute("user_id");
+                try {
+                    productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void deleteProduct(HttpServletRequest request) {
+        Long prodID = Long.parseLong(request.getParameter("delete"));
+        try {
+            productDAO.delete(prodID);
+        } catch (DBException e) {
+            //TODO: make logic if failure
+            e.printStackTrace();
+        }
     }
 
     private void putInDBCart(Long prodID, HttpSession session) {
@@ -133,6 +137,11 @@ public class IndexController extends AccessController {
             count++;
             inCart.put(prodID, count);
             System.out.println("New count of product: " + count);
+        }
+
+        if ((Integer) session.getAttribute("access_level")
+                > AccessLevel.GUEST.getValue()) {
+            putInDBCart(prodID, session);
         }
     }
 }

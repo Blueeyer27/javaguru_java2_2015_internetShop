@@ -32,66 +32,20 @@ public class CartController extends AccessController {
     @Qualifier("ORM_ProductInCartDAO")
     private ProductInCartDAO productInCartDAO;
 
+    private HttpSession session;
+
     @Override
     public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-        HttpSession session = request.getSession();
+        session = request.getSession();
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
         if (request.getParameter("remove_id") != null) {
-            Long prodID = Long.parseLong(request.getParameter("remove_id"));
-
-            Map<Long, Integer> inSessionCart
-                    = (HashMap<Long, Integer>) session.getAttribute("in_cart");
-            if (inSessionCart.containsKey(prodID)) {
-                inSessionCart.remove(prodID);
-
-                if ((Integer) session.getAttribute("access_level")
-                        > AccessLevel.GUEST.getValue()) {
-                    Long userID = (Long) session.getAttribute("user_id");
-                    try {
-                        productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
-                    } catch (DBException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            removeFromCart(request);
         }
 
         if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
-            Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
-
-            if (products.size() > 0) {
-                // This array is fo ID of items which don't exist in DB anymore
-                List<Long> toRemove = new ArrayList<Long>();
-
-                for (Entry<Long, Integer> entry : products.entrySet()) {
-                    Long id = entry.getKey();
-                    Integer count = entry.getValue();
-
-                    System.out.println("In cart: " + id);
-
-                    Product product;
-
-                    try {
-                        product = productDAO.getById(id);
-
-                        if (product != null)
-                            inCart.add(new ProductInCart(product, count, false));
-                        else
-                            //Product don't exist in DB
-                            toRemove.add(id);
-
-                    } catch (DBException e) {
-                        //TODO: logic if something wrong with DB
-                        e.printStackTrace();
-                    }
-                }
-
-                for (Long removeID : toRemove) {
-                    products.remove(removeID);
-                }
-            }
+            getGuestCart(inCart, request);
         } else {
             Long userID = (Long) session.getAttribute("user_id");
 
@@ -103,5 +57,54 @@ public class CartController extends AccessController {
         }
 
         return new MVCModel("/cart.jsp", inCart);
+    }
+
+    private void getGuestCart(List<ProductInCart> inCart, HttpServletRequest request) {
+        Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+
+        if (products.size() > 0) {
+            // This array is fo ID of items which don't exist in DB anymore
+            List<Long> toRemove = new ArrayList<Long>();
+
+            for (Entry<Long, Integer> entry : products.entrySet()) {
+                Long id = entry.getKey();
+                Integer count = entry.getValue();
+
+                try {
+                    Product product = productDAO.getById(id);
+
+                    if (product != null) inCart.add(new ProductInCart(product, count, false));
+                    else toRemove.add(id); //product don't exist in DB anymore
+
+                } catch (DBException e) {
+                    //TODO: logic if something wrong with DB
+                    e.printStackTrace();
+                }
+            }
+
+            for (Long removeID : toRemove) {
+                products.remove(removeID);
+            }
+        }
+    }
+
+    private void removeFromCart(HttpServletRequest request) {
+        Long prodID = Long.parseLong(request.getParameter("remove_id"));
+
+        Map<Long, Integer> inSessionCart
+                = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+        if (inSessionCart.containsKey(prodID)) {
+            inSessionCart.remove(prodID);
+
+            if ((Integer) session.getAttribute("access_level")
+                    > AccessLevel.GUEST.getValue()) {
+                Long userID = (Long) session.getAttribute("user_id");
+                try {
+                    productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
