@@ -18,8 +18,8 @@ public class Product {
     DEFAULT CHARACTER SET = utf8;
      */
 
-    @Column(name="ProductID",columnDefinition = "INT(11)")
     @Id
+    @Column(name="ProductID",columnDefinition = "INT(11)")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long productId;
 
@@ -35,8 +35,8 @@ public class Product {
     @Column(name = "Picture", columnDefinition = "CHAR(255)")
     protected String imageURL;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "productID", fetch = FetchType.EAGER,
+            cascade = CascadeType.REMOVE, orphanRemoval = true)
     protected List<Comment> comments;
 
     public Product() {

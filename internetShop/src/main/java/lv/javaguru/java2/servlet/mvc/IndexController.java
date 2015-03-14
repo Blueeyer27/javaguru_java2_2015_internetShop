@@ -101,6 +101,14 @@ public class IndexController extends AccessController {
 
         try {
             products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
+            //products = productDAO.getAll();
+
+            for (Product product : products)
+                System.out.println(product.getDescription());
+
+            System.out.println("GGSGS: " + products.get(0).getName());
+            for (Product product : products)
+                System.out.println(product.getName());
 
             // THIS IS JUST FOR TEST! (CREATE 100 NEW PRODUCTS IN DATABASE)
             if (productDAO.getTotal() < 1) {

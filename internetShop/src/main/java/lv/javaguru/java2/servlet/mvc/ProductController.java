@@ -161,17 +161,7 @@ public class ProductController extends AccessController {
 
 
     private void loadComments(HttpServletRequest request, Product product) {
-        List<Comment> comments = null;
-
-//        try {
-            comments = product.getComments();
-
-//            for (Comment comment : comments) {
-//                comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
-//            }
-//        } catch (DBException e) {
-//            e.printStackTrace();
-//        }
+        List<Comment> comments = product.getComments();
 
         request.setAttribute("all_comments", comments);
     }

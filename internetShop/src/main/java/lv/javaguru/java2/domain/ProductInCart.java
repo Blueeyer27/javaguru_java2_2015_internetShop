@@ -23,7 +23,7 @@ public class ProductInCart {
     private long ID;
 
     //@Column(name="ProductID",columnDefinition = "INT(11)")
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProductID")
     private Product product;
 
@@ -39,16 +39,10 @@ public class ProductInCart {
     @Column(name="IsOrdered",columnDefinition = "BIT")
     private boolean isOrdered;
 
-    //@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    //@JoinTable(name = "products")
-    //private Product product;
-
     public ProductInCart() {
 
     }
 
-//    public ProductInCart(Long productID, Long userID,
-//                  Integer count, boolean isOrdered) {
 public ProductInCart(Product product, Long userID,
                      Integer count, boolean isOrdered) {
         this.product = product;
@@ -70,7 +64,7 @@ public ProductInCart(Product product, Long userID,
     public void setID(long value) { ID = value; }
 
     public long getUserID() { return userID; }
-    public void setUserID(long value) { this.userID = value; }
+    public void setUserID(long value) { userID = value; }
 
 //    public long getProductId() { return productID; }
 //    public void setProductId(long value) { productID = value; }
