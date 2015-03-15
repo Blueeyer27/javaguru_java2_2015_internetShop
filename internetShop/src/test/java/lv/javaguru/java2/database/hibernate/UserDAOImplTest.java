@@ -31,7 +31,7 @@ public class UserDAOImplTest extends SpringIntegration {
     }
 
 //    @After
-//    public void setUp() throws Exception {
+//    public void tearDown() throws Exception {
 //        databaseCleaner.cleanDatabase();
 //    }
 

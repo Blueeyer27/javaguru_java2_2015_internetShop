@@ -47,6 +47,7 @@ public class Product {
         this. name = name;
         this.description = description;
         this.price = price;
+        this.imageURL = null;
     }
 
     public List<Comment> getComments() { return comments; }
