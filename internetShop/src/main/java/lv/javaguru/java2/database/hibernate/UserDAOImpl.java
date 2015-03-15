@@ -2,7 +2,6 @@ package lv.javaguru.java2.database.hibernate;
 
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
-import lv.javaguru.java2.database.jdbc.DAOImpl;
 import lv.javaguru.java2.domain.User;
 
 import org.hibernate.Session;
@@ -11,11 +10,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component("ORM_UserDAO")
