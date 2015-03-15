@@ -35,7 +35,7 @@ public class ProductInCartDAOImplTest extends SpringIntegration {
 
     @Before
     public void setUp() throws Exception {
-        //databaseCleaner.cleanDatabase();
+        databaseCleaner.cleanDatabase();
     }
 
     @Test
@@ -68,6 +68,18 @@ public class ProductInCartDAOImplTest extends SpringIntegration {
 
 
         assertTrue(productInCartDAO.getCartWithProd(user.getId()).size() == 0);
+
+        Product product = new Product("Soda", "Cold tasty soda.", 0.59f);
+        productDAO.create(product);
+
+        int productCount = 8;
+        ProductInCart productInCart =
+                new ProductInCart(product, user.getId(), productCount, false);
+        productInCartDAO.addElem(productInCart);
+
+        assertTrue(productInCartDAO.getCartWithProd(user.getId()).size() == 1);
+        assertEquals(productInCartDAO.getCartWithProd(user.getId())
+                .get(0).getProduct().getProductId(), product.getProductId());
     }
 
     @Test
