@@ -70,20 +70,20 @@ public class IndexController extends AccessController {
         List<Product> products = null;
 
         String page = request.getParameter("page");
-        //System.out.println("Requested page: " + page);
+
         if (page == null) page = "1";
         else if (Integer.parseInt(page) < 1) page = "1";
 
         try {
             products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
-            //products = productDAO.getAll();
         } catch (DBException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
         String nextPage = (request.getRequestURI() + "?page=" +
                 (Integer.parseInt(page) + 1));
-        //System.out.println("Next page: " + nextPage);
 
         return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
     }
@@ -120,7 +120,6 @@ public class IndexController extends AccessController {
     private void putInDBCart(Long prodID, HttpSession session) {
         Long userID = (Long) session.getAttribute("user_id");
         try {
-
             productInCartDAO.addElem(new ProductInCart(productDAO.getById(prodID), userID, 1, false));
             System.out.println("PRODUCT ADDED TO CART");
         } catch (DBException e) {
