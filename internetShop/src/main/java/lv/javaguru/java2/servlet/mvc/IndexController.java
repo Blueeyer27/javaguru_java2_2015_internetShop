@@ -78,8 +78,6 @@ public class IndexController extends AccessController {
             products = productDAO.getRange((Integer.parseInt(page) - 1) * 10, 11);
         } catch (DBException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
 
         String nextPage = (request.getRequestURI() + "?page=" +
