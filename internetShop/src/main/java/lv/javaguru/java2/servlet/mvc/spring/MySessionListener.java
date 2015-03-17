@@ -19,13 +19,17 @@ public class MySessionListener implements HttpSessionListener {
     public void sessionCreated(HttpSessionEvent sessionEvent) {
         HttpSession session = sessionEvent.getSession();
 
-        session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
+        // Adding empty cart to session <productID, productCount>
+        session.setAttribute("in_cart", new HashMap<Long, Integer>());
         session.setAttribute("access_level", AccessLevel.GUEST.getValue());
-        session.setAttribute("liked", new ArrayList<Long>());    }
+        session.setAttribute("liked", new ArrayList<Long>());
+
+        System.out.println("Session Created:: ID=" + sessionEvent.getSession().getId());
+    }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent sessionEvent) {
-        System.out.println("Session Destroyed:: ID="+sessionEvent.getSession().getId());
+        System.out.println("Session Destroyed:: ID=" + sessionEvent.getSession().getId());
     }
 
 }

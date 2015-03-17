@@ -53,7 +53,8 @@ public class IndexControllerTest {
 
         List<Product> products = createProducts(10);
         //Mockito.doReturn(products).when(productDAO).getRange(anyInt(), anyInt());
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     private List<Product> createProducts(int productCount) {
@@ -77,7 +78,8 @@ public class IndexControllerTest {
         //Mockito.doThrow(new Exception()).doNothing().when(productDAO).delete(anyLong());
 
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
 
         verify(productDAO, times(1)).delete(anyLong());
     }
@@ -94,7 +96,8 @@ public class IndexControllerTest {
         doReturn(2).when(session).getAttribute("access_level");
         doReturn(27l).when(session).getAttribute("user_id");
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     @Test
@@ -110,7 +113,8 @@ public class IndexControllerTest {
         doReturn(2).when(session).getAttribute("access_level");
         doReturn(createSessionCart(10)).when(session).getAttribute("in_cart");
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
 
         verify(productInCartDAO, times(1))
                 .removeFromCart(any(Product.class), anyLong());
@@ -136,7 +140,8 @@ public class IndexControllerTest {
 //        doThrow(new DBException("Test exception!"))
 //                .when(productDAO.getById(anyLong()));
                 //.thenThrow(new DBException("Test exception!"));
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     @Test
@@ -147,7 +152,8 @@ public class IndexControllerTest {
         doThrow(new DBException("Test exception!"))
                 .when(productDAO).delete(anyLong());
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     @Test
@@ -157,7 +163,8 @@ public class IndexControllerTest {
         doThrow(new DBException("Test exception!"))
                 .when(productDAO).getRange(anyInt(), anyInt());
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     @Test
@@ -175,7 +182,8 @@ public class IndexControllerTest {
         doThrow(new DBException("Test exception!"))
                 .when(productInCartDAO).addElem(any(ProductInCart.class));
 
-        indexController.safeRequest(request, null);
+        //indexController.safeRequest(request, null);
+        indexController.processRequest(request, null);
     }
 
     private Map<Long, Integer> createSessionCart(int productCount) {

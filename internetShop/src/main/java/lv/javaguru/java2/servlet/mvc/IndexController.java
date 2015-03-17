@@ -11,6 +11,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class IndexController extends AccessController {
+//@Component
+//public class IndexController extends AccessController {
+
+@Controller
+public class IndexController {
 
     @Autowired
     @Qualifier("ORM_ProductDAO")
@@ -50,8 +57,14 @@ public class IndexController extends AccessController {
 
     HttpSession session;
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+    @RequestMapping(value = "index", method = {RequestMethod.GET})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("index");
         session = request.getSession();
 
         if ((request.getParameter("delete") != null)) {
@@ -83,7 +96,8 @@ public class IndexController extends AccessController {
         String nextPage = (request.getRequestURI() + "?page=" +
                 (Integer.parseInt(page) + 1));
 
-        return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
+        //return new MVCModel("/index.jsp", new PageInfo(products, nextPage));
+        return model.addObject("model", new PageInfo(products, nextPage));
     }
 
     private void removeProduct(HttpServletRequest request) {

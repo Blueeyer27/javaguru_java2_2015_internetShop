@@ -11,6 +11,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class LoginController extends AccessController {
+//@Component
+//public class LoginController extends AccessController {
+
+@Controller
+public class LoginController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
@@ -31,12 +38,20 @@ public class LoginController extends AccessController {
     @Qualifier("ORM_ProductInCartDAO")
     ProductInCartDAO productInCartDAO;
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    @RequestMapping(value = {"login", "logout"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("login");
+
         HttpSession session = request.getSession(true);
 
-        if (request.getServletPath().equals("/logout"))
-            return new MVCModel("/logout.jsp");
+        if (request.getServletPath().equals("/logout")) {
+//            return new MVCModel("/logout.jsp");
+            model.setViewName("logout");
+            return model;
+        }
 
         if (request.getMethod().equals("POST")) {
             String error = null;
@@ -45,8 +60,10 @@ public class LoginController extends AccessController {
 
             System.out.println("Login method: " + username + " " + password);
 
-            if (username.isEmpty() || password.isEmpty())
-                return new MVCModel("/login.jsp", "Login and password fields can't be empty.");
+            if (username.isEmpty() || password.isEmpty()) {
+                //return new MVCModel("/login.jsp", "Login and password fields can't be empty.");
+                return model.addObject("model", "Login and password fields can't be empty.");
+            }
 
 
             User user = null;
@@ -80,7 +97,10 @@ public class LoginController extends AccessController {
 
                     if (inCart.size() > 0) {
                         session.setAttribute("transfer", "transfer");
-                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+//                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+//                                "Do you want to transfer them on your account?");
+                        model.setViewName("transfer");
+                        return model.addObject("model", "You have products in your cart. " +
                                 "Do you want to transfer them on your account?");
                     } else {
                         loadCartToSession(session, user.getId());
@@ -91,10 +111,12 @@ public class LoginController extends AccessController {
             } catch (InvalidKeySpecException e) {
                 e.printStackTrace();
             }
-            return new MVCModel("/login.jsp", error);
+            //return new MVCModel("/login.jsp", error);
+            return model.addObject("model", error);
         }
 
-        return new MVCModel("/login.jsp", null);
+        //return new MVCModel("/login.jsp", null);
+        return model.addObject("model", null);
     }
 
     private void loadCartToSession(HttpSession session, Long userID) {

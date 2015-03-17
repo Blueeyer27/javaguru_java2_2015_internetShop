@@ -40,7 +40,7 @@ public class MVCFilter implements Filter {
         }
 
         controllerMapping = new HashMap<String, MVCController>();
-        controllerMapping.put("/index", getBean(IndexController.class));
+        //controllerMapping.put("/index", getBean(IndexController.class));
         controllerMapping.put("/users", getBean(UsersController.class));
         controllerMapping.put("/register", getBean(RegisterController.class));
         controllerMapping.put("/login", getBean(LoginController.class));

@@ -13,7 +13,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<jsp:include page="includes/header.jsp"/>
+<%--<jsp:include page="includes/header.jsp"/>--%>
+<%@ include file="includes/header.jsp" %>
 <body>
 <script>
     function nextPage(link) {
@@ -59,17 +60,20 @@
 <%
     Map<Long,Integer> inCart = (HashMap<Long,Integer>) session.getAttribute("in_cart");
 %>
-<jsp:include page="includes/menu.jsp"/>
+<%--<jsp:include page="includes/menu.jsp"/>--%>
+<%@ include file="includes/menu.jsp" %>
 <div id="content_wrapper">
     <div id="content">
-        <jsp:include page="includes/user_bar.jsp"/>
+        <%--<jsp:include page="includes/user_bar.jsp"/>--%>
+            <%@ include file="includes/user_bar.jsp" %>
         <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
             if (products != null) { %>
         <div id="column_w530">
             <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>
             <input type='submit' value='Add New Product'
                    onclick='ShowOrHide("test_div")'><br><br>
-            <jsp:include page="includes/product_form.jsp"/>
+            <%--<jsp:include page="includes/product_form.jsp"/>--%>
+            <%@ include file="includes/product_form.jsp" %>
             <% }%>
         <%
             int lastElem = 1;
