@@ -74,13 +74,13 @@ public class MVCFilter implements Filter {
         System.out.println(contextURI);
         String path = ((HttpServletRequest) request).getRequestURI();
 
-        HttpSession session = req.getSession(true);
-
-        if (session.isNew()) {
-            session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
-            session.setAttribute("access_level", AccessLevel.GUEST.getValue());
-            session.setAttribute("liked", new ArrayList<Long>());
-        }
+//        HttpSession session = req.getSession(true);
+//
+//        if (session.isNew()) {
+//            session.setAttribute("in_cart", new HashMap<Long, Integer>()); // empty cart (<prodID, count>)
+//            session.setAttribute("access_level", AccessLevel.GUEST.getValue());
+//            session.setAttribute("liked", new ArrayList<Long>());
+//        }
 
         if (contextURI.equals("/index.jsp"))
             contextURI = "/index";
