@@ -46,6 +46,7 @@ public class LoginController {
         model.setViewName("login");
 
         HttpSession session = request.getSession(true);
+        session.setAttribute("page_name", "Login Page");
 
         if (request.getServletPath().equals("/logout")) {
 //            return new MVCModel("/logout.jsp");

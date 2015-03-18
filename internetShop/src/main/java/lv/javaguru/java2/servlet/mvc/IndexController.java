@@ -66,6 +66,7 @@ public class IndexController {
         ModelAndView model = new ModelAndView();
         model.setViewName("index");
         session = request.getSession();
+        session.setAttribute("page_name", "Main Page");
 
         if ((request.getParameter("delete") != null)) {
             deleteProduct(request);

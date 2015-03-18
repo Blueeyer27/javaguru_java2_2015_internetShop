@@ -76,7 +76,8 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'product0','This is test product description.',0.250000,NULL),
+INSERT INTO `products` VALUES
+(1,'product0','This is test product description.',0.250000,NULL),
 (2,'product1','This is test product description.',0.250000,NULL),
 (3,'product2','This is test product description.',0.250000,NULL),
 (4,'product3','This is test product description.',0.250000,NULL),

@@ -11,6 +11,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-@Component
-public class CartController extends AccessController {
+//@Component
+//public class CartController extends AccessController {
+@Controller
+public class CartController {
 
     @Autowired
     @Qualifier("ORM_ProductDAO")
@@ -34,9 +40,13 @@ public class CartController extends AccessController {
 
     private HttpSession session;
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+    @RequestMapping(value = "cart", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
         session = request.getSession();
+        session.setAttribute("page_name", "My Cart");
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
@@ -56,7 +66,8 @@ public class CartController extends AccessController {
             }
         }
 
-        return new MVCModel("/cart.jsp", inCart);
+        //return new MVCModel("/cart.jsp", inCart);
+        return new ModelAndView("cart").addObject("model", inCart);
     }
 
     private void getGuestCart(List<ProductInCart> inCart, HttpServletRequest request) {

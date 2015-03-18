@@ -8,6 +8,11 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,8 +27,10 @@ import static java.lang.Thread.sleep;
  * Created by Anna on 27.02.15.
  */
 
-@Component
-public class NewsController extends AccessController {
+//@Component
+//public class NewsController extends AccessController {
+@Controller
+public class NewsController {
 
     @Autowired
     @Qualifier("ORM_NewItemDAO")
@@ -34,9 +41,14 @@ public class NewsController extends AccessController {
         this.newItemDAO = newItemDAO;
     }
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    //    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    @RequestMapping(value = "news", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("news");
+
         HttpSession session = request.getSession();
+        session.setAttribute("page_name", "Shop News");
 
         ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
 
@@ -55,7 +67,8 @@ public class NewsController extends AccessController {
                 newItemDAO.create(insertNewToDB(request));
             } catch (DBException e) {
                 e.printStackTrace();
-                return new MVCModel("/news.jsp", "Something gone wrong with DB.");
+                //return new MVCModel("/news.jsp", "Something gone wrong with DB.");
+                return model.addObject("model", "Something gone wrong with DB.");
             }
         }
 
@@ -66,9 +79,10 @@ public class NewsController extends AccessController {
         likeNewItem(request, likedItems);
 
         // passing news from DB to page
-        MVCModel model = null;
+        //MVCModel model = null;
         try {
-            model = new MVCModel("/news.jsp", newItemDAO.getAll());
+            //model = new MVCModel("/news.jsp", newItemDAO.getAll());
+            model.addObject("model", newItemDAO.getAll());
         } catch (DBException e) {
             e.printStackTrace();
         }
@@ -76,7 +90,7 @@ public class NewsController extends AccessController {
         return model;
     }
 
-//---------------PROCEDURE DEFINATION-----------------------------------
+    //---------------PROCEDURE DEFINATION-----------------------------------
     private void removingNewItem(HttpServletRequest request) {
         if (request.getParameter("idRemove") != null) {
             //String dateID = new String(request.getParameter("idDelete"));
@@ -93,7 +107,7 @@ public class NewsController extends AccessController {
         if (request.getParameter("idLike") != null) {
             //String dateID = new String(request.getParameter("idLike"));
             long num = Long.parseLong(request.getParameter("idLike"));
-            if(!likedItems.contains(num)){
+            if (!likedItems.contains(num)) {
                 try {
                     newItemDAO.update(newItemDAO.getById(num));
                     likedItems.add(num);
@@ -114,9 +128,9 @@ public class NewsController extends AccessController {
                 NewItem newItem = new NewItem(formatter.format(date),
                         "Title-" + i, "This is a new number-" + i, rand.nextInt(100));
 
-                    newItemDAO.create(newItem);
+                newItemDAO.create(newItem);
 
-                    sleep(2000);
+                sleep(2000);
             }
         }
     }
