@@ -12,6 +12,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,21 +29,34 @@ import java.util.List;
  * Created by Anton on 2015.03.02..
  */
 
-@Component
-public class UserInfoController extends AccessController {
+//@Component
+//public class UserInfoController extends AccessController {
+
+@Controller
+public class UserInfoController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     UserDAO userDAO;
 
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\users\\";
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+    @RequestMapping(value = "user", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("user");
         HttpSession session = request.getSession();
+        session.setAttribute("page_name", "User Information");
 
         String currLogin = (String) session.getAttribute("username");
-        if (currLogin == null) return new MVCModel("/user.jsp", "Something wrong with session. " +
-                "Please, try to login again.");
+        if (currLogin == null) {
+//            return new MVCModel("/user.jsp", "Something wrong with session. " +
+//                    "Please, try to login again.");
+            return model.addObject("model", "Something wrong with session. " +
+                    "Please, try to login again.");
+        }
 
         User user = null;
 
@@ -84,7 +101,8 @@ public class UserInfoController extends AccessController {
                 if (request.getParameter("update") != null) {
                     if (!checkFields(request)) {
                         request.setAttribute("message", "Fields can't be empty...");
-                        return new MVCModel("/user.jsp", user);
+                        //return new MVCModel("/user.jsp", user);
+                        return model.addObject("model", user);
                     } else {
                         updateUserInfo(user, request);
 
@@ -143,7 +161,8 @@ public class UserInfoController extends AccessController {
             }
         }
 
-        return new MVCModel("/user.jsp", user);
+        //return new MVCModel("/user.jsp", user);
+        return model.addObject("model", user);
     }
 
     private void updateUserInfo(User user, HttpServletRequest request) {

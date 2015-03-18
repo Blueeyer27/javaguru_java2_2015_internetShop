@@ -7,13 +7,20 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Component
-public class UsersController implements MVCController {
+//@Component
+//public class UsersController implements MVCController {
+
+@Controller
+public class UsersController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
@@ -35,9 +42,10 @@ public class UsersController implements MVCController {
 
     }
 
-    @Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
-
+    //@Override
+    @RequestMapping(value = "users", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("users");
 
         List<User> users = null;
 
@@ -57,8 +65,9 @@ public class UsersController implements MVCController {
 
         RezList rezult = new RezList(users);
 
-        MVCModel model = new MVCModel("/users.jsp", rezult);
+        //MVCModel model = new MVCModel("/users.jsp", rezult);
 
+        model.addObject("model", rezult);
         /*for(User user : users){
             try {
                 userDAO.delete(user.getId());
@@ -68,8 +77,6 @@ public class UsersController implements MVCController {
         }*/
 
         return model;
-
-
     }
 
     private User createUser(String name, String surname, String persCode, String gender,

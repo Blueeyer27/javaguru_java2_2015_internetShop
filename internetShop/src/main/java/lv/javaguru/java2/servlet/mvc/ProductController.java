@@ -15,6 +15,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,9 +30,11 @@ import java.util.List;
  * Created by Anton on 2015.02.27..
  */
 
-@Component
-public class ProductController extends AccessController {
+//@Component
+//public class ProductController extends AccessController {
 
+@Controller
+public class ProductController {
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
     @Autowired
@@ -43,9 +49,15 @@ public class ProductController extends AccessController {
     @Qualifier("ORM_CommentDAO")
     private CommentDAO commentDAO;
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+    @RequestMapping(value = "product", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("product");
+
         HttpSession session = request.getSession();
+        session.setAttribute("page_name", "Product Information");
 
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
@@ -116,10 +128,13 @@ public class ProductController extends AccessController {
             if (product != null)
                 loadComments(request, product);
 
-            return new MVCModel("/product.jsp", product);
+            //return new MVCModel("/product.jsp", product);
+            return model.addObject("model", product);
         }
 
-        return new MVCModel("/access.jsp", "Product ID need to be send as parameter.");
+        //return new MVCModel("/access.jsp", "Product ID need to be send as parameter.");
+        model.setViewName("access");
+        return model.addObject("model", "Product ID need to be send as parameter.");
     }
 
     private void updateProductImage(Long productID, String fileName) {

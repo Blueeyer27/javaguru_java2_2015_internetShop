@@ -9,6 +9,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +25,11 @@ import java.util.Map;
  * Created by Anton on 2015.03.08..
  */
 
-@Component
-public class TransferController extends AccessController {
+//@Component
+//public class TransferController extends AccessController {
+
+@Controller
+public class TransferController {
     @Autowired
     @Qualifier("ORM_ProductInCartDAO")
     ProductInCartDAO productInCartDAO;
@@ -31,8 +38,13 @@ public class TransferController extends AccessController {
     @Qualifier("ORM_ProductDAO")
     ProductDAO productDAO;
 
-    @Override
-    MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+//    @Override
+//    MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+    @RequestMapping(value = "transfer", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("transfer");
+        request.getSession().setAttribute("page_name", "Session Cart Transfer");
         if(request.getParameter("answer") != null) {
             HttpSession session = request.getSession();
             Long userID = (Long) session.getAttribute("user_id");
@@ -79,6 +91,7 @@ public class TransferController extends AccessController {
 
             session.setAttribute("in_cart", sessionCart);
         }
-        return new MVCModel("/transfer.jsp", null);
+        //return new MVCModel("/transfer.jsp", null);
+        return model;
     }
 }
