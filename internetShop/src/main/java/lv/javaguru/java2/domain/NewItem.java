@@ -27,6 +27,18 @@ public class NewItem {
     @Column(name="Likes",columnDefinition = "INT(11)")
     private int likes;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CatName")
+    private Category category;
+
+    public NewItem(Category category, String dateID, String title, String body, int likes) {
+        this.dateID = dateID;
+        this.title = title;
+        this.body = body;
+        this.likes = likes;
+        this.category = category;
+    }
+
     public NewItem(String dateID, String title, String body, int likes) {
         this.dateID = dateID;
         this.title = title;
@@ -73,4 +85,12 @@ public class NewItem {
     public long getNum() { return num; }
 
     public void setNum(long num) { this.num = num; }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

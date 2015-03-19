@@ -1,8 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
+import lv.javaguru.java2.database.CategoryDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.NewItemDAO;
+import lv.javaguru.java2.domain.Category;
 import lv.javaguru.java2.domain.NewItem;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,50 @@ import static java.lang.Thread.sleep;
 public class NewsController {
 
     @Autowired
+    @Qualifier("ORM_CategoryDAO")
+    private CategoryDAO categoryDAO;
+
+    @Autowired
     @Qualifier("ORM_NewItemDAO")
     private NewItemDAO newItemDAO;
+
+    public class Result{
+        private List<NewItem> news;
+        private List<Category> categories;
+        private List<NewItem> newsFromCategory;
+
+        public Result() {
+        }
+
+        public List<NewItem> getNews() {
+            return news;
+        }
+
+        public void setNews(List<NewItem> news) {
+            this.news = news;
+        }
+
+        public List<Category> getCategories() {
+            return categories;
+        }
+
+        public void setCategories(List<Category> categories) {
+            this.categories = categories;
+        }
+
+        public List<NewItem> getNewsFromCategory() {
+            return newsFromCategory;
+        }
+
+        public void setNewsFromCategory(List<NewItem> newsFromCategory) {
+            this.newsFromCategory = newsFromCategory;
+        }
+    }
+
+
+
     Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    Result result = new Result();
 
     public void setNewItemDAO(NewItemDAO newItemDAO) {
         this.newItemDAO = newItemDAO;
@@ -78,12 +121,24 @@ public class NewsController {
         // adding likes
         likeNewItem(request, likedItems);
 
+
         // passing news from DB to page
         //MVCModel model = null;
+
+        try {
+            result.setNews(newItemDAO.getAll());
+            result.setCategories(categoryDAO.getAll());
+            List<NewItem> fromCat = viewCat(request);
+            result.setNewsFromCategory(fromCat);
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+
         try {
             //model = new MVCModel("/news.jsp", newItemDAO.getAll());
-            model.addObject("model", newItemDAO.getAll());
-        } catch (DBException e) {
+            //model.addObject("model", newItemDAO.getAll());
+            model.addObject("model", result);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -119,27 +174,61 @@ public class NewsController {
         return likedItems;
     }
 
+    private List<NewItem> viewCat(HttpServletRequest request) throws DBException {
+        List<NewItem> all = newItemDAO.getAll();
+        List<NewItem> rez = newItemDAO.getAll();
+        //List<NewItem> rez = null;
+
+        if ((request.getParameter("idView") != null) && ( !request.getParameter("idView").equals("All"))){
+            String catName = request.getParameter("idView");
+            rez.clear();
+            for (NewItem a : all){
+                if (a.getCategory().getCatName().equals(catName)){
+                    rez.add(a);
+                }
+            }
+        }
+        return rez;
+    }
+
     private void creatingMaterialsForTest() throws DBException, InterruptedException {
         Random rand = new Random();
         if (newItemDAO.getAll().size() < 5) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 3; i++) {
                 Timestamp stamp = new Timestamp(System.currentTimeMillis());
                 Date date = new Date(stamp.getTime());
-                NewItem newItem = new NewItem(formatter.format(date),
-                        "Title-" + i, "This is a new number-" + i, rand.nextInt(100));
-
+                NewItem newItem = new NewItem(categoryDAO.getById("Sales"), formatter.format(date),
+                        "Title-Sales-" + i, "This is a new number-" + i, rand.nextInt(100));
                 newItemDAO.create(newItem);
+                sleep(2000);
+            }
+            for (int i = 3; i < 6; i++) {
+                Timestamp stamp = new Timestamp(System.currentTimeMillis());
+                Date date = new Date(stamp.getTime());
+                NewItem newItem = new NewItem(categoryDAO.getById("Comming_Soon"), formatter.format(date),
+                        "Title-Comming_Soon-" + i, "This is a new number-" + i, rand.nextInt(100));
+                newItemDAO.create(newItem);
+                sleep(2000);
+            }
 
+            for (int i = 6; i < 9; i++) {
+                Timestamp stamp = new Timestamp(System.currentTimeMillis());
+                Date date = new Date(stamp.getTime());
+                NewItem newItem = new NewItem(categoryDAO.getById("Actual"), formatter.format(date),
+                        "Title-Actual-" + i, "This is a new number-" + i, rand.nextInt(100));
+                newItemDAO.create(newItem);
                 sleep(2000);
             }
         }
     }
 
-    private NewItem insertNewToDB(HttpServletRequest request) {
+    private NewItem insertNewToDB(HttpServletRequest request) throws DBException {
         Timestamp stamp = new Timestamp(System.currentTimeMillis());
         Date date = new Date(stamp.getTime());
+        Category category = categoryDAO.getById(request.getParameter("category"));
 
         NewItem newItem = new NewItem(
+                category,
                 formatter.format(date),
                 request.getParameter("title"),
                 request.getParameter("body"),
@@ -147,4 +236,6 @@ public class NewsController {
 
         return newItem;
     }
+
+
 }

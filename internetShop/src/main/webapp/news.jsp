@@ -2,6 +2,9 @@
 <%@ page import="lv.javaguru.java2.domain.NewItem" %>
 <%@ page import="lv.javaguru.java2.AccessLevel" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="lv.javaguru.java2.servlet.mvc.NewsController" %>
+<%@ page import="lv.javaguru.java2.domain.Category" %>
+<%@ page import="java.util.Collection" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -25,16 +28,26 @@
         var uri = document.documentURI.split('?')[0];
         window.location = "news?idLike=" + id;
     }
+
+
+    function view(name) {
+        var uri = document.documentURI.split('?')[0];
+        window.location = "news?idView=" + name.value;
+    }
 </script>
 
-<%
-    ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
-%>
+<% ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked"); %>
+
+<%List<Category> categories = ((NewsController.Result) request.getAttribute("model")).getCategories();
+    //List<NewItem> news = (List<NewItem>) request.getAttribute("model");%>
+
+<% List<NewItem> news = ((NewsController.Result) request.getAttribute("model")).getNews();%>
 
     <jsp:include page="includes/menu.jsp"/>
     <div id="content_wrapper">
         <div id="content">
             <jsp:include page="includes/user_bar.jsp"/>
+
 
             <!-- --------------------FORM FOR INSERTING NEWS (ADMIN-VISIBLE)------------------------ -->
             <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
@@ -51,6 +64,18 @@
                     </tr>
 
                     <tr>
+                        <td>Category:</td>
+                        <td>
+                            <%for (Category ct : categories){%>
+                                <input type="radio" name="category" value=<%=ct.getCatName()%> checked>
+                                <%=ct.getCatName()%><br>
+                            <%}%>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
                         <td></td>
                         <td><input type="SUBMIT" value="Add" name="submit"></td>
                     </tr>
@@ -59,33 +84,74 @@
             <%}%>
 
             <!-- ------------GETTING NEWS FROM DB---------- -->
-            <%  List<NewItem> news = (List<NewItem>) request.getAttribute("model");
-                if (news.size() < 1) {%>
-                    <p>No news</p>
-            <%  }
+            <select name="selectCat" onchange="view(this)">
+                <option value="">Choose category</option>
+                <% for (Category ca : categories) {%>
+                <option value=<%=ca.getCatName() %> ><%=ca.getCatName() %></option>
+                <%}%>
+            </select><br><br><br>
+
+            <% List<NewItem> newsFromCat = ((NewsController.Result) request.getAttribute("model")).getNewsFromCategory();
+                if (newsFromCat.size() > 0){
+                    for (NewItem n : newsFromCat){%>
+                        <div id="column_w530"><div class="header_02"><%=n.getTitle()%></div>
+                            <p class="em_text"><%=n.getBody()%></p>
+                            <p><%=n.getLikes()%> people like this</p>
+                            <p><%=n.getDateID() + "\t"%></p>
+
+
+                            <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
+                            <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
+                            <input id='<%=n.getNum()%>' type='submit' value='Move to archive'
+                                   onclick='removeItem("<%=n.getNum()%>")'>
+                            <%}%>
+
+                            <!-- ----------------------BUTTON FOR LIKES------------------- -->
+                            <% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
+                            <% if(!likedItems.contains(n.getNum())){%>
+                            <input id='<%=n.getNum()%>' type='submit' value='Like'
+                                   onclick='likeItem("<%=n.getNum()%>")'>
+                            <%} else {%>
+                            <font color="#228b22"></font>
+                            <% }%>
+                            <%}%>
+
+                         <div class="margin_bottom_20"></div>
+                         <div class="cleaner"></div>
+                         </div><br><br><br><br><br><br><br><br><br><br>
+                    <%  } %>
+                    <div class="cleaner"></div>
+
+                <% } %>
+
+
+
+            <!--% for (Category c : categories) { %>
+            <div class="header_02"><!%=c.getCatName()%></div>
+
                 for (NewItem n : news) { %>
                     <div id="column_w530">
-                        <div class="header_02"><%=n.getTitle()%></div>
-                        <p class="em_text"><%=n.getBody()%></p>
-                        <p><%=n.getLikes()%> people like this</p>
-                        <p><%=n.getDateID() + "\t"%></p>
+                        <div class="header_02"><!%=n.getTitle()%></div>
+                        <p class="em_text"><!%=n.getBody()%></p>
+                        <p><!%=n.getLikes()%> people like this</p>
+                        <p><!%=n.getDateID() + "\t"%></p>
 
 
                         <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
-                        <% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
-                            <input id='<%=n.getNum()%>' type='submit' value='Move to archive'
-                                onclick='removeItem("<%=n.getNum()%>")'>
-                        <%}%>
+                        <!--% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
+                            <input id='<!%=n.getNum()%>' type='submit' value='Move to archive'
+                                onclick='removeItem("<!%=n.getNum()%>")'>
+                        <!%}%>
 
                         <!-- ----------------------BUTTON FOR LIKES------------------- -->
-                        <% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
-                            <% if(!likedItems.contains(n.getNum())){%>
-                                <input id='<%=n.getNum()%>' type='submit' value='Like'
-                                onclick='likeItem("<%=n.getNum()%>")'>
-                            <%} else {%>
+                        <!--% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
+                            <!% if(!likedItems.contains(n.getNum())){%>
+                                <input id='<!%=n.getNum()%>' type='submit' value='Like'
+                                onclick='likeItem("<!%=n.getNum()%>")'>
+                            <!%} else {%>
                                 <font color="#228b22"></font>
-                            <% }%>
-                        <%}%>
+                            <!% }%>
+                        <!%}%>
 
 
 
@@ -94,8 +160,8 @@
                         <div class="margin_bottom_20"></div>
                         <div class="cleaner"></div>
                     </div><br><br><br><br><br><br><br><br><br><br>
-            <%  } %>
-            <div class="cleaner"></div>
+            <!%  } %>
+            <div class="cleaner"></div-->
 
 
         </div>

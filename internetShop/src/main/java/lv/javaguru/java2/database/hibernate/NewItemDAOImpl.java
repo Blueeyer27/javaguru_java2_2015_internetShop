@@ -23,7 +23,7 @@ package lv.javaguru.java2.database.hibernate;
 
 @Component("ORM_NewItemDAO")
 @Transactional
-public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
+public class NewItemDAOImpl implements NewItemDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
