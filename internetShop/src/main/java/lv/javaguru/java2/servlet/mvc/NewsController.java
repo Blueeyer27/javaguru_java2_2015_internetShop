@@ -124,7 +124,6 @@ public class NewsController {
 
         // passing news from DB to page
         //MVCModel model = null;
-
         try {
             result.setNews(newItemDAO.getAll());
             result.setCategories(categoryDAO.getAll());

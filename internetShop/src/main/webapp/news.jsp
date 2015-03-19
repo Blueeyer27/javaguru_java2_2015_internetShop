@@ -83,13 +83,27 @@
             </form>
             <%}%>
 
-            <!-- ------------GETTING NEWS FROM DB---------- -->
+            <!--------------GETTING NEWS FROM DB---------- -->
             <select name="selectCat" onchange="view(this)">
                 <option value="">Choose category</option>
                 <% for (Category ca : categories) {%>
                 <option value=<%=ca.getCatName() %> ><%=ca.getCatName() %></option>
                 <%}%>
             </select><br><br><br>
+
+            <td>Choose order:</td>
+            <td>
+                <BR>
+                <INPUT TYPE="radio" NAME="radios" VALUE="popular" CHECKED>
+                Most Popular
+                <BR>
+                <INPUT TYPE="radio" NAME="radios" VALUE="last">
+                Last
+                <BR>
+                <INPUT TYPE="radio" NAME="radios" VALUE="first">
+                First
+                <BR><BR><BR><BR>
+            </td>
 
             <% List<NewItem> newsFromCat = ((NewsController.Result) request.getAttribute("model")).getNewsFromCategory();
                 if (newsFromCat.size() > 0){

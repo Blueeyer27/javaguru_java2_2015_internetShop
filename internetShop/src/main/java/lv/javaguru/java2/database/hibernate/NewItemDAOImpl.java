@@ -62,5 +62,8 @@ public class NewItemDAOImpl implements NewItemDAO {
     }
 
 
+
+
+
 }
 
