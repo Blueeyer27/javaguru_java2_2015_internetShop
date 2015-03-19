@@ -71,6 +71,8 @@ public class IndexControllerTest {
     @Test
     public void deleteProductFromDB() throws Exception {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpSession session = Mockito.mock(HttpSession.class);
+        doReturn(session).when(request).getSession();
 
         doReturn("2727").when(request).getParameter("delete");
 
@@ -147,7 +149,9 @@ public class IndexControllerTest {
     @Test
     public void throwExceptionWhenDeleteProd() throws Exception {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpSession session = Mockito.mock(HttpSession.class);
 
+        doReturn(session).when(request).getSession();
         doReturn("2727").when(request).getParameter("delete");
         doThrow(new DBException("Test exception!"))
                 .when(productDAO).delete(anyLong());
@@ -159,7 +163,9 @@ public class IndexControllerTest {
     @Test
     public void throwExceptionWhenGetProductByRange() throws Exception {
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpSession session = Mockito.mock(HttpSession.class);
 
+        doReturn(session).when(request).getSession();
         doThrow(new DBException("Test exception!"))
                 .when(productDAO).getRange(anyInt(), anyInt());
 

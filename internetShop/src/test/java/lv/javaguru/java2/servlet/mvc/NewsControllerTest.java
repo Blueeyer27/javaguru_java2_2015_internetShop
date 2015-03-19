@@ -6,6 +6,7 @@ import lv.javaguru.java2.domain.NewItem;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,7 +39,8 @@ public class NewsControllerTest {
 
         Mockito.when(nid.getAll()).thenReturn(niList);
 
-        MVCModel model = nc.safeRequest(req, null);
-        assertEquals("/news.jsp", model.getView());
+        //MVCModel model = nc.safeRequest(req, null);
+        ModelAndView model = nc.processRequest(req, null);
+        assertEquals("news", model.getViewName());
     }
 }
