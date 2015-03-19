@@ -10,6 +10,10 @@ import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,15 +23,24 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-public class RegisterController extends AccessController {
+//@Component
+//public class RegisterController extends AccessController {
+
+@Controller
+public class RegisterController {
     @Autowired
     @Qualifier("ORM_UserDAO")
     private UserDAO userDAO;
 
-    @Override
-    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+//    @Override
+//    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+
+
+    @RequestMapping(value = "register", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = new ModelAndView("register");
         HttpSession session = request.getSession();
+        session.setAttribute("page_name", "Registration");
 
         if (request.getMethod().equals("POST")) {
             User user = new User(
@@ -40,8 +53,10 @@ public class RegisterController extends AccessController {
                     request.getParameter("password"),
                     AccessLevel.CLIENT.getValue());
 
-            if(!checkFields(user))
-                return new MVCModel("/register.jsp", "All fields must be filled.");
+            if(!checkFields(user)) {
+                //return new MVCModel("/register.jsp", "All fields must be filled.");
+                return  model.addObject("model", "All fields must be filled.");
+            }
 
 
             User testUser = null;
@@ -59,7 +74,8 @@ public class RegisterController extends AccessController {
                         session.setAttribute("user_id", userDAO.getByLogin(user.getLogin()).getId());
                     } catch (DBException e) {
                         e.printStackTrace();
-                        return new MVCModel("/register.jsp", "Something gone wrong with DB.");
+                        //return new MVCModel("/register.jsp", "Something gone wrong with DB.");
+                        return model.addObject("model", "Something gone wrong with DB.");
                     }
 
                     session.setAttribute("username", request.getParameter("username"));
@@ -72,11 +88,15 @@ public class RegisterController extends AccessController {
 
                     if (inCart.size() > 0) {
                         session.setAttribute("transfer", "yes");
-                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+//                        return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+//                                "Do you want to transfer them on your account?");
+
+                        return model.addObject("model", "You have products in your cart. " +
                                 "Do you want to transfer them on your account?");
                     }
                 } else {
-                    return new MVCModel("/register.jsp", "This login is already in use.");
+                    //return new MVCModel("/register.jsp", "This login is already in use.");
+                    return model.addObject("model", "This login is already in use.");
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
@@ -85,7 +105,8 @@ public class RegisterController extends AccessController {
             }
         }
 
-        return new MVCModel("/register.jsp", null);
+        //return new MVCModel("/register.jsp", null);
+        return model;
     }
 
     private boolean checkFields(User user) {
