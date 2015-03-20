@@ -73,7 +73,7 @@ public class ProductInCartDAOImpl implements ProductInCartDAO {
     }
 
     @Override
-    public void removeFromCart(Product product, Long userID) {
+    public void removeFromCart(Product product, Long userID) throws DBException {
         Session session = sessionFactory.getCurrentSession();
 
         ProductInCart productInCart = (ProductInCart) session.createCriteria(ProductInCart.class)

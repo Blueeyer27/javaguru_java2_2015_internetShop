@@ -86,8 +86,13 @@ public class CartController {
 
                 try {
                     Product product = productDAO.getById(id);
+//                    System.out.println("ID " + id);
+//
+//                    if (product != null)
+//                        System.out.println("Name: " + product.getName());
 
-                    if (product != null) inCart.add(new ProductInCart(product, count, false));
+                    if (product != null)
+                        inCart.add(new ProductInCart(product, count, false));
                     else toRemove.add(id); //product don't exist in DB anymore
 
                 } catch (DBException e) {
@@ -96,9 +101,7 @@ public class CartController {
                 }
             }
 
-            for (Long removeID : toRemove) {
-                products.remove(removeID);
-            }
+            for (Long removeID : toRemove) products.remove(removeID);
         }
     }
 
@@ -111,7 +114,8 @@ public class CartController {
         if (inSessionCart == null) return;
 
         if (inSessionCart.containsKey(prodID)) {
-            inSessionCart.remove(prodID);
+            boolean error = false;
+            //inSessionCart.remove(prodID);
 
             if ((Integer) session.getAttribute("access_level")
                     > AccessLevel.GUEST.getValue()) {
@@ -119,9 +123,13 @@ public class CartController {
                 try {
                     productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
                 } catch (DBException e) {
+                    error = true;
                     e.printStackTrace();
                 }
             }
+
+            if (!error)
+                inSessionCart.remove(prodID);
         }
     }
 }

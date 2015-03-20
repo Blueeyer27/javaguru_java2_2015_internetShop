@@ -14,6 +14,6 @@ public interface ProductInCartDAO {
     List<ProductInCart> getCartWithProd(Long userID) throws DBException;
     List<ProductInCart> getCart(Long userID) throws DBException;
 
-    void removeFromCart(Product product, Long userID);
+    void removeFromCart(Product product, Long userID) throws DBException;
     //void updateElem(Long productID, Long userID, Integer toAdd) throws DBException;
 }
