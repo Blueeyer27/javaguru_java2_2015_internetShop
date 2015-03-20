@@ -54,7 +54,8 @@ public class CartController {
             removeFromCart(request);
         }
 
-        if ((Integer)session.getAttribute("access_level") == AccessLevel.GUEST.getValue()) {
+        if ((Integer)session.getAttribute("access_level")
+                == AccessLevel.GUEST.getValue()) {
             getGuestCart(inCart, request);
         } else {
             Long userID = (Long) session.getAttribute("user_id");
@@ -72,6 +73,8 @@ public class CartController {
 
     private void getGuestCart(List<ProductInCart> inCart, HttpServletRequest request) {
         Map<Long, Integer> products = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+
+        if (products == null) return;
 
         if (products.size() > 0) {
             // This array is fo ID of items which don't exist in DB anymore
@@ -104,6 +107,9 @@ public class CartController {
 
         Map<Long, Integer> inSessionCart
                 = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+
+        if (inSessionCart == null) return;
+
         if (inSessionCart.containsKey(prodID)) {
             inSessionCart.remove(prodID);
 
