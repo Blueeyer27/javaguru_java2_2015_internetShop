@@ -236,8 +236,32 @@ UNLOCK TABLES;
 
 
 -- -----------------------------------------------------
+-- Table `java2_test`.`categories`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `java2_test`.`categories` ;
+
+CREATE TABLE IF NOT EXISTS `java2_test`.`categories` (
+  `CatId` INT(11),
+  `CatName` CHAR(30),
+  PRIMARY KEY (`CatName`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES
+(7,'Sales'),
+(8,'Comming_Soon'),
+(9,'Actual');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+-- -----------------------------------------------------
 -- Table `java2_test`.`news`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `java2_test`.`news` ;
 
 CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
@@ -246,6 +270,7 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
   `Title` CHAR(30) NOT NULL,
   `Body` CHAR(80) NOT NULL,
   `Likes` INT(11),
+  `CatName` CHAR(30),
   PRIMARY KEY (`Num`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -262,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `java2_test`.`newsbackup` (
   `Title` CHAR(30) NOT NULL,
   `Body` CHAR(80) NOT NULL,
   `Likes` INT(11),
+  `CatName` CHAR(30) NOT NULL,
   PRIMARY KEY (`Num`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -334,7 +360,8 @@ TRIGGER `java2_test`.`delete_newItem`
 BEFORE DELETE ON `java2_test`.`news`
 FOR EACH ROW
 BEGIN
-  INSERT INTO newsBackup Set Num = OLD.Num, DateId = OLD.DateId, Title = OLD.Title, Body = OLD.Body, Likes = OLD.Likes;
+  INSERT INTO newsBackup Set Num = OLD.Num, DateId = OLD.DateId, Title = OLD.Title,
+  Body = OLD.Body, Likes = OLD.Likes, CatName = OLD.CatName;
 END$$
 
 
