@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Anton on 2015.02.27..
@@ -64,17 +66,19 @@ public class ProductController {
                 List<FileItem> multiparts = new ServletFileUpload(
                         new DiskFileItemFactory()).parseRequest(request);
 
-                String fileName = null;
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        fileName = new File(item.getName()).getName();
-                        item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
-                    } else {
-                        String name = item.getFieldName();//text1
-                        String value = item.getString();
-                        request.setAttribute(name, value);
-                    }
-                }
+//                String fileName = null;
+//                for (FileItem item : multiparts) {
+//                    if (!item.isFormField()) {
+//                        fileName = new File(item.getName()).getName();
+//                        item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+//                    } else {
+//                        String name = item.getFieldName();//text1
+//                        String value = item.getString();
+//                        request.setAttribute(name, value);
+//                    }
+//                }
+
+                String fileName = uploadFileAndGetParams(request, multiparts);
 
                 //File uploaded successfully
                 System.out.println("File Uploaded Successfully");
@@ -94,7 +98,6 @@ public class ProductController {
         if (request.getAttribute("id") != null) {
             Long productID = Long.parseLong((String) request.getAttribute("id"));
 
-            System.out.println("THERE IT IS WHAT I NEED: " + productID);
             if (request.getMethod().equals("POST")) {
 
                 // If comment button pressed
@@ -156,6 +159,25 @@ public class ProductController {
         } catch (DBException e) {
             e.printStackTrace();
         }
+    }
+
+    private String uploadFileAndGetParams(HttpServletRequest request, List<FileItem> multiparts) throws Exception {
+        Map<String, String> params = new HashMap<String, String>();
+
+        String fileName = null;
+
+        for (FileItem item : multiparts) {
+            if (!item.isFormField()) {
+                fileName = new File(item.getName()).getName();
+                item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+            } else {
+                String name = item.getFieldName();//text1
+                String value = item.getString();
+                request.setAttribute(name, value);
+            }
+        }
+
+        return fileName;
     }
 
     private void loadComments(HttpServletRequest request, Long productID) {
