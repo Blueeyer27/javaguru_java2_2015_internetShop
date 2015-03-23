@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import static org.junit.Assert.*;
 /**
  * Created by Anton on 2015.03.15..
  */
+
+@WebAppConfiguration
 public class ProductDAOImplTest extends SpringIntegration {
 
     @Autowired

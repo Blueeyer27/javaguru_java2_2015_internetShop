@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
@@ -16,6 +17,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Anna on 17.03.15.
  */
+
+@WebAppConfiguration
 public class NewItemDAOImplTest extends SpringIntegration {
     @Autowired
     @Qualifier("ORM_NewItemDAO")
