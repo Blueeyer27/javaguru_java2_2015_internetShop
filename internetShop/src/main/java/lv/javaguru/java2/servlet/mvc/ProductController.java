@@ -51,6 +51,9 @@ public class ProductController {
     @Qualifier("ORM_CommentDAO")
     private CommentDAO commentDAO;
 
+    private ServletFileUpload servletFileUpload =
+            new ServletFileUpload(new DiskFileItemFactory());
+
 //    @Override
 //    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
@@ -63,8 +66,7 @@ public class ProductController {
 
         if (ServletFileUpload.isMultipartContent(request)) {
             try {
-                List<FileItem> multiparts = new ServletFileUpload(
-                        new DiskFileItemFactory()).parseRequest(request);
+                List<FileItem> multiparts = servletFileUpload.parseRequest(request);
 
 //                String fileName = null;
 //                for (FileItem item : multiparts) {
@@ -79,12 +81,10 @@ public class ProductController {
 //                }
 
                 String fileName = uploadFileAndGetParams(request, multiparts);
-
-                //File uploaded successfully
-                System.out.println("File Uploaded Successfully");
+                System.out.println("File Name: " + fileName);
 
                 updateProductImage(Long.parseLong((String)request.getAttribute("id")), fileName);
-                request.setAttribute("message", "File Uploaded Successfully");
+                request.setAttribute("message", "Request successfully processed!");
             } catch (Exception ex) {
                 System.out.println("File Upload Failed due to " + ex);
                 request.setAttribute("message", "File Upload Failed due to " + ex);

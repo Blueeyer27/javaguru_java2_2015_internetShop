@@ -8,12 +8,15 @@ import lv.javaguru.java2.domain.Comment;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.mock.MockFileItem;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +48,19 @@ public class ProductControllerTest {
     @Mock HttpServletRequest request;
     @Mock HttpSession session;
 
-    private ServletFileUpload mockUpload;
+    @Mock private ServletFileUpload mockUpload;
+//    private ServletFileUploadCreator mockCreator;
+//
+//    @Before
+//    public void setup() {
+//        config = new DefaultMultipartConfig();
+//
+//        MockitoAnnotations.initMocks(this);
+//
+//        mockCreator = mock(ServletFileUploadCreator.class);
+//        mockUpload = mock(ServletFileUpload.class);
+//        when(mockCreator.create(any(FileItemFactory.class))).thenReturn(mockUpload);
+//    }
 
     @InjectMocks
     ProductController productController = new ProductController();
@@ -115,7 +130,13 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void multipartContentFieldsOnlyTest() throws Exception {
+    public void uploadWithFieldsOnly() throws Exception {
+        doReturn(session).when(request).getSession();
+        when(request.getAttribute("id")).thenReturn("22");
+
+        doReturn(new Product("banana", "yellow fruit", 22.55f))
+                .when(productDAO).getById(anyLong());
+
         final List<FileItem> elements = new ArrayList<FileItem>();
         //org.loom.mock.MockFileItem
 
@@ -126,6 +147,33 @@ public class ProductControllerTest {
         when(request.getContentType()).thenReturn("multipart/form-data");
         when(request.getMethod()).thenReturn("POST");
         when(mockUpload.parseRequest(request)).thenReturn(elements);
+
+        ModelAndView model = productController.processRequest(request, null);
+    }
+
+    @Test
+    public void uploadWithFieldsAndFiles() throws Exception {
+        doReturn(session).when(request).getSession();
+        when(request.getAttribute("id")).thenReturn("22");
+
+        doReturn(new Product("banana", "yellow fruit", 22.55f))
+                .when(productDAO).getById(anyLong());
+
+        final List<FileItem> elements = new ArrayList<FileItem>();
+
+        //Fields
+        elements.add(new MockFileItem("id", "22"));
+        elements.add(new MockFileItem("test", "blah blah"));
+
+        //Files
+        elements.add(new MockFileItem("thefile0", "test333.txt", "test333".getBytes()));
+
+        when(request.getCharacterEncoding()).thenReturn("utf-8");
+        when(request.getContentType()).thenReturn("multipart/form-data");
+        when(request.getMethod()).thenReturn("POST");
+        when(mockUpload.parseRequest(request)).thenReturn(elements);
+
+        productController.processRequest(request, null);
     }
 
     private void productInfoLoad(String productID) throws Exception {
