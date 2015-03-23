@@ -115,6 +115,10 @@ public class ProductController {
                         //TODO: handle exception when can't add comment
                         e.printStackTrace();
                     }
+//                    catch (ClassCastException e) {
+//                        System.out.println("Incorrect user ID");
+//                        e.printStackTrace();
+//                    }
                 }
             }
 
@@ -180,21 +184,21 @@ public class ProductController {
         return fileName;
     }
 
-    private void loadComments(HttpServletRequest request, Long productID) {
-        List<Comment> comments = null;
-
-        try {
-            comments = commentDAO.getAll(productID);
-
-            //for (Comment comment : comments) {
-                //comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
-            //}
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
-
-        request.setAttribute("all_comments", comments);
-    }
+//    private void loadComments(HttpServletRequest request, Long productID) {
+//        List<Comment> comments = null;
+//
+//        try {
+//            comments = commentDAO.getAll(productID);
+//
+//            //for (Comment comment : comments) {
+//                //comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
+//            //}
+//        } catch (DBException e) {
+//            e.printStackTrace();
+//        }
+//
+//        request.setAttribute("all_comments", comments);
+//    }
 
 
     private void loadComments(HttpServletRequest request, Product product) {
