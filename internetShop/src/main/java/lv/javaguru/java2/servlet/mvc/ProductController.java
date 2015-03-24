@@ -68,20 +68,7 @@ public class ProductController {
             try {
                 List<FileItem> multiparts = servletFileUpload.parseRequest(request);
 
-//                String fileName = null;
-//                for (FileItem item : multiparts) {
-//                    if (!item.isFormField()) {
-//                        fileName = new File(item.getName()).getName();
-//                        item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
-//                    } else {
-//                        String name = item.getFieldName();//text1
-//                        String value = item.getString();
-//                        request.setAttribute(name, value);
-//                    }
-//                }
-
                 String fileName = uploadFileAndGetParams(request, multiparts);
-                System.out.println("File Name: " + fileName);
 
                 updateProductImage(Long.parseLong((String)request.getAttribute("id")), fileName);
                 request.setAttribute("message", "Request successfully processed!");
@@ -89,7 +76,6 @@ public class ProductController {
                 System.out.println("File Upload Failed due to " + ex);
                 request.setAttribute("message", "File Upload Failed due to " + ex);
             }
-
         }
 
         if (request.getParameter("id") != null)
@@ -98,31 +84,10 @@ public class ProductController {
         if (request.getAttribute("id") != null) {
             Long productID = Long.parseLong((String) request.getAttribute("id"));
 
-            if (request.getMethod().equals("POST")) {
-
+            if (request.getMethod().equals("POST"))
                 // If comment button pressed
-                if (request.getParameter("comment") != null) {
-                    try {
-                        // Create new Comment if it's not empty
-                        String comment = null;
-                        if ((comment = request.getParameter("comment")) != null)
-                            commentDAO.create(new Comment(
-                                    userDAO.getById((Long) session.getAttribute("user_id")), //current user ID
-                                    productID,
-                                    comment));
-                    } catch (DBException e) {
-                        System.out.println("exception ;((");
-                        //TODO: handle exception when can't add comment
-                        e.printStackTrace();
-                    }
-//                    catch (ClassCastException e) {
-//                        System.out.println("Incorrect user ID");
-//                        e.printStackTrace();
-//                    }
-                }
-            }
-
-            //loadComments(request, productID);
+                if (request.getParameter("comment") != null)
+                    createComment(productID, request);
 
             Product product = null;
 
@@ -142,6 +107,23 @@ public class ProductController {
         //return new MVCModel("/access.jsp", "Product ID need to be send as parameter.");
         model.setViewName("access");
         return model.addObject("model", "Product ID need to be send as parameter.");
+    }
+
+    private void createComment(Long productID, HttpServletRequest request) {
+        try {
+            // Create new Comment if it's not empty
+            String comment = null;
+            if ((comment = request.getParameter("comment")) != null)
+                commentDAO.create(new Comment(
+                        userDAO.getById((Long) request.getSession()
+                                .getAttribute("user_id")), //current user ID
+                        productID,
+                        comment));
+        } catch (DBException e) {
+            System.out.println("exception ;((");
+            //TODO: handle exception when can't add comment
+            e.printStackTrace();
+        }
     }
 
     private void updateProductImage(Long productID, String fileName) {
@@ -170,10 +152,14 @@ public class ProductController {
 
         String fileName = null;
 
+        boolean isUploaded = false;
         for (FileItem item : multiparts) {
             if (!item.isFormField()) {
+                if (isUploaded) continue;
+
                 fileName = new File(item.getName()).getName();
                 item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+                isUploaded = true;
             } else {
                 String name = item.getFieldName();//text1
                 String value = item.getString();
@@ -183,23 +169,6 @@ public class ProductController {
 
         return fileName;
     }
-
-//    private void loadComments(HttpServletRequest request, Long productID) {
-//        List<Comment> comments = null;
-//
-//        try {
-//            comments = commentDAO.getAll(productID);
-//
-//            //for (Comment comment : comments) {
-//                //comment.setUsername(userDAO.getById(comment.getUserID()).getLogin());
-//            //}
-//        } catch (DBException e) {
-//            e.printStackTrace();
-//        }
-//
-//        request.setAttribute("all_comments", comments);
-//    }
-
 
     private void loadComments(HttpServletRequest request, Product product) {
         List<Comment> comments = product.getComments();
