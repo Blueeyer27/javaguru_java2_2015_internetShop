@@ -87,13 +87,14 @@ public class NewsController {
     //    @Override
 //    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
     @RequestMapping(value = "news", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) throws DBException {
         ModelAndView model = new ModelAndView("news");
 
         HttpSession session = request.getSession();
         session.setAttribute("page_name", "Shop News");
 
         ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
+        //List<NewItem> allNews = newItemDAO.getAll();
 
         // automatic generator of news if there are less then 5 news in DB
         try {
@@ -122,12 +123,14 @@ public class NewsController {
         likeNewItem(request, likedItems);
 
 
+
         // passing news from DB to page
         //MVCModel model = null;
         try {
+            //result.setNews(newItemDAO.getAll());
             result.setNews(newItemDAO.getAll());
             result.setCategories(categoryDAO.getAll());
-            List<NewItem> fromCat = viewCat(request);
+            List<NewItem> fromCat = viewCat(request, request.getParameter("idParam"));
             result.setNewsFromCategory(fromCat);
         } catch (DBException e) {
             e.printStackTrace();
@@ -140,6 +143,8 @@ public class NewsController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
         return model;
     }
@@ -173,19 +178,32 @@ public class NewsController {
         return likedItems;
     }
 
-    private List<NewItem> viewCat(HttpServletRequest request) throws DBException {
-        List<NewItem> all = newItemDAO.getAll();
+    private List<NewItem> viewCat(HttpServletRequest request, String param) throws DBException {
         List<NewItem> rez = newItemDAO.getAll();
-        //List<NewItem> rez = null;
 
-        if ((request.getParameter("idView") != null) && ( !request.getParameter("idView").equals("All"))){
+        if ( (request.getParameter("idParam") == null) && ( (request.getParameter("idView") == null) || (request.getParameter("idView").equals("All")) ) ){
+            rez.clear();
+            rez = newItemDAO.getAll();
+        } else if ( (request.getParameter("idParam") != null) && ((request.getParameter("idView") == null) || (request.getParameter("idView").equals("All")) ) ){
+            rez.clear();
+            rez = newItemDAO.getAll(param);
+        } else if((request.getParameter("idParam") == null) && (request.getParameter("idView") != null)){
             String catName = request.getParameter("idView");
             rez.clear();
-            for (NewItem a : all){
-                if (a.getCategory().getCatName().equals(catName)){
-                    rez.add(a);
-                }
-            }
+            rez = newItemDAO.getNewsFromCat(categoryDAO.getById(catName));
+
+        } else if ( (request.getParameter("idParam") != null) && (request.getParameter("idView") != null) ){
+            String catName = request.getParameter("idView");
+            rez.clear();
+            //rez = categoryDAO.getNews(catName);
+            rez = newItemDAO.getNewsFromCat(categoryDAO.getById(catName), param);
+            // (NewItem a : all){
+            //if (a.getCategory().getCatName().equals(catName)){
+            //rez.add(a);
+            //}
+            //}*/
+        } else {
+            rez = newItemDAO.getAll();
         }
         return rez;
     }
