@@ -1,6 +1,7 @@
 package lv.javaguru.java2.database;
 
 import lv.javaguru.java2.domain.Category;
+import lv.javaguru.java2.domain.NewItem;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface CategoryDAO {
     Category getById(String id)throws DBException;
 
     List<Category> getAll() throws DBException;
+
+    List<NewItem> getNews(String catName) throws DBException;
 
     void delete(long id) throws DBException;
 

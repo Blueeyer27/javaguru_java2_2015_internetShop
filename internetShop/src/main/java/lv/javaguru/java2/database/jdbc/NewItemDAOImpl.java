@@ -1,15 +1,16 @@
 package lv.javaguru.java2.database.jdbc;
 
-import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.NewItemDAO;
-import lv.javaguru.java2.domain.NewItem;
-import org.springframework.stereotype.Component;
+        import lv.javaguru.java2.database.DBException;
+        import lv.javaguru.java2.database.NewItemDAO;
+        import lv.javaguru.java2.domain.Category;
+        import lv.javaguru.java2.domain.NewItem;
+        import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+        import java.sql.Connection;
+        import java.sql.PreparedStatement;
+        import java.sql.ResultSet;
+        import java.util.ArrayList;
+        import java.util.List;
 
 /**
  * Created by Anna on 27.02.15.
@@ -82,6 +83,11 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
     }
 
     @Override
+    public List<NewItem> getAll(String param) throws DBException {
+        return null;
+    }
+
+    @Override
     public void delete(long id) throws DBException {
         Connection connection = null;
         try {
@@ -149,6 +155,16 @@ public class NewItemDAOImpl extends DAOImpl implements NewItemDAO {
         } finally {
             closeConnection(connection);
         }
+    }
+
+    @Override
+    public List<NewItem> getNewsFromCat(Category category, String param) throws DBException {
+        return null;
+    }
+
+    @Override
+    public List<NewItem> getNewsFromCat(Category category) throws DBException {
+        return null;
     }
 
 
