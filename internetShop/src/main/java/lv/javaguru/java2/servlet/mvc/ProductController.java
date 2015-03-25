@@ -1,14 +1,13 @@
 package lv.javaguru.java2.servlet.mvc;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
+import lv.javaguru.java2.AccessLevel;
+import lv.javaguru.java2.database.*;
+import lv.javaguru.java2.domain.ProductInCart;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import lv.javaguru.java2.database.CommentDAO;
-import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Comment;
 import lv.javaguru.java2.domain.Product;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
@@ -50,6 +49,10 @@ public class ProductController {
     @Autowired
     @Qualifier("ORM_CommentDAO")
     private CommentDAO commentDAO;
+
+    @Autowired
+    @Qualifier("ORM_ProductInCartDAO")
+    private ProductInCartDAO productInCartDAO;
 
     private ServletFileUpload servletFileUpload =
             new ServletFileUpload(new DiskFileItemFactory());
@@ -95,6 +98,15 @@ public class ProductController {
                 product = productDAO.getById(productID);
             } catch (DBException e) {
                 e.printStackTrace();
+            }
+
+            if (request.getParameter("remove") != null) {
+                removeProduct(request);
+            }
+
+            if (request.getParameter("cart") != null) {
+                Long prodID = Long.parseLong(request.getParameter("cart"));
+                putInSessionCart(prodID, session);
             }
 
             if (product != null)
@@ -174,5 +186,53 @@ public class ProductController {
         List<Comment> comments = product.getComments();
 
         request.setAttribute("all_comments", comments);
+    }
+
+
+    private void putInDBCart(Long prodID, HttpSession session) {
+        Long userID = (Long) session.getAttribute("user_id");
+        try {
+            productInCartDAO.addElem(new ProductInCart(productDAO.getById(prodID), userID, 1, false));
+            System.out.println("PRODUCT ADDED TO CART");
+        } catch (DBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void putInSessionCart(Long prodID, HttpSession session) {
+        Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+        if (!inCart.containsKey(prodID)) {
+            inCart.put(prodID, 1);
+        } else {
+            Integer count = inCart.get(prodID);
+            count++;
+            inCart.put(prodID, count);
+            System.out.println("New count of product: " + count);
+        }
+
+        if ((Integer) session.getAttribute("access_level")
+                > AccessLevel.GUEST.getValue()) {
+            putInDBCart(prodID, session);
+        }
+    }
+
+    private void removeProduct(HttpServletRequest request) {
+        Long prodID = Long.parseLong(request.getParameter("remove"));
+        HttpSession session = request.getSession();
+
+        Map<Long, Integer> inCart = (HashMap<Long, Integer>) session.getAttribute("in_cart");
+        if (inCart.containsKey(prodID)) {
+            inCart.remove(prodID);
+
+            if ((Integer) session.getAttribute("access_level")
+                    > AccessLevel.GUEST.getValue()) {
+                Long userID = (Long) session.getAttribute("user_id");
+                try {
+                    productInCartDAO.removeFromCart(productDAO.getById(prodID), userID);
+                } catch (DBException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

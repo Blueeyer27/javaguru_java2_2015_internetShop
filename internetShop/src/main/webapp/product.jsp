@@ -2,6 +2,8 @@
 <%@ page import="lv.javaguru.java2.domain.Comment" %>
 <%@ page import="java.util.List" %>
 <%@ page import="lv.javaguru.java2.AccessLevel" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
 <%--
   Created by IntelliJ IDEA.
   User: Anton
@@ -22,7 +24,19 @@
     function deleteProduct(id) {
         window.location = "/java2/index?delete=" + id;
     }
+
+    function removeProduct(id) {
+        window.location = "/java2/product?id=" + id + "&remove=" + id;
+    }
+
+    function putProduct(id) {
+        window.location = "/java2/product?id=" + id + "&cart=" + id;
+    }
 </script>
+<%
+    Map<Long,Integer> inCart = (HashMap<Long,Integer>) session.getAttribute("in_cart");
+%>
+
 <jsp:include page="includes/menu.jsp"/>
 <%
     if(request.getMethod().equals("POST") && request.getAttribute("id") != null) {
@@ -57,7 +71,7 @@
 
 
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'
-                       onclick=''>
+                       onclick='putProduct("<%=prod.getProductId()%>")'>
 
             </p>
             <% if ((Integer) session.getAttribute("access_level")
@@ -70,7 +84,6 @@
 
             <input id='delete' type='submit' value='Delete'
                    onclick='deleteProduct("<%=prod.getProductId()%>")'>
-
 
             <div id="upload_image" style="display:none;">
                 <h3> Choose File to Upload </h3>
@@ -92,6 +105,17 @@
             </div>
 
             <% } %>
+
+            <%  if (inCart != null) {
+                if (inCart.containsKey(prod.getProductId())) {%>
+            <input id='<%=prod.getProductId()%>' type='submit' value='Remove From Cart'
+                   onclick='removeProduct("<%=prod.getProductId()%>")'>
+            <br>
+            <font color="#228b22">Count of this product in your cart : <%=inCart.get(prod.getProductId())%></font>
+            <br><br>
+
+            <%      }
+            } %>
             <div class="margin_bottom_20"></div>
             <div class="cleaner"></div>
         </div>
