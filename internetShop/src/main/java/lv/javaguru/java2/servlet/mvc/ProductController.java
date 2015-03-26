@@ -192,8 +192,8 @@ public class ProductController {
     private void putInDBCart(Long prodID, HttpSession session) {
         Long userID = (Long) session.getAttribute("user_id");
         try {
-            productInCartDAO.addElem(new ProductInCart(productDAO.getById(prodID), userID, 1, false));
-            System.out.println("PRODUCT ADDED TO CART");
+            productInCartDAO.addElem(
+                    new ProductInCart(productDAO.getById(prodID), userID, 1, false));
         } catch (DBException e) {
             e.printStackTrace();
         }

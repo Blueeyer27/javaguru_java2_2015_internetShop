@@ -1,11 +1,10 @@
 package lv.javaguru.java2.servlet.mvc;
 
-import lv.javaguru.java2.database.CommentDAO;
-import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.ProductDAO;
-import lv.javaguru.java2.database.UserDAO;
+import lv.javaguru.java2.AccessLevel;
+import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.domain.Comment;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.mock.MockFileItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -26,7 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
@@ -44,6 +45,7 @@ public class ProductControllerTest {
     @Mock private UserDAO userDAO;
     @Mock private ProductDAO productDAO;
     @Mock private CommentDAO commentDAO;
+    @Mock private ProductInCartDAO productInCartDAO;
 
     @Mock HttpServletRequest request;
     @Mock HttpSession session;
@@ -76,6 +78,30 @@ public class ProductControllerTest {
         ModelAndView model = productController.processRequest(request, null);
 
         verify(productDAO, times(1)).getById(anyLong());
+        verify(commentDAO, times(0)).getAll(anyLong());
+
+        assertTrue(model.getModel().get("model") instanceof Product);
+    }
+
+    @Test
+    public void putInCart() throws Exception {
+//        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+//        HttpSession session = Mockito.mock(HttpSession.class);
+        when(request.getMethod()).thenReturn("GET");
+        doReturn(27l).when(session).getAttribute("user_id");
+        doReturn(createSessionCart(10)).when(session).getAttribute("in_cart");
+        when(session.getAttribute("access_level")).thenReturn(AccessLevel.CLIENT.getValue());
+
+        when(productDAO.getById(anyLong())).thenReturn(new Product("apple", "green", 22f));
+        String productID = "22";
+        when(request.getParameter("cart")).thenReturn(productID);
+
+        //doNothing().when()
+        productInfoLoad(productID);
+
+        ModelAndView model = productController.processRequest(request, null);
+
+        verify(productDAO, times(2)).getById(anyLong());
         verify(commentDAO, times(0)).getAll(anyLong());
 
         assertTrue(model.getModel().get("model") instanceof Product);
@@ -185,5 +211,19 @@ public class ProductControllerTest {
 
         doReturn(new Product("banana", "yellow fruit", 22.55f))
                 .when(productDAO).getById(anyLong());
+    }
+
+    private Map<Long, Integer> createSessionCart(int productCount) {
+        Map<Long, Integer> inCart = new HashMap<Long, Integer>();
+
+        for (long i = 1; i <= productCount; i++) {
+            inCart.put(i, randomInt(1, 50));
+        }
+
+        return inCart;
+    }
+
+    private int randomInt(int min, int max) {
+        return min + (int)(Math.random() * (max + 1));
     }
 }
