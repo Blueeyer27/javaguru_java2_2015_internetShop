@@ -7,8 +7,8 @@
     <groupId>lv.javaguru</groupId>
     <artifactId>java2</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <packaging>war</packaging>
+
 
 
     <repositories>

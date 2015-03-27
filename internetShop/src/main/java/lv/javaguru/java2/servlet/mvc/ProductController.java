@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +171,12 @@ public class ProductController {
             if (!item.isFormField()) {
                 if (isUploaded) continue;
 
-                fileName = new File(item.getName()).getName();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyhhmmss");
+                fileName = new File(simpleDateFormat.format(new Date())
+                        + item.getName()).getName();
+
+                System.out.println(fileName + ":::" + item.getName() + ":::"
+                        + simpleDateFormat.format(new Date()));
                 item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
                 isUploaded = true;
             } else {
