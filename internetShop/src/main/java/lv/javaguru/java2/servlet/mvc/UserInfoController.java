@@ -23,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,10 +76,19 @@ public class UserInfoController {
                     List<FileItem> multiparts = new ServletFileUpload(
                             new DiskFileItemFactory()).parseRequest(request);
 
+                    boolean isUploaded = false;
+
                     for (FileItem item : multiparts) {
                         if (!item.isFormField()) {
-                            fileName = new File(item.getName()).getName();
+                            if(isUploaded) continue;
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyhhmmss");
+                            fileName = new File(simpleDateFormat.format(new Date())
+                                    + item.getName()).getName();
+
+                            //fileName = new File(item.getName()).getName();
                             item.write(new File(UPLOAD_DIRECTORY + File.separator + fileName));
+                            isUploaded = true;
                         }
                     }
 
