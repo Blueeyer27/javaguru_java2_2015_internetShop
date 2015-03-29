@@ -44,13 +44,13 @@
             <% } %>
         </div>
         <p><%=product.getDescription() + " | Price for one: "
-                + product.getPrice()
+                + (double) product.getPrice()
                 + "$ | Count: " + prod.getCount()%></p>
         <br>
         <input id='<%=product.getProductId()%>' type='submit' value='Remove From Cart'
                onclick='removeFromCart("<%=product.getProductId()%>", "<%=product.getName()%>")'>
         <br><br>
-        <%  totalPrice+=(product.getPrice()*prod.getCount());
+        <%  totalPrice+=((double) product.getPrice()*prod.getCount());
                 }
             }%>
         <br><br>

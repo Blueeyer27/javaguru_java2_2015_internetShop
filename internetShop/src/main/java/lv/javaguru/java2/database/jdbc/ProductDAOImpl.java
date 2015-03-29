@@ -18,7 +18,6 @@ import java.util.List;
 @Component("JDBC_ProductDAO")
 public class ProductDAOImpl extends DAOImpl implements ProductDAO {
 
-    @Override
     public void create(Product product) throws DBException {
         if (product == null) {
             return;
@@ -32,7 +31,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
                     connection.prepareStatement("insert into products (Name, Description, Price, Picture) values (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setDouble(3, product.getPrice());
             preparedStatement.setString(4, product.getImage());
 
             preparedStatement.executeUpdate();
@@ -50,7 +49,6 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
 
     }
 
-    @Override
     public Product getById(Long id) throws DBException {
         Connection connection = null;
 
@@ -106,13 +104,11 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         return products;
     }
 
-    @Override
     public Long getTotal() throws DBException {
         System.out.println("getProductCount() method in jdbc don't work.");
         throw new NotImplementedException();
     }
 
-    @Override
     public void delete(Long id) throws DBException {
         Connection connection = null;
         try {
@@ -130,7 +126,6 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         }
     }
 
-    @Override
     public void update(Product product) throws DBException {
         if (product == null) {
             return;
@@ -144,7 +139,7 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
                             "where ProductID = ?");
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
-            preparedStatement.setFloat(3, product.getPrice());
+            preparedStatement.setDouble(3, product.getPrice());
             preparedStatement.setString(4, product.getImage());
             preparedStatement.setLong(5, product.getProductId());
             preparedStatement.executeUpdate();
@@ -157,7 +152,6 @@ public class ProductDAOImpl extends DAOImpl implements ProductDAO {
         }
     }
 
-    @Override
     public List<Product> getRange(int startRow, int rowCount) throws DBException {
         List<Product> products = new ArrayList<Product>();
         Connection connection = null;

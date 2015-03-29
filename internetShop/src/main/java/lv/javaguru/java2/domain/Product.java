@@ -30,7 +30,7 @@ public class Product {
     protected String description;
 
     @Column(name = "Price", columnDefinition = "DECIMAL(20,6)")
-    protected float price;
+    protected double price;
 
     @Column(name = "Picture", columnDefinition = "CHAR(255)")
     protected String imageURL;
@@ -77,11 +77,11 @@ public class Product {
         this.description = description;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

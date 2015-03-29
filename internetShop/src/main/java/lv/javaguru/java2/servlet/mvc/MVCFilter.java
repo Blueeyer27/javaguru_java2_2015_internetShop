@@ -29,7 +29,7 @@ public class MVCFilter implements Filter {
 
     private Map<String, MVCController> controllerMapping;
 
-    @Override
+    //@Override
     public void init (FilterConfig filterConfig) throws ServletException {
 
         try {
@@ -62,7 +62,7 @@ public class MVCFilter implements Filter {
         return (MVCController) springContext.getBean(clazz);
     }
 
-    @Override
+    //@Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
@@ -100,7 +100,7 @@ public class MVCFilter implements Filter {
 
     }
 
-    @Override
+    //@Override
     public void destroy() {
 
     }

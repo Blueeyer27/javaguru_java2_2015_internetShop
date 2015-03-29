@@ -92,7 +92,7 @@
             <% } %>
             </div>
             <p class="em_text"><%=prod.getDescription()%></p>
-            <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
+            <p><%="Price: " + (double) prod.getPrice() + "\t"%>&nbsp;&nbsp;
                 <%--<%  int commentsCount = 0;--%>
                     <%--if (prod.getComments() != null) {--%>
                         <%--commentsCount = prod.getComments().size();--%>

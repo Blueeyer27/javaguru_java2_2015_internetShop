@@ -26,19 +26,19 @@ public class ProductDAOImpl implements ProductDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Override
+    //@Override
     public void create(Product product) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         session.persist(product);
     }
 
-    @Override
+    //@Override
     public Product getById(Long id) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         return (Product) session.get(Product.class, id);
     }
 
-    @Override
+    //@Override
     public void delete(Long id) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         Product product = (Product) session.get(Product.class, id);
@@ -46,13 +46,13 @@ public class ProductDAOImpl implements ProductDAO {
             session.delete(product);
     }
 
-    @Override
+    //@Override
     public void update(Product product) throws DBException {
         Session session = sessionFactory.getCurrentSession();
         session.update(product);
     }
 
-    @Override
+    //@Override
     public List<Product> getRange(int startRow, int rowCount) throws DBException {
         Session session = sessionFactory.getCurrentSession();
 
@@ -107,7 +107,7 @@ public class ProductDAOImpl implements ProductDAO {
                 .setResultTransformer(Transformers.aliasToBean(Product.class)).list();
     }
 
-    @Override
+    //@Override
     public List<Product> getAll() throws DBException {
         Session session = sessionFactory.getCurrentSession();
 
@@ -116,7 +116,7 @@ public class ProductDAOImpl implements ProductDAO {
                 .addOrder(Order.asc("productId")).list();
     }
 
-    @Override
+    //@Override
     public Long getTotal() throws DBException {
         Session session = sessionFactory.getCurrentSession();
 

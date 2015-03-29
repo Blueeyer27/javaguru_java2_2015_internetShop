@@ -67,7 +67,7 @@
             <p class="em_text"><%=prod.getDescription()%>
             </p>
 
-            <p><%="Price: " + prod.getPrice() + "\t"%>&nbsp;&nbsp;
+            <p><%="Price: " + (double) prod.getPrice() + "\t"%>&nbsp;&nbsp;
 
 
                 <input id='<%=prod.getProductId()%>' type='submit' value='Put in Cart'

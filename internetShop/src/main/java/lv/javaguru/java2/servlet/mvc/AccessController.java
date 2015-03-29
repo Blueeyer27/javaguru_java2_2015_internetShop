@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 public abstract class AccessController implements MVCController {
 
-    @Override
+    //@Override
     public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
         HttpSession session = request.getSession();
         String message = null;
