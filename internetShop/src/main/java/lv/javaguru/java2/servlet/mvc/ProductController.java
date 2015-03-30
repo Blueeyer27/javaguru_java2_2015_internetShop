@@ -39,6 +39,11 @@ import java.util.Map;
 
 @Controller
 public class ProductController {
+
+    //For linux:
+    //private final String UPLOAD_DIRECTORY = "../internetShop/src/main/webapp/images/products";
+
+    //For windows:
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\products\\";
 
     @Autowired
