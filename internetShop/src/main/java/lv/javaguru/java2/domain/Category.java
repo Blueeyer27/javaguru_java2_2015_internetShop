@@ -14,6 +14,13 @@ import javax.persistence.*;
 @Table(name = "categories")
 public class Category {
 
+//    CREATE TABLE IF NOT EXISTS `java2_test`.`categories` (
+//            `CatId` INT(11),
+//    `CatName` CHAR(30),
+//    PRIMARY KEY (`CatName`))
+//    ENGINE = InnoDB
+//    DEFAULT CHARACTER SET = utf8;
+
     @Column(name="CatId",columnDefinition = "int(11)")
     private long catId;
 

@@ -6,6 +6,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.NewItemDAO;
 import lv.javaguru.java2.domain.Category;
 import lv.javaguru.java2.domain.NewItem;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -88,10 +89,13 @@ public class NewsController {
 //    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
     @RequestMapping(value = "news", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) throws DBException {
-        ModelAndView model = new ModelAndView("news");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("news");
 
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Shop News");
+        //session.setAttribute("page_name", "Shop News");
 
         ArrayList<Long> likedItems = (ArrayList<Long>) session.getAttribute("liked");
         //List<NewItem> allNews = newItemDAO.getAll();

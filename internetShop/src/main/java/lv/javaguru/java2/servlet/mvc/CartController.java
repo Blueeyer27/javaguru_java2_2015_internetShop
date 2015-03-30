@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,8 +46,13 @@ public class CartController {
 
     @RequestMapping(value = "cart", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("cart");
+
         session = request.getSession();
-        session.setAttribute("page_name", "My Cart");
+        //session.setAttribute("page_name", "My Cart");
 
         List<ProductInCart> inCart = new ArrayList<ProductInCart>();
 
@@ -68,7 +74,7 @@ public class CartController {
         }
 
         //return new MVCModel("/cart.jsp", inCart);
-        return new ModelAndView("cart").addObject("model", inCart);
+        return model.addObject("model", inCart);
     }
 
     private void getGuestCart(List<ProductInCart> inCart, HttpServletRequest request) {

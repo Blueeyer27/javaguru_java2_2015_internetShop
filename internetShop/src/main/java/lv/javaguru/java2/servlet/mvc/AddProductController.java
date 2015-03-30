@@ -4,6 +4,7 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -43,9 +44,11 @@ public class AddProductController {
 
     @RequestMapping(value = "add_product", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        // While AccessController isn't in use setting page_name here.
-        request.getSession().setAttribute("page_name", "Add Product");
-        ModelAndView model = new ModelAndView("add_product");
+        //request.getSession().setAttribute("page_name", "Add Product");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("add_product");
 
         if (ServletFileUpload.isMultipartContent(request)) {
             Map<String, String> params = new HashMap<String, String>();

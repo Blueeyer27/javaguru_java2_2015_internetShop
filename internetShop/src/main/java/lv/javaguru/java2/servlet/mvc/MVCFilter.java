@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 /**
  * Created by alex on 17/02/15.
  */
+
+@Deprecated
 public class MVCFilter implements Filter {
 
     private static Logger logger = Logger.getLogger(MVCFilter.class.getName());

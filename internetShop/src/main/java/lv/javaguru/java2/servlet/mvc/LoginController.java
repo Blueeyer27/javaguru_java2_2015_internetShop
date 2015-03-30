@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,11 +43,14 @@ public class LoginController {
 //    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
     @RequestMapping(value = {"login", "logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView();
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model =  new ModelAndView();
         model.setViewName("login");
 
         HttpSession session = request.getSession(true);
-        session.setAttribute("page_name", "Login Page");
+        //session.setAttribute("page_name", "Login Page");
 
         if (request.getServletPath().equals("/logout")) {
 //            return new MVCModel("/logout.jsp");

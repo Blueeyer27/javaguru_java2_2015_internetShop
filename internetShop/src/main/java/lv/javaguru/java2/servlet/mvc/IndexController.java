@@ -7,6 +7,7 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.ProductInCart;
 import lv.javaguru.java2.domain.Product;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,12 +62,15 @@ public class IndexController {
 //    @Override
 //    public MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
 
-    @RequestMapping(value = "index", method = {RequestMethod.GET})
+    @RequestMapping(value = {"index", ""}, method = {RequestMethod.GET})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView();
-        model.setViewName("index");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("index");
+
         session = request.getSession();
-        session.setAttribute("page_name", "Main Page");
+        //session.setAttribute("page_name", "Main Page");
 
         if ((request.getParameter("delete") != null)) {
             deleteProduct(request);

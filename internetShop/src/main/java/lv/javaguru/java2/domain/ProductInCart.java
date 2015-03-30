@@ -10,6 +10,22 @@ import javax.persistence.*;
 @Table(name = "productInCart")
 public class ProductInCart {
 
+//    CREATE TABLE IF NOT EXISTS `java2_test`.`productInCart` (
+//            `ID` INT(11) NOT NULL AUTO_INCREMENT,
+//    `ProductID` INT(11) NOT NULL,
+//    `UserID` INT(11) NOT NULL,
+//    `Count` INT UNSIGNED NULL DEFAULT 0,
+//            `IsOrdered` TINYINT(1) NULL DEFAULT 0,
+//    PRIMARY KEY (`ID`),
+//    FOREIGN KEY (`ProductID`) REFERENCES `java2_test`.`products` (`ProductID`)
+//    ON DELETE CASCADE
+//    ON UPDATE CASCADE,
+//    FOREIGN KEY (`UserID`) REFERENCES `java2_test`.`users` (`UserID`)
+//    ON DELETE CASCADE
+//    ON UPDATE CASCADE)
+//    ENGINE = InnoDB
+//    DEFAULT CHARACTER SET = utf8;
+
     @Column(name = "ID", columnDefinition = "INT(11)")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

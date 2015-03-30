@@ -66,7 +66,10 @@
     <div id="content">
         <%--<jsp:include page="includes/user_bar.jsp"/>--%>
             <%@ include file="includes/user_bar.jsp" %>
-        <%  List<Product> products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
+        <%  List<Product> products = null;
+            if (request.getAttribute("model") instanceof IndexController.PageInfo)
+                    products = ((IndexController.PageInfo)request.getAttribute("model")).getProducts();
+
             if (products != null) { %>
         <div id="column_w530">
             <% if((Integer) session.getAttribute("access_level") == AccessLevel.ADMIN.getValue()) { %>

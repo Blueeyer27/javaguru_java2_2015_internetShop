@@ -6,6 +6,7 @@ import lv.javaguru.java2.PasswordHash;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,9 +39,13 @@ public class RegisterController {
 
     @RequestMapping(value = "register", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView("register");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("register");
+
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Registration");
+        //session.setAttribute("page_name", "Registration");
 
         if (request.getMethod().equals("POST")) {
             User user = new User(

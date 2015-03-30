@@ -4,6 +4,7 @@ import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.domain.ProductInCart;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -64,10 +65,13 @@ public class ProductController {
 
     @RequestMapping(value = "product", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView("product");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("product");
 
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "Product Information");
+        //session.setAttribute("page_name", "Product Information");
 
         if (ServletFileUpload.isMultipartContent(request)) {
             try {

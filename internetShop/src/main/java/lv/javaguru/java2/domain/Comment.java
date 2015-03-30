@@ -12,6 +12,21 @@ import javax.persistence.*;
 @Table(name = "comments")
 public class Comment {
 
+//    CREATE TABLE IF NOT EXISTS `java2_test`.`comments` (
+//            `ID` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+//    `Comment` CHAR(255) NULL DEFAULT NULL,
+//    `UserID` INT(11) NOT NULL,
+//    `ProductID` INT(11) NOT NULL,
+//    PRIMARY KEY (`ID`, `UserID`, `ProductID`),
+//    FOREIGN KEY (`UserID`) REFERENCES `java2_test`.`users` (`UserID`)
+//    ON DELETE CASCADE
+//    ON UPDATE CASCADE,
+//    FOREIGN KEY (`ProductID`) REFERENCES `java2_test`.`products` (`ProductID`)
+//    ON DELETE CASCADE
+//    ON UPDATE CASCADE)
+//    ENGINE = InnoDB
+//    DEFAULT CHARACTER SET = utf8;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID",columnDefinition = "INT(11)")

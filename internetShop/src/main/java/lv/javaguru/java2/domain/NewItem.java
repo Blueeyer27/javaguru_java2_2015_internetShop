@@ -10,6 +10,17 @@ import javax.persistence.*;
 
 public class NewItem {
 
+//    CREATE TABLE IF NOT EXISTS `java2_test`.`news` (
+//            `Num` INT(11) NOT NULL AUTO_INCREMENT,
+//    `DateID` CHAR(30) NOT NULL,
+//    `Title` CHAR(30) NOT NULL,
+//    `Body` CHAR(80) NOT NULL,
+//    `Likes` INT(11),
+//    `CatName` CHAR(30),
+//    PRIMARY KEY (`Num`))
+//    ENGINE = InnoDB
+//    DEFAULT CHARACTER SET = utf8;
+
     @Column(name="Num",columnDefinition = "int(11)")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

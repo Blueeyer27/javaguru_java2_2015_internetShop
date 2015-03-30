@@ -5,6 +5,7 @@ import lv.javaguru.java2.database.ProductInCartDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.ProductDAO;
 import lv.javaguru.java2.domain.ProductInCart;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,8 +44,12 @@ public class TransferController {
 
     @RequestMapping(value = "transfer", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView("transfer");
-        request.getSession().setAttribute("page_name", "Session Cart Transfer");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("transfer");
+
+        //request.getSession().setAttribute("page_name", "Session Cart Transfer");
         if(request.getParameter("answer") != null) {
             HttpSession session = request.getSession();
             Long userID = (Long) session.getAttribute("user_id");

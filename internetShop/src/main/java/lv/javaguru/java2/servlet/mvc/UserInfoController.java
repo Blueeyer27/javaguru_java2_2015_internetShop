@@ -5,6 +5,7 @@ import lv.javaguru.java2.PasswordHash;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.User;
+import lv.javaguru.java2.servlet.mvc.AccessCheck.AccessChecker;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -40,6 +41,10 @@ public class UserInfoController {
     @Qualifier("ORM_UserDAO")
     UserDAO userDAO;
 
+    //For linux:
+    //private final String UPLOAD_DIRECTORY = "../internetShop/src/main/webapp/images/users";
+
+    //For windows:
     private final String UPLOAD_DIRECTORY = "..\\internetShop\\src\\main\\webapp\\images\\users\\";
 
 
@@ -48,9 +53,12 @@ public class UserInfoController {
 
     @RequestMapping(value = "user", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView model = new ModelAndView("user");
+        ModelAndView model = AccessChecker.check(request);
+        if (model != null) return model;
+
+        model = new ModelAndView("user");
         HttpSession session = request.getSession();
-        session.setAttribute("page_name", "User Information");
+        //session.setAttribute("page_name", "User Information");
 
         String currLogin = (String) session.getAttribute("username");
         if (currLogin == null) {
@@ -71,12 +79,13 @@ public class UserInfoController {
         if (request.getMethod().equals("POST")) {
             if (ServletFileUpload.isMultipartContent(request)) {
                 String fileName = null;
+                boolean isUploaded = false;
 
                 try {
                     List<FileItem> multiparts = new ServletFileUpload(
                             new DiskFileItemFactory()).parseRequest(request);
 
-                    boolean isUploaded = false;
+
 
                     for (FileItem item : multiparts) {
                         if (!item.isFormField()) {
@@ -99,7 +108,7 @@ public class UserInfoController {
                     request.setAttribute("message", "File Upload Failed due to " + ex);
                 }
 
-                if (fileName != null) {
+                if (isUploaded && fileName != null) {
                     try {
                         updateUserPhoto(user, fileName, session);
                     } catch (DBException e) {

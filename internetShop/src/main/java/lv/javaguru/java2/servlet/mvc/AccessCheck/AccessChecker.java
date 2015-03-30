@@ -1,25 +1,27 @@
-package lv.javaguru.java2.servlet.mvc;
+package lv.javaguru.java2.servlet.mvc.AccessCheck;
 
 import com.sun.corba.se.impl.io.TypeMismatchException;
 import lv.javaguru.java2.AccessLevel;
 import lv.javaguru.java2.RequestType;
 import lv.javaguru.java2.servlet.mvc.models.MVCModel;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@Deprecated
-public abstract class AccessController implements MVCController {
+/**
+ * Created by anton on 15.30.3.
+ */
+public class AccessChecker {
 
-    //@Override
-    public MVCModel processRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException {
+    public static ModelAndView check(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String message = null;
         Integer access_level = (Integer) session.getAttribute("access_level");
         String transfer = (String) session.getAttribute("transfer");
-        
+
         if (access_level ==  AccessLevel.BANNED.getValue()) {
             session.setAttribute("page_name", "Access Denied");
 
@@ -30,7 +32,9 @@ public abstract class AccessController implements MVCController {
         else if (transfer != null
                 && !request.getServletPath().equals("/transfer")) {
             System.out.println("Transfer: " + transfer);
-            return new MVCModel("/transfer.jsp", "You have products in your cart. " +
+
+            return new ModelAndView("transfer").addObject("model",
+                    "You have products in your cart. " +
                     "Do you want to transfer them on your account?");
         }
         else {
@@ -101,11 +105,7 @@ public abstract class AccessController implements MVCController {
             }
         }
 
-        if (message != null)
-            return new MVCModel("/access.jsp", message);
-
-        return safeRequest(request, response);
+        return message == null ?
+                null : new ModelAndView("access").addObject("model", message);
     }
-
-    abstract MVCModel safeRequest(HttpServletRequest request, HttpServletResponse response) throws TypeMismatchException;
 }

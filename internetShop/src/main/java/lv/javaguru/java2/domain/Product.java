@@ -7,6 +7,15 @@ import java.util.List;
 @Table(name = "products")
 public class Product {
 
+//    CREATE TABLE `products` (
+//            `ProductID` int(11) NOT NULL AUTO_INCREMENT,
+//    `Name` char(32) NOT NULL,
+//    `Description` text NOT NULL,
+//            `Price` decimal(20,6) unsigned NOT NULL,
+//    `Picture` char(255) DEFAULT NULL,
+//    PRIMARY KEY (`ProductID`)
+//    ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
+
     @Id
     @Column(name="ProductID",columnDefinition = "INT(11)")
     @GeneratedValue(strategy = GenerationType.AUTO)
