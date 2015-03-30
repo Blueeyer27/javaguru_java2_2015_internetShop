@@ -69,11 +69,6 @@
                     <input type="file" name="file" multiple accept="image/*">
                     <input type="submit" name="upload" value="upload">
                 </form>
-                <%--<div id="result">--%>
-
-                <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
-
-                <%--</div>--%>
             </div>
             <br><br>
             <div id="update_info" style="display:none;">
@@ -133,11 +128,6 @@
                         </tr>
                     </table>
                 </form>
-                <%--<div id="result">--%>
-
-                <%--<h3><font color="red"><%=request.getAttribute("message")%></font></h3>--%>
-
-                <%--</div>--%>
             </div>
             </b>
             <% } %>

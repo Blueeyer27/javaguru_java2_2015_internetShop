@@ -21,9 +21,9 @@ public class ContactsServlet extends HttpServlet {
 	                     HttpServletResponse resp) throws ServletException, IOException {
 
 
-		ServletContext servletContext = getServletContext();
-		RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/contacts.jsp");
-		requestDispatcher.forward(req, resp);
+//		ServletContext servletContext = getServletContext();
+//		RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/contacts.jsp");
+//		requestDispatcher.forward(req, resp);
 
 	}
 

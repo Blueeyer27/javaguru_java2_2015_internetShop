@@ -26,17 +26,13 @@
 
     function likeItem(id, category) {
         var uri = document.documentURI.split('?')[0];
-        //window.location = "news?idLike=" + id;
-        //window.location = "news?idView=Comming_Soon&idLike=" + id;
         window.location = "news?idView=" + category + "&idLike=" + id;
     }
-
 
     function view(name) {
         var uri = document.documentURI.split('?')[0];
         window.location = "news?idView=" + name.value;
     }
-
 
     function order(param) {
         var uri = document.documentURI.split('?')[0];
@@ -110,24 +106,6 @@
 
 
 
-
-        <!--td>
-            <BR>
-            <INPUT TYPE="radio" NAME="radios" VALUE="popular" CHECKED>
-            Most Popular
-            <BR>
-            <INPUT TYPE="radio" NAME="radios" VALUE="last">
-            Last
-            <BR>
-            <INPUT TYPE="radio" NAME="radios" VALUE="first">
-            First
-            <BR>
-            <input id='first' type='submit' value='ok'
-                   onclick='order("first")'>
-            <BR><BR><BR>
-        </td-->
-
-
         <% List<NewItem> newsFromCat = ((NewsController.Result) request.getAttribute("model")).getNewsFromCategory();
             String catTitle = new String("All");
             if(newsFromCat.size() < news.size()){
@@ -176,45 +154,6 @@
         <div class="cleaner"></div>
 
         <% } %>
-
-
-
-        <!--% for (Category c : categories) { %>
-        <div class="header_02"><!%=c.getCatName()%></div>
-
-            for (NewItem n : news) { %>
-                <div id="column_w530">
-                    <div class="header_02"><!%=n.getTitle()%></div>
-                    <p class="em_text"><!%=n.getBody()%></p>
-                    <p><!%=n.getLikes()%> people like this</p>
-                    <p><!%=n.getDateID() + "\t"%></p>
-
-
-                    <!-- ---------BUTTON FOR DELETING NEWS (ADMIN-VISIBLE)-------- -->
-        <!--% if ((Integer) session.getAttribute("access_level") > AccessLevel.GUEST.getValue()) {%>
-            <input id='<!%=n.getNum()%>' type='submit' value='Move to archive'
-                onclick='removeItem("<!%=n.getNum()%>")'>
-        <!%}%>
-
-        <!-- ----------------------BUTTON FOR LIKES------------------- -->
-        <!--% if ((Integer) session.getAttribute("access_level") < AccessLevel.ADMIN.getValue()) {%>
-            <!% if(!likedItems.contains(n.getNum())){%>
-                <input id='<!%=n.getNum()%>' type='submit' value='Like'
-                onclick='likeItem("<!%=n.getNum()%>")'>
-            <!%} else {%>
-                <font color="#228b22"></font>
-            <!% }%>
-        <!%}%>
-
-
-
-
-
-        <div class="margin_bottom_20"></div>
-        <div class="cleaner"></div>
-    </div><br><br><br><br><br><br><br><br><br><br>
-<!%  } %>
-<div class="cleaner"></div-->
 
 
     </div>
