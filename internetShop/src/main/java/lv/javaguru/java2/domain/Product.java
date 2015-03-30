@@ -6,17 +6,6 @@ import java.util.List;
 @Entity
 @Table(name = "products")
 public class Product {
-    /*
-    CREATE TABLE IF NOT EXISTS `java2_test`.`products` (
-      `ProductID` INT(11) NOT NULL AUTO_INCREMENT,
-      `Name` CHAR(32) NOT NULL,
-      `Description` TEXT NOT NULL,
-      `Price` DECIMAL(20,6) UNSIGNED NOT NULL,
-      `Picture` CHAR(255) NULL DEFAULT NULL,
-      PRIMARY KEY (`ProductID`))
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8;
-     */
 
     @Id
     @Column(name="ProductID",columnDefinition = "INT(11)")

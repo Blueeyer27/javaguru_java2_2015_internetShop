@@ -7,17 +7,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-//    `UserID` INT(11) NOT NULL AUTO_INCREMENT,
-//    `Login` CHAR(16) NOT NULL,
-//    `Password` CHAR(80) NOT NULL,
-//    `Name` CHAR(32) NOT NULL,
-//    `Surname` CHAR(32) NOT NULL,
-//    `Gender` CHAR(6) NOT NULL,
-//    `Phone` CHAR(15) NOT NULL,
-//    `Email` CHAR(30) NOT NULL,
-//    `Access_Level` INT(3) NOT NULL,
-//    PRIMARY KEY (`UserID`))
-
     @Id
     @Column(name="UserId",columnDefinition = "int(11)")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,10 +38,6 @@ public class User {
 
     @Column(name = "Photo", columnDefinition = "CHAR(255)")
     private String photoURL;
-
-//    @OneToMany(fetch=FetchType.EAGER)
-//    @JoinTable(name = "productInCart")
-//    private List<ProductInCart> cart;
 
     public User() {
     }
@@ -146,4 +131,3 @@ public class User {
         this.access_level = access_level;
     }
 }
-
