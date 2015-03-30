@@ -55,7 +55,7 @@ public class SpringAppConfig {
     public DataSource dataSource(
         @Value("${driverClass}") String driver,
         @Value("${dbUrl}") String url,
-        @Value("${database.userName}") String user,
+        @Value("${userName}") String user,
         @Value("${password}") String password) throws PropertyVetoException {
 
         BasicDataSource dataSource = new BasicDataSource();

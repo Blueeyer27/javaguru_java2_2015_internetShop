@@ -40,7 +40,7 @@
                     + session.getAttribute("surname") + "!"%>
             </a></div>
         <h3><a href="/java2/logout" target="_self">Logout</a> |
-            <a href="/java2/user" target="_self">Account</a><br>
+            <a href="/java2/user" target="_self">Profile</a><br>
             <a href="/java2/cart" target="_self">My Cart:
                 (<%=((HashMap<Integer, Integer>)session.getAttribute("in_cart")).size()%>)</a></h3>
         <% } %>
